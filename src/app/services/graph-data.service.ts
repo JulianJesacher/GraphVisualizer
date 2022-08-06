@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { DataSet, Edge, Network, Node, Options } from 'vis';
 
 @Injectable({
@@ -6,6 +7,11 @@ import { DataSet, Edge, Network, Node, Options } from 'vis';
 })
 export class GraphDataService {
   private labelFontsizeInPx = 20;
+
+  public edgeSelected = (edge: Edge, id: string, selected: boolean, hovering: boolean) =>  {
+    edge.color = '#333333';
+    this.selectedEdge$.next(id);
+  }
 
   private edgeOptions = {
     arrows: {
@@ -26,7 +32,7 @@ export class GraphDataService {
       vadjust: this.labelFontsizeInPx,
     },
     chosen: {
-      edge: this.edgeSelected as unknown as undefined
+      edge: this.edgeSelected as unknown as undefined,
     },
     shadow: true,
     smooth: true,
@@ -64,6 +70,7 @@ export class GraphDataService {
   private _graphNodes = new DataSet<Node>();
   private _graphEdges = new DataSet<Edge>();
   private _currentId;
+  public selectedEdge$ = new BehaviorSubject<null | string>(null);
 
   public get graph() {
     return this._graph;
@@ -107,10 +114,5 @@ export class GraphDataService {
 
   public addEdge() {
     this._graph.addEdgeMode();
-  }
-
-  public edgeSelected(values: any, id: any, selected: any, hovering: any) {
-    values.color = '#333333';
-    console.log(values, id, selected, hovering);
   }
 }
