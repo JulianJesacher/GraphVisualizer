@@ -15,13 +15,13 @@ button {
 
 .config-container {
   border-radius: 10px;
-  background-color: #EEEEEE;
+  background-color: #eeeeee;
   width: fit-content;
   font-family: sans-serif;
   position: relative;
 }
 
-.config-container>form {
+.config-container > form {
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -39,7 +39,7 @@ button {
   justify-content: space-between;
 }
 
-.config-container .row>button {
+.config-container .row > button {
   --button-color: #1d83d1;
   margin: 0 0.25rem;
   border-radius: 5px;
@@ -48,7 +48,7 @@ button {
   background-color: transparent;
 }
 
-.config-container .row>button:hover {
+.config-container .row > button:hover {
   background-color: var(--button-color);
   color: white;
   transition: 0.5s;
@@ -62,11 +62,26 @@ button {
   margin-bottom: 0.75rem;
 }
 
-.config-container .grid>span {
+.config-container .grid > span {
   text-align: end;
 }
 
-.config-error{
+.config-error {
   margin-top: 0.75rem;
   color: #cc1010;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  background-color: transparent;
+  border: none;
+  font-size: 1.15rem;
+  transition: transform 0.5s;
+}
+
+.close-btn:hover {
+  color: red;
+  transform: rotate(90deg);
 }
