@@ -151,5 +151,6 @@ export class GraphDataService {
 
   public addEdge() {
     this._graph.addEdgeMode();
+    this._graph.on('click', ()=>this._graph.disableEditMode())
   }
 }
