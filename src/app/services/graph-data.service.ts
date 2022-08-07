@@ -35,6 +35,13 @@ export class GraphDataService {
     //TODO: Show gui to edit edge
   };
 
+  private addNodeCallback = (data: any, callback: any) => {
+    //TODO: Show gui to add node
+    console.log(data)
+    this._currentId = this._currentId + 1;
+    callback(data)
+  };
+
   private edgeOptions = {
     arrows: {
       to: {
@@ -87,6 +94,7 @@ export class GraphDataService {
       enabled: false,
       editEdge: this.editEdgeCallback,
       addEdge: this.addEdgeCallback,
+      addNode: this.addNodeCallback,
     },
     physics: {
       enabled: false,
@@ -138,8 +146,7 @@ export class GraphDataService {
   }
 
   public addNode() {
-    this._graphNodes.add({ id: this._currentId, label: 'Node 6', x: 4, y: 4 });
-    this._currentId = this._currentId + 1;
+    this._graph.addNodeMode();
   }
 
   public addEdge() {
