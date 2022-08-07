@@ -11,7 +11,7 @@ import { GraphDataService } from '../../services/graph-data.service';
 export class NodeConfigComponent implements OnInit {
   public nodeConfigForm: FormGroup;
   public configErrorState: NodeConfigErrorState = NodeConfigErrorState.NONE;
-  @Input() nodeToEdit: Node = { id: -1, label: 'new' };
+  @Input() nodeToEdit: Node = { id: 0, label: 'new' };
 
   constructor(private fb: FormBuilder, private graphData: GraphDataService) {
     this.nodeConfigForm = this.fb.group({
@@ -22,6 +22,9 @@ export class NodeConfigComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  /**
+   * Checks provided id and label and shows error if a value is missing or the given id already exists in the graph. If everything is valid, the node is updated.
+   */
   updateNode() {
     if (!this.nodeConfigForm.valid) {
       if (this.nodeConfigForm.value.id === null) {
@@ -35,12 +38,6 @@ export class NodeConfigComponent implements OnInit {
     const nodeConfig: Node = this.nodeConfigForm.value;
     let idExists: boolean = false;
     this.graphData.graphNodes.forEach((node) => {
-      console.log(
-        node.id,
-        this.nodeToEdit.id,
-        nodeConfig.id != this.nodeToEdit.id,
-        nodeConfig.id == node.id
-      );
       //New id chosen which is already in the dataset
       if (nodeConfig.id != this.nodeToEdit.id && nodeConfig.id == node.id) {
         idExists = true;
@@ -52,12 +49,15 @@ export class NodeConfigComponent implements OnInit {
       return;
     }
 
-    this.graphData.graphNodes.add({
+    this.graphData.graphNodes.update({
       id: nodeConfig.id,
       label: nodeConfig.label,
     });
   }
 
+  /**
+   * Deletes respective node, if an id was provided
+   */
   deleteNode() {
     if (this.nodeToEdit?.id == undefined) {
       return;
