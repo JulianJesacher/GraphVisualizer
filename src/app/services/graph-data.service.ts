@@ -38,7 +38,7 @@ export class GraphDataService {
   private addNodeCallback = (data: any, callback: any) => {
     //TODO: Show gui to add node
     this._currentId = this._currentId + 1;
-    callback(data)
+    callback(data);
   };
 
   private edgeOptions = {
@@ -88,6 +88,7 @@ export class GraphDataService {
       hideEdgesOnDrag: true,
       hover: true,
       multiselect: true,
+      hoverConnectedEdges: false,
     },
     manipulation: {
       enabled: false,
