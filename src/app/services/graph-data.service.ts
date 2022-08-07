@@ -8,10 +8,32 @@ import { DataSet, Edge, Network, Node, Options } from 'vis';
 export class GraphDataService {
   private labelFontsizeInPx = 20;
 
-  public edgeSelected = (edge: Edge, id: string, selected: boolean, hovering: boolean) =>  {
+  private hoverEdge = (
+    edge: Edge,
+    id: string,
+    selected: boolean,
+    hovering: boolean
+  ) => {
     edge.color = '#333333';
-    this.selectedEdge$.next(id);
-  }
+  };
+
+  private editEdgeCallback = (data: any, callback: any) => {
+    callback(data);
+  };
+
+  private addEdgeCallback = (data: any, callback: any) => {
+    let edgeExists: boolean = false;
+    this._graphEdges.forEach((edge) => {
+      if (edge.from === data.from && edge.to === data.to) {
+        edgeExists = true;
+      }
+    });
+    if (edgeExists) {
+      callback(null);
+    }
+    callback(data);
+    //TODO: Show gui to edit edge
+  };
 
   private edgeOptions = {
     arrows: {
@@ -32,7 +54,7 @@ export class GraphDataService {
       vadjust: this.labelFontsizeInPx,
     },
     chosen: {
-      edge: this.edgeSelected as unknown as undefined,
+      edge: this.hoverEdge as unknown as undefined,
     },
     shadow: true,
     smooth: true,
@@ -61,6 +83,11 @@ export class GraphDataService {
       hover: true,
       multiselect: true,
     },
+    manipulation: {
+      enabled: false,
+      editEdge: this.editEdgeCallback,
+      addEdge: this.addEdgeCallback,
+    },
     physics: {
       enabled: false,
     },
@@ -78,6 +105,9 @@ export class GraphDataService {
 
   public set graph(newGraph: Network) {
     this._graph = newGraph;
+    this._graph.on('selectEdge', () => {
+      //TODO: Show gui to edit edge
+    });
   }
 
   public get graphNodes() {
