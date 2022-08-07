@@ -1,16 +1,16 @@
 <div class="config-container">
-  <form action="updateNode()">
+  <form [formGroup]="nodeConfigForm">
     <h3>Edit node</h3>
     <div class="grid">
       <span>Id:</span>
-      <input type="text" />
+      <input type="text" formControlName="id" />
       <span>Label:</span>
-      <input type="text" />
+      <input type="text" formControlName="label" />
     </div>
-    <div class="row">
+    <div class="row" style="margin-bottom: 0">
       <button>Remove</button>
       <button>Set start</button>
-      <button>Save changes</button>
+      <button (click)="updateNode()">Save changes</button>
     </div>
   </form>
 </div>

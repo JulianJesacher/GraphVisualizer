@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { GraphComponentComponent } from './components/graph-component/graph-component.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { NodeConfigComponent } from './components/node-config/node-config.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,7 @@ import { NodeConfigComponent } from './components/node-config/node-config.compon
     ToolbarComponent,
     NodeConfigComponent,
   ],
-  imports: [BrowserModule],
+  imports: [BrowserModule, ReactiveFormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
