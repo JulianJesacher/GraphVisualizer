@@ -57,6 +57,13 @@ export class NodeConfigComponent implements OnInit {
       label: nodeConfig.label,
     });
   }
+
+  deleteNode() {
+    if (this.nodeToEdit?.id == undefined) {
+      return;
+    }
+    this.graphData.graphNodes.remove(this.nodeToEdit.id);
+  }
 }
 
 enum NodeConfigErrorState {

@@ -105,7 +105,7 @@ export class GraphDataService {
   private _graphNodes = new DataSet<Node>();
   private _graphEdges = new DataSet<Edge>();
   private _currentId;
-  public selectedEdge$ = new BehaviorSubject<null | string>(null);
+  private startNode$ = new BehaviorSubject<Node | null>(null);
 
   public get graph() {
     return this._graph;
