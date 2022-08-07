@@ -136,7 +136,7 @@ export class GraphDataService {
     ]);
 
     this._graphEdges = new DataSet<Edge>([
-      { from: 0, to: 2, label: '1' },
+      { from: 0, to: 2, label: '1', id: '0' },
       { from: 0, to: 1, label: '1' },
       { from: 1, to: 3, label: '1' },
       { from: 1, to: 4, label: '1' },
@@ -151,6 +151,6 @@ export class GraphDataService {
 
   public addEdge() {
     this._graph.addEdgeMode();
-    this._graph.on('click', ()=>this._graph.disableEditMode())
+    this._graph.on('click', () => this._graph.disableEditMode());
   }
 }

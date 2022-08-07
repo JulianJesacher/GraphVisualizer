@@ -56,7 +56,7 @@ export class NodeConfigComponent implements OnInit {
   }
 
   /**
-   * Remove respective node, if an id was provided. This function also removes all edges that are incident with this node
+   * Remove respective node, if an id was provided. This function also removes all edges that are incident with this node.
    */
   removeNode() {
     if (this.nodeToEdit?.id == undefined) {

@@ -1,0 +1,17 @@
+<div class="config-container">
+    <form [formGroup]="edgeConfigForm">
+      <h3>Edit edge</h3>
+      <div class="grid">
+        <span>Id:</span>
+        <input type="text" formControlName="id" required/>
+        <span>Label:</span>
+        <input type="text" formControlName="label"required />
+      </div>
+      <div class="row" style="margin-bottom: 0">
+        <button (click)="removeEdge()">Remove</button>
+        <button>Save changes</button>
+      </div>
+      <span class="config-error"></span>
+    </form>
+  </div>
+  
