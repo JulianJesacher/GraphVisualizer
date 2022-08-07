@@ -37,7 +37,6 @@ export class GraphDataService {
 
   private addNodeCallback = (data: any, callback: any) => {
     //TODO: Show gui to add node
-    console.log(data)
     this._currentId = this._currentId + 1;
     callback(data)
   };
