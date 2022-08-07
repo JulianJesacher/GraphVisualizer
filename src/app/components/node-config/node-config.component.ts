@@ -49,10 +49,7 @@ export class NodeConfigComponent implements OnInit {
       return;
     }
 
-    this.graphData.graphNodes.update({
-      id: nodeConfig.id,
-      label: nodeConfig.label,
-    });
+    this.graphData.graphNodes.update(nodeConfig);
   }
 
   /**
