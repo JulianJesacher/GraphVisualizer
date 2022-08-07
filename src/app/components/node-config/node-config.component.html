@@ -3,14 +3,15 @@
     <h3>Edit node</h3>
     <div class="grid">
       <span>Id:</span>
-      <input type="text" formControlName="id" />
+      <input type="text" formControlName="id" required/>
       <span>Label:</span>
-      <input type="text" formControlName="label" />
+      <input type="text" formControlName="label"required />
     </div>
     <div class="row" style="margin-bottom: 0">
       <button>Remove</button>
       <button>Set start</button>
       <button (click)="updateNode()">Save changes</button>
     </div>
+    <span class="config-error" #configErrorSpan>{{configErrorState}}</span>
   </form>
 </div>
