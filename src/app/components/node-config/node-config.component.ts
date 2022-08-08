@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Node } from 'vis';
 import { GraphDataService } from '../../services/graph-data.service';
+import { ConfigService } from '../../services/config.service';
 
 @Component({
   selector: 'app-node-config',
@@ -18,7 +19,7 @@ export class NodeConfigComponent implements OnInit {
     this.nodeToEdit = this.graphData.graphNodes.get(newNodeId)!;
     this.updateForm();
   }
-  @Input() set visible(newVisibility: boolean) {
+  @Input() set visible(newVisibility: boolean | undefined) {
     if (newVisibility === undefined) {
       return;
     }
@@ -28,17 +29,16 @@ export class NodeConfigComponent implements OnInit {
       this.container.nativeElement.style.display = 'none';
     }
   }
-  @Input() set position(newPosition: { x: number; y: number }) {
+  @Input() set position(newPosition: { x: number; y: number } | undefined) {
     if (newPosition === undefined) {
       return;
     }
-    this.container.nativeElement.style.left =
-      newPosition.x + 'px';
+    this.container.nativeElement.style.left = newPosition.x + 'px';
     this.container.nativeElement.style.bottom =
       window.innerHeight - newPosition.y + 'px';
   }
 
-  constructor(private fb: FormBuilder, private graphData: GraphDataService) {
+  constructor(private fb: FormBuilder, private graphData: GraphDataService, private configService: ConfigService) {
     this.updateForm();
   }
 
@@ -94,6 +94,13 @@ export class NodeConfigComponent implements OnInit {
       return;
     }
     this.graphData.graphNodes.remove(this.nodeToEdit.id);
+  }
+
+  /**
+   * Closes the node config component
+   */
+  closeConfig(){
+    this.configService.nodeConfigVisible$.next(false);
   }
 }
 

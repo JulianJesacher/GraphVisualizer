@@ -1,3 +1,3 @@
 <div #graphContainer id="graph-container"></div>
-<app-edge-config [visible]="edgeConfigVisible" [position]="position" [edgeId]="edgeId"></app-edge-config>
-<app-node-config [visible]="nodeConfigVisible" [position]="position" [nodeId]="nodeId"></app-node-config>
+<app-edge-config [visible]="configService.edgeConfigVisible" [position]="configService.position" [edgeId]="configService.edgeId"></app-edge-config>
+<app-node-config [visible]="configService.nodeConfigVisible" [position]="configService.position" [nodeId]="configService.edgeId"></app-node-config>

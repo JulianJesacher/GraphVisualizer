@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { ConfigService } from 'src/app/services/config.service';
 import { Edge, Network, Node } from 'vis';
 import { GraphDataService } from '../../services/graph-data.service';
 
@@ -9,13 +10,11 @@ import { GraphDataService } from '../../services/graph-data.service';
 })
 export class GraphComponentComponent implements AfterViewInit {
   @ViewChild('graphContainer') graphContainer!: ElementRef;
-  public edgeConfigVisible!: boolean;
-  public nodeConfigVisible!: boolean;
-  public position!: { x: number; y: number };
-  public edgeId!: number;
-  public nodeId!: number;
 
-  constructor(private graphData: GraphDataService) {}
+  constructor(
+    private graphData: GraphDataService,
+    public configService: ConfigService
+  ) {}
 
   ngAfterViewInit() {
     const container = this.graphContainer.nativeElement;
@@ -30,23 +29,31 @@ export class GraphComponentComponent implements AfterViewInit {
     );
 
     this.graphData.graph.on('selectNode', (event) => {
-      console.log('node', event);
-      this.nodeConfigVisible = true;
-      this.edgeConfigVisible = false;
-      this.position = { x: event.pointer.DOM.x, y: event.pointer.DOM.y };
-      this.nodeId = event.nodes[0];
+      this.updateConfigData(ConfigTypes.NODE, event);
     });
 
     this.graphData.graph.on('selectEdge', (event) => {
-      console.log('edge', event);
-      this.edgeConfigVisible = true;
-      this.nodeConfigVisible = false;
-      this.position = { x: event.pointer.DOM.x, y: event.pointer.DOM.y };
-      this.edgeId = event.edges[0];
-    });
-
-    this.graphData.graph.on('click', (event) => {
-      console.log(event.pointer.DOM.x + ', ' + event.pointer.DOM.y);
+      this.updateConfigData(ConfigTypes.EDGE, event);
     });
   }
+
+  updateConfigData(configType: ConfigTypes, event: any) {
+    const newPosition = { x: event.pointer.DOM.x, y: event.pointer.DOM.y };
+    this.configService.position$.next(newPosition);
+
+    if (configType === ConfigTypes.NODE) {
+      this.configService.nodeConfigVisible$.next(true);
+      this.configService.edgeConfigVisible$.next(false);
+      this.configService.nodeId$.next(event.nodes[0]);
+    } else if (configType === ConfigTypes.EDGE) {
+      this.configService.edgeConfigVisible$.next(true);
+      this.configService.nodeConfigVisible$.next(false);
+      this.configService.edgeId$.next(event.edges[0]);
+    }
+  }
+}
+
+enum ConfigTypes {
+  NODE,
+  EDGE,
 }

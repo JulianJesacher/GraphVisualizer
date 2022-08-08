@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ConfigService } from 'src/app/services/config.service';
 import { GraphDataService } from 'src/app/services/graph-data.service';
 import { Edge } from 'vis';
 
@@ -18,7 +19,7 @@ export class EdgeConfigComponent implements OnInit {
     this.edgeToEdit = this.graphData.graphEdges.get(newEdgeId)!;
     this.updateForm();
   }
-  @Input() set visible(newVisibility: boolean) {
+  @Input() set visible(newVisibility: boolean | undefined) {
     if (newVisibility === undefined) {
       return;
     }
@@ -28,7 +29,7 @@ export class EdgeConfigComponent implements OnInit {
       this.container.nativeElement.style.display = 'none';
     }
   }
-  @Input() set position(newPosition: { x: number; y: number }) {
+  @Input() set position(newPosition: { x: number; y: number } | undefined) {
     if (newPosition === undefined) {
       return;
     }
@@ -37,7 +38,7 @@ export class EdgeConfigComponent implements OnInit {
       window.innerHeight - newPosition.y + 'px';
   }
 
-  constructor(private fb: FormBuilder, private graphData: GraphDataService) {
+  constructor(private fb: FormBuilder, private graphData: GraphDataService, private configService: ConfigService) {
     this.updateForm();
   }
 
@@ -101,6 +102,13 @@ export class EdgeConfigComponent implements OnInit {
       return;
     }
     this.graphData.graphEdges.remove(this.edgeToEdit.id);
+  }
+
+  /**
+   * Closes the edge config component
+   */
+  closeConfig() {
+    this.configService.edgeConfigVisible$.next(false);
   }
 }
 
