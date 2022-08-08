@@ -1,6 +1,7 @@
-#graph-container{
-    --background-color: #111111;
+#graph-container {
+  --background-color: #111111;
 
-    height: 100vh;
-    background-color: var(--background-color);
+  height: 100vh;
+  background-color: var(--background-color);
+  position: relative;
 }

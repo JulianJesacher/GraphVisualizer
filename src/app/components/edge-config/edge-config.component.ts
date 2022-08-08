@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GraphDataService } from 'src/app/services/graph-data.service';
 import { Edge } from 'vis';
@@ -9,18 +9,50 @@ import { Edge } from 'vis';
   styleUrls: ['./edge-config.component.css'],
 })
 export class EdgeConfigComponent implements OnInit {
-  public edgeConfigForm: FormGroup;
+  public edgeConfigForm!: FormGroup;
   public configErrorState: EdgeConfigErrorState = EdgeConfigErrorState.NONE;
-  @Input() edgeToEdit: Edge = { id: 0, label: 'new', from: 0, to: 0 };
+  @ViewChild('configContainer') container!: ElementRef<HTMLDivElement>;
+  private edgeToEdit!: Edge;
+
+  @Input() set edgeId(newEdgeId: number) {
+    this.edgeToEdit = this.graphData.graphEdges.get(newEdgeId)!;
+    this.updateForm();
+  }
+  @Input() set visible(newVisibility: boolean) {
+    if (newVisibility === undefined) {
+      return;
+    }
+    if (newVisibility) {
+      this.container.nativeElement.style.display = 'block';
+    } else {
+      this.container.nativeElement.style.display = 'none';
+    }
+  }
+  @Input() set position(newPosition: { x: number; y: number }) {
+    if (newPosition === undefined) {
+      return;
+    }
+    this.container.nativeElement.style.left = newPosition.x + 'px';
+    this.container.nativeElement.style.bottom = newPosition.y + 'px';
+  }
 
   constructor(private fb: FormBuilder, private graphData: GraphDataService) {
-    this.edgeConfigForm = this.fb.group({
-      id: this.fb.control(null, [Validators.required]),
-      label: this.fb.control(null, [Validators.required]),
-    });
+    this.updateForm();
   }
 
   ngOnInit(): void {}
+
+  /**
+   * Updates the values in the form with the data of the updated edge or with no values, if no edge was provided
+   */
+  updateForm() {
+    this.edgeConfigForm = this.fb.group({
+      id: this.fb.control(this.edgeToEdit?.id ?? null, [Validators.required]),
+      label: this.fb.control(this.edgeToEdit?.label ?? null, [
+        Validators.required,
+      ]),
+    });
+  }
 
   /**
    * Checks provided id and label and shows error if a value is missing or the given id already exists in the graph. If everything is valid, the edge is updated.

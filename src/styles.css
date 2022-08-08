@@ -19,6 +19,7 @@ button {
   width: fit-content;
   font-family: sans-serif;
   position: relative;
+  margin: 0;
 }
 
 .config-container > form {

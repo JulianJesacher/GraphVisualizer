@@ -89,6 +89,7 @@ export class GraphDataService {
       hover: true,
       multiselect: true,
       hoverConnectedEdges: false,
+      selectConnectedEdges: false
     },
     manipulation: {
       enabled: false,

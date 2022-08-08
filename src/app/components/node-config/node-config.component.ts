@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Node } from 'vis';
 import { GraphDataService } from '../../services/graph-data.service';
@@ -9,18 +9,52 @@ import { GraphDataService } from '../../services/graph-data.service';
   styleUrls: ['./node-config.component.css'],
 })
 export class NodeConfigComponent implements OnInit {
-  public nodeConfigForm: FormGroup;
+  public nodeConfigForm!: FormGroup;
   public configErrorState: NodeConfigErrorState = NodeConfigErrorState.NONE;
-  @Input() nodeToEdit: Node = { id: 0, label: 'new' };
+  @ViewChild('configContainer') container!: ElementRef<HTMLDivElement>;
+  private nodeToEdit!: Node;
+
+  @Input() set nodeId(newNodeId: number) {
+    this.nodeToEdit = this.graphData.graphNodes.get(newNodeId)!;
+    this.updateForm();
+  }
+  @Input() set visible(newVisibility: boolean) {
+    if (newVisibility === undefined) {
+      return;
+    }
+    if (newVisibility) {
+      this.container.nativeElement.style.display = 'inline-block';
+    } else {
+      this.container.nativeElement.style.display = 'none';
+    }
+  }
+  @Input() set position(newPosition: { x: number; y: number }) {
+    if (newPosition === undefined) {
+      return;
+    }
+    this.container.nativeElement.style.left =
+      newPosition.x + 'px';
+    this.container.nativeElement.style.bottom =
+      window.innerHeight - newPosition.y + 'px';
+  }
 
   constructor(private fb: FormBuilder, private graphData: GraphDataService) {
-    this.nodeConfigForm = this.fb.group({
-      id: this.fb.control(null, [Validators.required]),
-      label: this.fb.control(null, [Validators.required]),
-    });
+    this.updateForm();
   }
 
   ngOnInit(): void {}
+
+  /**
+   * Updates the values in the form with the data of the updated edge or with no values, if no edge was provided
+   */
+  updateForm() {
+    this.nodeConfigForm = this.fb.group({
+      id: this.fb.control(this.nodeToEdit?.id ?? null, [Validators.required]),
+      label: this.fb.control(this.nodeToEdit?.label ?? null, [
+        Validators.required,
+      ]),
+    });
+  }
 
   /**
    * Checks provided id and label and shows error if a value is missing or the given id already exists in the graph. If everything is valid, the node is updated.
