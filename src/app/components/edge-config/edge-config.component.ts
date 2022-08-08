@@ -33,7 +33,8 @@ export class EdgeConfigComponent implements OnInit {
       return;
     }
     this.container.nativeElement.style.left = newPosition.x + 'px';
-    this.container.nativeElement.style.bottom = newPosition.y + 'px';
+    this.container.nativeElement.style.bottom =
+      window.innerHeight - newPosition.y + 'px';
   }
 
   constructor(private fb: FormBuilder, private graphData: GraphDataService) {
