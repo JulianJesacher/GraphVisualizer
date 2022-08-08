@@ -9,14 +9,13 @@ import { GraphDataService } from '../../services/graph-data.service';
 })
 export class GraphComponentComponent implements AfterViewInit {
   @ViewChild('graphContainer') graphContainer!: ElementRef;
-  private graph: any;
 
   constructor(private graphData: GraphDataService) {}
 
   ngAfterViewInit() {
     const container = this.graphContainer.nativeElement;   
     const data = { nodes: this.graphData.graphNodes, edges: this.graphData.graphEdges };
-    this.graph = new Network(container, data, this.graphData.graphOptions);
-    this.graphData.graph = this.graph;
+    this.graphData.graph = new Network(container, data, this.graphData.graphOptions);
+    this.graphData.graph.on('click', (event)=> console.log(event))
   }
 }
