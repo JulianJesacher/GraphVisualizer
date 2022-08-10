@@ -101,6 +101,7 @@ export class NodeConfigComponent implements OnInit {
    */
   closeConfig(){
     this.configService.nodeConfigVisible$.next(false);
+    this.graphData.graph.selectNodes([]);
   }
 }
 

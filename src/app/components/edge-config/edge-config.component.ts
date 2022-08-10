@@ -109,6 +109,7 @@ export class EdgeConfigComponent implements OnInit {
    */
   closeConfig() {
     this.configService.edgeConfigVisible$.next(false);
+    this.graphData.graph.selectEdges([]);
   }
 }
 
