@@ -21,13 +21,10 @@ export class GraphComponentComponent implements AfterViewInit {
   @ViewChild('edgeConfig') edgeConfigElement!: EdgeConfigComponent;
   @ViewChild('nodeConfig') nodeConfigElement!: NodeConfigComponent;
 
-  private configOpenedClick: boolean = false;
-
   // HostListener to close config element if a click outside occured
   @HostListener('document:click', ['$event'])
   closeConfigs(event: MouseEvent) {
-    let configContainer: undefined | EdgeConfigComponent | NodeConfigComponent =
-      undefined;
+    let configContainer: undefined | EdgeConfigComponent | NodeConfigComponent = undefined;
     if (
       this.configService.edgeConfigVisible &&
       !this.configService.nodeConfigVisible
@@ -41,8 +38,8 @@ export class GraphComponentComponent implements AfterViewInit {
     }
 
     // Return if no configContainer was selected or if viewchilds are not yet initialized, or if the config is not yet displayed (click to open the config)
-    if (configContainer === undefined || this.configOpenedClick) {
-      this.configOpenedClick = false;
+    if (configContainer === undefined || this.configService.configOpenedClick) {
+      this.configService.configOpenedClick$.next(false);
       return;
     }
 
@@ -53,7 +50,7 @@ export class GraphComponentComponent implements AfterViewInit {
       this.configService.edgeConfigVisible$.next(false);
       this.configService.nodeConfigVisible$.next(false);
     }
-    this.configOpenedClick = false;
+    this.configService.configOpenedClick$.next(false);
   }
 
   constructor(
@@ -70,13 +67,11 @@ export class GraphComponentComponent implements AfterViewInit {
     this.graphData.graph = new Network(container, data, this.graphData.graphOptions);
 
     this.graphData.graph.on('selectNode', (event) => {
-      this.configService.showConfig(ConfigTypes.NODE, event);
-      this.configOpenedClick = true;
+      this.configService.showConfig(ConfigTypes.NODE, event.nodes[0], event.pointer.DOM.x, event.pointer.DOM.y );
     });
 
     this.graphData.graph.on('selectEdge', (event) => {
-      this.configService.showConfig(ConfigTypes.EDGE, event);
-      this.configOpenedClick = true;
+      this.configService.showConfig(ConfigTypes.EDGE, event.edges[0], event.pointer.DOM.x, event.pointer.DOM.y);
     });
   }
 }

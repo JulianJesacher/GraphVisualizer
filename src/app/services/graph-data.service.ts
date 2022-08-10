@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DataSet, Edge, Network, Node, Options } from 'vis';
-import { ConfigService } from './config.service';
+import { ConfigService, ConfigTypes } from './config.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,15 +33,17 @@ export class GraphDataService {
       callback(null);
     }
     callback(data);
-    //TODO: Show gui to edit edge
+
+    const domClickPosition = this._graph.canvasToDOM({x: data.x, y: data.y});
+    this.configService.showConfig(ConfigTypes.EDGE, data.id, domClickPosition.x, domClickPosition.y)
   };
 
   private addNodeCallback = (data: any, callback: any) => {
     this._currentId = this._currentId + 1;
     callback(data);
-    console.log("now", data.id)
-    this.configService.nodeId$.next(data.id);
-    this.configService.nodeConfigVisible$.next(true);
+
+    const domClickPosition = this._graph.canvasToDOM({x: data.x, y: data.y});
+    this.configService.showConfig(ConfigTypes.NODE, data.id, domClickPosition.x, domClickPosition.y)
   };
 
   private edgeOptions = {
