@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DataSet, Edge, Network, Node, Options } from 'vis';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root',
@@ -36,9 +37,11 @@ export class GraphDataService {
   };
 
   private addNodeCallback = (data: any, callback: any) => {
-    //TODO: Show gui to add node
     this._currentId = this._currentId + 1;
     callback(data);
+    console.log("now", data.id)
+    this.configService.nodeId$.next(data.id);
+    this.configService.nodeConfigVisible$.next(true);
   };
 
   private edgeOptions = {
@@ -127,7 +130,7 @@ export class GraphDataService {
     return this._graphEdges;
   }
 
-  constructor() {
+  constructor(private configService: ConfigService) {
     this._graphNodes = new DataSet<Node>([
       { id: 0, label: 'Node 1' },
       { id: 1, label: 'Node 2' },

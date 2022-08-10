@@ -29,4 +29,25 @@ export class ConfigService {
   }
 
   constructor() {}
+
+  public showConfig(configType: ConfigTypes, event: any){
+    const newPosition = { x: event.pointer.DOM.x, y: event.pointer.DOM.y };
+   this.position$.next(newPosition);
+
+    if (configType === ConfigTypes.NODE) {
+      this.nodeConfigVisible$.next(true);
+      this.edgeConfigVisible$.next(false);
+      this.nodeId$.next(event.nodes[0]);
+      
+    } else if (configType === ConfigTypes.EDGE) {
+      this.edgeConfigVisible$.next(true);
+      this.nodeConfigVisible$.next(false);
+      this.edgeId$.next(event.edges[0]);
+    }
+  }
+}
+
+export enum ConfigTypes {
+  NODE,
+  EDGE,
 }
