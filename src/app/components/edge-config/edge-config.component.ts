@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfigService } from 'src/app/services/config.service';
 import { GraphDataService } from 'src/app/services/graph-data.service';
@@ -19,6 +19,8 @@ export class EdgeConfigComponent implements OnInit {
     this.edgeToEdit = this.graphData.graphEdges.get(newEdgeId)!;
     this.updateForm();
   }
+
+  private _visible: boolean = false;
   @Input() set visible(newVisibility: boolean | undefined) {
     if (newVisibility === undefined) {
       return;
@@ -28,7 +30,9 @@ export class EdgeConfigComponent implements OnInit {
     } else {
       this.container.nativeElement.style.display = 'none';
     }
+    this._visible = newVisibility;
   }
+
   @Input() set position(newPosition: { x: number; y: number } | undefined) {
     if (newPosition === undefined) {
       return;
@@ -38,6 +42,26 @@ export class EdgeConfigComponent implements OnInit {
       window.innerHeight - newPosition.y + 'px';
   }
 
+    // HostListener to handle keyboard events to interact with the node
+    @HostListener('document:keyup', ['$event'])
+    handleKeyBoardEvents(event: KeyboardEvent) {
+      // If no edge config is opened, the keyboard event is disregarded
+      if(!this._visible){
+        return;
+      }
+  
+      const key = event.key;
+      console.log(event)
+      switch(key){
+        case 'Delete':
+        case 'Backspace':
+          this.removeEdge();
+          break;
+        default:
+          return;
+      }
+    }
+
   constructor(private fb: FormBuilder, private graphData: GraphDataService, private configService: ConfigService) {
     this.updateForm();
   }
@@ -45,7 +69,7 @@ export class EdgeConfigComponent implements OnInit {
   ngOnInit(): void {}
 
   /**
-   * Updates the values in the form with the data of the updated edge or with no values, if no edge was provided
+   * Updates the values in the form with the data of the updated edge or with no values, if no edge was provided.
    */
   updateForm() {
     this.edgeConfigForm = this.fb.group({
@@ -95,13 +119,14 @@ export class EdgeConfigComponent implements OnInit {
   }
 
   /**
-   * Remove respective edge, if an id was provided.
+   * Remove respective edge, if an id was provided. If the edge has been removed, the config gets closed
    */
   removeEdge() {
     if (this.edgeToEdit?.id == undefined) {
       return;
     }
     this.graphData.graphEdges.remove(this.edgeToEdit.id);
+    this.closeConfig();
   }
 
   /**
