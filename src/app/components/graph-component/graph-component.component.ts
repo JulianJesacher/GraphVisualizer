@@ -45,7 +45,7 @@ export class GraphComponentComponent implements AfterViewInit {
 
     if (
       event.target instanceof Node &&
-      !this.edgeConfigElement.container.nativeElement.contains(event.target)
+      !configContainer.container.nativeElement.contains(event.target)
     ) {
       this.configService.edgeConfigVisible$.next(false);
       this.configService.nodeConfigVisible$.next(false);
