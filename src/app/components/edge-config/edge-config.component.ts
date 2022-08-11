@@ -116,6 +116,7 @@ export class EdgeConfigComponent implements OnInit {
     }
 
     this.graphData.graphEdges.update(edgeConfig);
+    this.closeConfig();
   }
 
   /**

@@ -116,6 +116,7 @@ export class NodeConfigComponent implements OnInit {
     }
 
     this.graphData.graphNodes.update(nodeConfig);
+    this.closeConfig();
   }
 
   /**
