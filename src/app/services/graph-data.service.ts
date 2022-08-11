@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { DataSet, Edge, Network, Node, Options } from 'vis';
+import { DataSet, Edge, Network, Node, Options, Position } from 'vis';
 import { ConfigService, ConfigTypes } from './config.service';
 
 @Injectable({
@@ -34,8 +34,10 @@ export class GraphDataService {
     }
     callback(data);
 
-    const domClickPosition = this._graph.canvasToDOM({x: data.x, y: data.y});
-    this.configService.showConfig(ConfigTypes.EDGE, data.id, domClickPosition.x, domClickPosition.y)
+    const toNodePositionCanvas: Position = this.graph.getPositions(data.to)[data.to];
+    const toNodePositionDOM : Position = this._graph.canvasToDOM(toNodePositionCanvas);
+
+    this.configService.showConfig(ConfigTypes.EDGE, data.id, toNodePositionDOM.x, toNodePositionDOM.y)
   };
 
   private addNodeCallback = (data: any, callback: any) => {
