@@ -63,7 +63,6 @@ export class NodeConfigComponent implements OnInit {
     console.log(event);
     switch (key) {
       case 'Delete':
-      case 'Backspace':
         this.removeNode();
         break;
       default:

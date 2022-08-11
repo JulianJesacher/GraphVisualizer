@@ -54,7 +54,6 @@ export class EdgeConfigComponent implements OnInit {
       const key = event.key;
       switch(key){
         case 'Delete':
-        case 'Backspace':
           this.removeEdge();
           break;
         default:
