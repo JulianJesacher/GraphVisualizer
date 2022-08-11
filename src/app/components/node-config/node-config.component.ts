@@ -60,7 +60,6 @@ export class NodeConfigComponent implements OnInit {
     }
 
     const key = event.key;
-    console.log(event);
     switch (key) {
       case 'Delete':
         this.removeNode();

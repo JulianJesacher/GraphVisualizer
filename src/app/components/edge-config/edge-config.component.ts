@@ -43,23 +43,23 @@ export class EdgeConfigComponent implements OnInit {
       window.innerHeight - newPosition.y + 'px';
   }
 
-    // HostListener to handle keyboard events to interact with the node
-    @HostListener('document:keyup', ['$event'])
-    handleKeyBoardEvents(event: KeyboardEvent) {
-      // If no edge config is opened, the keyboard event is disregarded
-      if(!this._visible){
-        return;
-      }
-  
-      const key = event.key;
-      switch(key){
-        case 'Delete':
-          this.removeEdge();
-          break;
-        default:
-          return;
-      }
+  // HostListener to handle keyboard events to interact with the node
+  @HostListener('document:keyup', ['$event'])
+  handleKeyBoardEvents(event: KeyboardEvent) {
+    // If no edge config is opened, the keyboard event is disregarded
+    if(!this._visible){
+      return;
     }
+
+    const key = event.key;
+    switch(key){
+      case 'Delete':
+        this.removeEdge();
+        break;
+      default:
+        return;
+    }
+  }
 
   constructor(private fb: FormBuilder, private graphData: GraphDataService, private configService: ConfigService) {
     this.updateForm();
