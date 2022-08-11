@@ -56,6 +56,9 @@ export class EdgeConfigComponent implements OnInit {
       case 'Delete':
         this.removeEdge();
         break;
+      case 'Escape':
+        this.closeConfig();
+        break;
       default:
         return;
     }

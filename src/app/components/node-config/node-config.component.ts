@@ -64,6 +64,9 @@ export class NodeConfigComponent implements OnInit {
       case 'Delete':
         this.removeNode();
         break;
+      case 'Escape':
+        this.closeConfig();
+        break;
       default:
         return;
     }
