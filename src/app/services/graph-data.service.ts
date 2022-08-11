@@ -9,12 +9,7 @@ import { ConfigService, ConfigTypes } from './config.service';
 export class GraphDataService {
   private labelFontsizeInPx = 20;
 
-  private hoverEdge = (
-    edge: Edge,
-    id: string,
-    selected: boolean,
-    hovering: boolean
-  ) => {
+  private hoverEdge = (edge: Edge, id: string, selected: boolean, hovering: boolean) => {
     edge.color = '#333333';
   };
 
@@ -36,7 +31,6 @@ export class GraphDataService {
 
     const toNodePositionCanvas: Position = this.graph.getPositions(data.to)[data.to];
     const toNodePositionDOM : Position = this._graph.canvasToDOM(toNodePositionCanvas);
-
     this.configService.showConfig(ConfigTypes.EDGE, data.id, toNodePositionDOM.x, toNodePositionDOM.y)
   };
 
