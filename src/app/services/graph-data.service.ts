@@ -36,7 +36,7 @@ export class GraphDataService {
 
   private addNodeCallback = (data: any, callback: any) => {
     this._graphNodes.add(data);
-    
+
     const domClickPosition = this._graph.canvasToDOM({x: data.x, y: data.y});
     this.configService.showConfig(ConfigTypes.NODE, data.id, domClickPosition.x, domClickPosition.y)
   };
@@ -85,7 +85,7 @@ export class GraphDataService {
     edges: this.edgeOptions,
     nodes: this.nodeOptions,
     interaction: {
-      hideEdgesOnDrag: true,
+      hideEdgesOnDrag: false,
       hover: true,
       multiselect: true,
       hoverConnectedEdges: false,
