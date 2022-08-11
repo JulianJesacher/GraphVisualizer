@@ -20,9 +20,10 @@ import { ConfigService } from '../../services/config.service';
 export class NodeConfigComponent implements OnInit {
   public nodeConfigForm!: FormGroup;
   public configErrorState: NodeConfigErrorState = NodeConfigErrorState.NONE;
+  public configErrorNone: NodeConfigErrorState = NodeConfigErrorState.NONE;
   @ViewChild('configContainer') container!: ElementRef<HTMLDivElement>;
   private nodeToEdit!: Node;
-  
+
   @Input() set nodeId(newNodeId: number) {
     this.nodeToEdit = this.graphData.graphNodes.get(newNodeId)!;
     this.updateForm();
@@ -54,13 +55,13 @@ export class NodeConfigComponent implements OnInit {
   @HostListener('document:keyup', ['$event'])
   handleKeyBoardEvents(event: KeyboardEvent) {
     // If no node config is opened, the keyboard event is disregarded
-    if(!this._visible){
+    if (!this._visible) {
       return;
     }
 
     const key = event.key;
-    console.log(event)
-    switch(key){
+    console.log(event);
+    switch (key) {
       case 'Delete':
       case 'Backspace':
         this.removeNode();
@@ -70,7 +71,11 @@ export class NodeConfigComponent implements OnInit {
     }
   }
 
-  constructor(private fb: FormBuilder, private graphData: GraphDataService, private configService: ConfigService) {
+  constructor(
+    private fb: FormBuilder,
+    private graphData: GraphDataService,
+    private configService: ConfigService
+  ) {
     this.updateForm();
   }
 
@@ -127,7 +132,7 @@ export class NodeConfigComponent implements OnInit {
       return;
     }
     this.graphData.graphNodes.remove(this.nodeToEdit.id);
-    this.closeConfig()
+    this.closeConfig();
   }
 
   /**
@@ -136,6 +141,13 @@ export class NodeConfigComponent implements OnInit {
   closeConfig() {
     this.configService.nodeConfigVisible$.next(false);
     this.graphData.graph.selectNodes([]);
+  }
+
+  /**
+   * Resets error of the config. Triggered, when either one of the input fields is focused.
+   */
+  resetErrors() {
+    this.configErrorState = NodeConfigErrorState.NONE;
   }
 }
 

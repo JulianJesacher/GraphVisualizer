@@ -3,15 +3,15 @@
     <h3>Edit node</h3>
     <div class="grid">
       <span>Id:</span>
-      <input type="text" formControlName="id" required/>
+      <input type="text" formControlName="id" required (focus)="resetErrors()" (focus)="resetErrors()"/>
       <span>Label:</span>
-      <input type="text" formControlName="label"required />
+      <input type="text" formControlName="label"required (focus)="resetErrors()" (focus)="resetErrors()"/>
     </div>
     <div class="row" style="margin-bottom: 0">
       <button (click)="removeNode()">Remove</button>
       <button (click)="updateNode()">Save changes</button>
     </div>
-    <span class="config-error">{{configErrorState}}</span>
+    <span class="config-error" *ngIf="configErrorState !== configErrorNone">{{configErrorState}}</span>
   </form>
   <button class="close-btn" (click)="closeConfig()">✖</button>
 </div>

@@ -12,6 +12,7 @@ import { Edge } from 'vis';
 export class EdgeConfigComponent implements OnInit {
   public edgeConfigForm!: FormGroup;
   public configErrorState: EdgeConfigErrorState = EdgeConfigErrorState.NONE;
+  public configErrorNone: EdgeConfigErrorState = EdgeConfigErrorState.NONE;
   @ViewChild('configContainer') container!: ElementRef<HTMLDivElement>;
   private edgeToEdit!: Edge;
 
@@ -51,7 +52,6 @@ export class EdgeConfigComponent implements OnInit {
       }
   
       const key = event.key;
-      console.log(event)
       switch(key){
         case 'Delete':
         case 'Backspace':
@@ -116,6 +116,7 @@ export class EdgeConfigComponent implements OnInit {
     }
 
     this.graphData.graphEdges.update(edgeConfig);
+    console.log("now")
     this.closeConfig();
   }
 
@@ -136,6 +137,13 @@ export class EdgeConfigComponent implements OnInit {
   closeConfig() {
     this.configService.edgeConfigVisible$.next(false);
     this.graphData.graph.selectEdges([]);
+  }
+
+  /**
+   * Resets error of the config. Triggered, when either one of the input fields is focused.
+   */
+  resetErrors(){
+    this.configErrorState = EdgeConfigErrorState.NONE;
   }
 }
 
