@@ -25,9 +25,9 @@ export class GraphDataService {
       }
     });
     if (edgeExists) {
-      callback(null);
+      return;
     }
-    callback(data);
+    this._graphEdges.add(data)
 
     const toNodePositionCanvas: Position = this.graph.getPositions(data.to)[data.to];
     const toNodePositionDOM : Position = this._graph.canvasToDOM(toNodePositionCanvas);
@@ -35,9 +35,8 @@ export class GraphDataService {
   };
 
   private addNodeCallback = (data: any, callback: any) => {
-    this._currentId = this._currentId + 1;
-    callback(data);
-
+    this._graphNodes.add(data);
+    
     const domClickPosition = this._graph.canvasToDOM({x: data.x, y: data.y});
     this.configService.showConfig(ConfigTypes.NODE, data.id, domClickPosition.x, domClickPosition.y)
   };
@@ -106,7 +105,6 @@ export class GraphDataService {
   private _graph!: Network;
   private _graphNodes = new DataSet<Node>();
   private _graphEdges = new DataSet<Edge>();
-  private _currentId;
   private startNode$ = new BehaviorSubject<Node | null>(null);
 
   public get graph() {
@@ -143,8 +141,6 @@ export class GraphDataService {
       { from: 1, to: 3, label: '1' },
       { from: 1, to: 4, label: '1' },
     ]);
-
-    this._currentId = this._graphNodes.length;
   }
 
   public addNode() {
