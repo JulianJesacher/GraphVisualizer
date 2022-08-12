@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { DataSet, Edge, Network, Node, Options, Position } from 'vis';
+import { LabelIterator, NumericalLabelIterator } from '../graphHelpers/labelIterator';
 import { ConfigService, ConfigTypes } from './config.service';
 
 @Injectable({
@@ -35,6 +36,7 @@ export class GraphDataService {
   };
 
   private addNodeCallback = (data: any, callback: any) => {
+    data.label = this._labelIterator.next().value.toString();
     this._graphNodes.add(data);
 
     const domClickPosition = this._graph.canvasToDOM({x: data.x, y: data.y});
@@ -106,6 +108,7 @@ export class GraphDataService {
   private _graphNodes = new DataSet<Node>();
   private _graphEdges = new DataSet<Edge>();
   private startNode$ = new BehaviorSubject<Node | null>(null);
+  private _labelIterator : LabelIterator<number | string> = new NumericalLabelIterator();
 
   public get graph() {
     return this._graph;
