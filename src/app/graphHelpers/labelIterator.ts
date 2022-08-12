@@ -23,10 +23,10 @@ export class AlphabeticLabelIterator extends LabelIterator<string> {
   protected getNextElement(): string {
     const nextNumberBase27 = (parseInt(this.currentNumberBase27, 26) + 1).toString(26);
     this.currentNumberBase27 = nextNumberBase27;
-    return AlphabeticLabelIterator.base27ToString(nextNumberBase27);
+    return AlphabeticLabelIterator.base26ToString(nextNumberBase27);
   }
 
-  public static base27ToString(value: string) {
+  public static base26ToString(value: string) {
     const chars = value.split('');
     return chars
       .map((digit, index) => {
