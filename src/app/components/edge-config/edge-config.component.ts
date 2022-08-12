@@ -118,7 +118,6 @@ export class EdgeConfigComponent implements OnInit {
     }
 
     this.graphData.graphEdges.update(edgeConfig);
-    console.log("now")
     this.closeConfig();
   }
 
@@ -145,7 +144,7 @@ export class EdgeConfigComponent implements OnInit {
   /**
    * Resets error of the config. Triggered, when either one of the input fields is focused, or when the config is closed.
    */
-  resetErrors(){
+  resetErrors() {
     this.configErrorState = EdgeConfigErrorState.NONE;
   }
 }

@@ -20,5 +20,4 @@ export class ToolbarComponent implements OnInit {
   addEdge(){
     this.graphData.addEdge();
   }
-
 }
