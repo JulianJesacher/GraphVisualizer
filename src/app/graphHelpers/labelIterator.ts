@@ -1,6 +1,4 @@
-export abstract class LabelIterator<T extends string | number>
-  implements Iterator<T>
-{
+export abstract class LabelIterator<T extends string | number> implements Iterator<T> {
   constructor(protected currentElement: T) {}
 
   next(): IteratorResult<T> {
@@ -30,11 +28,24 @@ export class AlphabeticLabelIterator extends LabelIterator<string> {
 
   public static base27ToString(value: string) {
     const chars = value.split('');
-    return chars.map((digit, index) => {
+    return chars
+      .map((digit, index) => {
         if (index === chars.length - 1) {
           return String.fromCharCode(65 + parseInt(digit, 26));
         }
         return String.fromCharCode(64 + parseInt(digit, 26)); // Allow to show A... and not skip the A and start with B...
-      }).join('');
+      })
+      .join('');
+  }
+}
+
+export class NumericalLabelIterator extends LabelIterator<number> {
+
+  constructor() {
+    super(1);
+  }
+
+  protected getNextElement(): number {
+    return this.currentElement + 1;
   }
 }
