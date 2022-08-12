@@ -139,10 +139,11 @@ export class EdgeConfigComponent implements OnInit {
   closeConfig() {
     this.configService.edgeConfigVisible$.next(false);
     this.graphData.graph.selectEdges([]);
+    this.resetErrors();
   }
 
   /**
-   * Resets error of the config. Triggered, when either one of the input fields is focused.
+   * Resets error of the config. Triggered, when either one of the input fields is focused, or when the config is closed.
    */
   resetErrors(){
     this.configErrorState = EdgeConfigErrorState.NONE;
