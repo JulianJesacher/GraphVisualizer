@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { DataSet, Edge, Network, Node, Options, Position } from 'vis';
 import { LabelIterator, NumericalLabelIterator } from '../graphHelpers/labelIterator';
-import { ConfigService, ConfigTypes } from './config.service';
+import { GraphElementDialogService } from './graph-element-dialog.service';
+import { GraphEventService } from './graph-event.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,38 +11,7 @@ import { ConfigService, ConfigTypes } from './config.service';
 export class GraphDataService {
   private labelFontsizeInPx = 20;
 
-  private hoverEdge = (edge: Edge, id: string, selected: boolean, hovering: boolean) => {
-    edge.color = '#333333';
-  };
-
-  private editEdgeCallback = (data: any, callback: any) => {
-    callback(data);
-  };
-
-  private addEdgeCallback = (data: any, callback: any) => {
-    let edgeExists: boolean = false;
-    this._graphEdges.forEach((edge) => {
-      if (edge.from === data.from && edge.to === data.to) {
-        edgeExists = true;
-      }
-    });
-    if (edgeExists) {
-      return;
-    }
-    this._graphEdges.add(data)
-
-    const toNodePositionCanvas: Position = this.graph.getPositions(data.to)[data.to];
-    const toNodePositionDOM : Position = this._graph.canvasToDOM(toNodePositionCanvas);
-    this.configService.showConfig(ConfigTypes.EDGE, data.id, toNodePositionDOM.x, toNodePositionDOM.y)
-  };
-
-  private addNodeCallback = (data: any, callback: any) => {
-    data.label = this._labelIterator.next().value.toString();
-    this._graphNodes.add(data);
-
-    const domClickPosition = this._graph.canvasToDOM({x: data.x, y: data.y});
-    this.configService.showConfig(ConfigTypes.NODE, data.id, domClickPosition.x, domClickPosition.y)
-  };
+  public graph$ = new BehaviorSubject<Network | null>(null);
 
   private edgeOptions = {
     arrows: {
@@ -60,9 +30,6 @@ export class GraphDataService {
       strokeWidth: 0,
       size: this.labelFontsizeInPx,
       vadjust: this.labelFontsizeInPx,
-    },
-    chosen: {
-      edge: this.hoverEdge as unknown as undefined,
     },
     shadow: true,
     smooth: true,
@@ -93,12 +60,6 @@ export class GraphDataService {
       hoverConnectedEdges: false,
       selectConnectedEdges: false
     },
-    manipulation: {
-      enabled: false,
-      editEdge: this.editEdgeCallback,
-      addEdge: this.addEdgeCallback,
-      addNode: this.addNodeCallback,
-    },
     physics: {
       enabled: false,
     },
@@ -107,18 +68,14 @@ export class GraphDataService {
   private _graph!: Network;
   private _graphNodes = new DataSet<Node>();
   private _graphEdges = new DataSet<Edge>();
-  private startNode$ = new BehaviorSubject<Node | null>(null);
-  private _labelIterator : LabelIterator<number | string> = new NumericalLabelIterator();
 
   public get graph() {
     return this._graph;
   }
 
-  public set graph(newGraph: Network) {
+  public assignGraph(newGraph: Network) {
     this._graph = newGraph;
-    this._graph.on('selectEdge', () => {
-      //TODO: Show gui to edit edge
-    });
+    this.graph$.next(newGraph);
   }
 
   public get graphNodes() {
@@ -129,7 +86,7 @@ export class GraphDataService {
     return this._graphEdges;
   }
 
-  constructor(private configService: ConfigService) {
+  constructor() {
     this._graphNodes = new DataSet<Node>([
       { id: 0, label: 'Node 1' },
       { id: 1, label: 'Node 2' },

@@ -1,0 +1,11 @@
+<div #graphContainer id="graph-container"></div>
+<app-graph-element-config
+  *ngIf="elementDialog.position$ | async"
+  [elementId]="elementDialog.elementId$ | async"
+  [elementType]="elementDialog.elementType$ | async"
+  [initialLabel]="elementDialog.initialLabel$ | async"
+  [position]="elementDialog.position$ | async"
+  (update)="updateElement($event)"
+  (delete)="deleteElement($event)"
+  (close)="closeElementConfig()"
+></app-graph-element-config>

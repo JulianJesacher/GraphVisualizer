@@ -1,0 +1,15 @@
+<div class="config-container" #configContainer>
+  <form [formGroup]="nodeConfigForm">
+    <h3>Edit {{elementType | titlecase}}</h3>
+    <div class="grid">
+      <span>Label:</span>
+      <input type="text" formControlName="label"required (focus)="resetErrors()"/>
+    </div>
+    <div class="row" style="margin-bottom: 0">
+      <button (click)="triggerDelete()">Remove</button>
+      <button (click)="triggerUpdate()">Save changes</button>
+    </div>
+    <span class="config-error" *ngIf="configErrorState !== ElementConfigErrorState.NONE">{{configErrorState}}</span>
+  </form>
+  <button class="close-btn" (click)="closeConfig()">✖</button>
+</div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NodePainter } from 'src/app/graphHelpers/nodePainter';
 import { GraphDataService } from 'src/app/services/graph-data.service';
 
 @Component({

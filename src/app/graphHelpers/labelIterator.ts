@@ -1,26 +1,25 @@
-export abstract class LabelIterator<T extends string | number> implements Iterator<T> {
-  constructor(protected currentElement: T) {}
+export abstract class LabelIterator<T> implements Iterator<T> {
+  private currentValue = this.initialValue();
 
   next(): IteratorResult<T> {
-    const oldElement = this.currentElement;
-    this.currentElement = this.getNextElement();
+    const oldElement = this.currentValue;
+    this.currentValue = this.getNextValue(this.currentValue);
     return {
       done: false,
       value: oldElement,
     };
   }
 
-  protected abstract getNextElement(): T;
+  protected abstract initialValue(): T;
+  protected abstract getNextValue(previousValue: T): T;
 }
 
 export class AlphabeticLabelIterator extends LabelIterator<string> {
   private currentNumberBase27 = '0'; // 1 because A is the initial currentElement, and A is 1
 
-  constructor() {
-    super('A');
-  }
+  protected initialValue() { return 'A'; }
 
-  protected getNextElement(): string {
+  protected getNextValue(_: string): string {
     const nextNumberBase27 = (parseInt(this.currentNumberBase27, 26) + 1).toString(26);
     this.currentNumberBase27 = nextNumberBase27;
     return AlphabeticLabelIterator.base26ToString(nextNumberBase27);
@@ -41,11 +40,11 @@ export class AlphabeticLabelIterator extends LabelIterator<string> {
 
 export class NumericalLabelIterator extends LabelIterator<number> {
 
-  constructor() {
-    super(1);
+  protected initialValue() {
+    return 0;
   }
 
-  protected getNextElement(): number {
-    return this.currentElement + 1;
+  protected getNextValue(currentValue: number): number {
+    return currentValue + 1;
   }
 }
