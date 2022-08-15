@@ -1,25 +1,7 @@
 import { Component, ElementRef, HostListener, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { GraphElementDeleteEvent, GraphElementType, GraphElementUpdateEvent } from 'src/app/types/element-config-dialog.types';
 import { Position } from 'vis';
-
-// ToDo: Extract somewhere else
-
-interface GraphElementIdentifier {
-  type: GraphElementType;
-  id: string;
-}
-
-export type GraphElementDeleteEvent = GraphElementIdentifier;
-
-interface UpdatePayload {
-  label: string;
-}
-
-export interface GraphElementUpdateEvent extends GraphElementIdentifier {
-  updatedData: UpdatePayload;
-}
-
-export type GraphElementType = 'edge' | 'node';
 
 @Component({
   selector: 'app-graph-element-config',

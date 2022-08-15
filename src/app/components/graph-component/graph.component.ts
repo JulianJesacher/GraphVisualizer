@@ -1,11 +1,10 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { GraphElementDialogService } from 'src/app/services/graph-element-dialog.service';
-import { Edge, Network, Node } from 'vis';
+import { GraphElementDeleteEvent, GraphElementUpdateEvent } from 'src/app/types/element-config-dialog.types';
+import { Network } from 'vis';
 import { GraphDataService } from '../../services/graph-data.service';
 import {
   GraphElementConfigComponent,
-  GraphElementDeleteEvent,
-  GraphElementUpdateEvent,
 } from '../graph-element-config/graph-element-config.component';
 
 @Component({

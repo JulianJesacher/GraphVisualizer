@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Edge, Node, Position } from 'vis';
-import { GraphElementType } from '../components/graph-element-config/graph-element-config.component';
 import { LabelIterator, NumericalLabelIterator } from '../graphHelpers/labelIterator';
+import { GraphElementType } from '../types/element-config-dialog.types';
 import { GraphDataService } from './graph-data.service';
 
 @Injectable({

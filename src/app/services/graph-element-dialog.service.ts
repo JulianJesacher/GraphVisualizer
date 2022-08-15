@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Position } from 'vis';
-import { GraphElementType } from '../components/graph-element-config/graph-element-config.component';
+import { GraphElementType } from '../types/element-config-dialog.types';
 import { GraphEventService } from './graph-event.service';
 
 @Injectable({
