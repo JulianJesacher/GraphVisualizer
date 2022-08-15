@@ -58,7 +58,7 @@ export class GraphDataService {
       hover: true,
       multiselect: true,
       hoverConnectedEdges: false,
-      selectConnectedEdges: false
+      selectConnectedEdges: false,
     },
     physics: {
       enabled: false,
@@ -96,7 +96,7 @@ export class GraphDataService {
     ]);
 
     this._graphEdges = new DataSet<Edge>([
-      { from: 10, to: 12, label: '1', id: '0' },
+      { from: 10, to: 12, label: '1' },
       { from: 10, to: 11, label: '1' },
       { from: 11, to: 13, label: '1' },
       { from: 11, to: 14, label: '1' },

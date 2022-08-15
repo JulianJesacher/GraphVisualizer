@@ -1,12 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  Input,
-  Output,
-  ViewChild,
-  EventEmitter,
-} from '@angular/core';
+import { Component, ElementRef, HostListener, Input, Output, ViewChild, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Position } from 'vis';
 
@@ -32,7 +24,7 @@ export type GraphElementType = 'edge' | 'node';
 @Component({
   selector: 'app-graph-element-config',
   templateUrl: './graph-element-config.component.html',
-  styleUrls: ['./graph-element-config.component.css']
+  styleUrls: ['./graph-element-config.component.css'],
 })
 export class GraphElementConfigComponent {
   public nodeConfigForm!: FormGroup;
@@ -64,8 +56,7 @@ export class GraphElementConfigComponent {
       return;
     }
     this.container.nativeElement.style.left = newPosition.x + 'px';
-    this.container.nativeElement.style.bottom =
-      window.innerHeight - newPosition.y + 'px';
+    this.container.nativeElement.style.bottom = window.innerHeight - newPosition.y + 'px';
   }
 
   @Output() delete = new EventEmitter<GraphElementDeleteEvent>();
@@ -93,7 +84,7 @@ export class GraphElementConfigComponent {
   triggerDelete() {
     const elementId = this.elementId_;
     const elementType = this.elementType_;
-    if (!elementId || !elementType) {
+    if (elementId === undefined || elementId === null || !elementType) {
       return;
     }
 
@@ -131,6 +122,9 @@ export class GraphElementConfigComponent {
    * Closes the node config component
    */
   closeConfig() {
+    if (!this.nodeConfigForm.valid) {
+      this.triggerDelete();
+    }
     this.resetErrors();
     this.close.next();
   }

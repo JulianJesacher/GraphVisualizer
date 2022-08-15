@@ -44,6 +44,7 @@ export class GraphComponent implements AfterViewInit {
         this.graphData.getEdges.remove(deleteEvent.id);
         break;
     }
+    this.closeElementConfig();
   }
 
   updateElement(updateEvent: GraphElementUpdateEvent) {
