@@ -46,10 +46,11 @@ export class GraphEventService {
         this.initialLabel$.next(edge.label as string);
         this.position$.next(event.pointer.DOM);
       });
-
+      console.log("noqw", graph)
       graph.on('selectNode', (event) => {
+        console.log(event)
         const nodeId = event.nodes[0];
-        const node: Node = this.graphData.graphNodes.get(nodeId)[0];
+        const node: Node = this.graphData.graphNodes.get(nodeId) as Node;
 
         this.elementType$.next('node');
         this.elementId$.next(nodeId);
