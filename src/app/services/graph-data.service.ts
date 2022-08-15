@@ -78,11 +78,11 @@ export class GraphDataService {
     this.graph$.next(newGraph);
   }
 
-  public get graphNodes() {
+  public get getNodes() {
     return this._graphNodes;
   }
 
-  public get graphEdges() {
+  public get getEdges() {
     return this._graphEdges;
   }
 

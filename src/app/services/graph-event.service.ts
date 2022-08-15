@@ -45,7 +45,7 @@ export class GraphEventService {
 
       graph.on('selectEdge', (event) => {
         const edgeId = event.edges[0];
-        const edge: Edge = this.graphData.graphEdges.get(edgeId);
+        const edge: Edge = this.graphData.getEdges.get(edgeId);
 
         this.elementType$.next('edge');
         this.elementId$.next(edgeId);
@@ -55,7 +55,7 @@ export class GraphEventService {
 
       graph.on('selectNode', (event) => {
         const nodeId = event.nodes[0];
-        const node: Node = this.graphData.graphNodes.get(nodeId) as Node;
+        const node: Node = this.graphData.getNodes.get(nodeId) as Node;
 
         this.elementType$.next('node');
         this.elementId$.next(nodeId);
@@ -75,7 +75,7 @@ export class GraphEventService {
 
   private addEdgeCallback = (data: any, callback: any) => {
     let edgeExists: boolean = false;
-    this.graphData.graphEdges.forEach((edge) => {
+    this.graphData.getEdges.forEach((edge) => {
       if (edge.from === data.from && edge.to === data.to) {
         edgeExists = true;
       }
@@ -85,7 +85,7 @@ export class GraphEventService {
     }
 
     data.id = this.currentEdgeId_++;
-    this.graphData.graphEdges.add(data);
+    this.graphData.getEdges.add(data);
 
     const toNodePositionCanvas: Position = this.graphData.graph.getPositions(data.to)[data.to];
     const toNodePositionDOM: Position = this.graphData.graph.canvasToDOM(toNodePositionCanvas);
@@ -99,7 +99,7 @@ export class GraphEventService {
   private addNodeCallback = (data: any, callback: any) => {
     data.label = this.labelIterator.next().value.toString();
     data.id = this.currentNodeId_++;
-    this.graphData.graphNodes.add(data);
+    this.graphData.getNodes.add(data);
 
     const domClickPosition = this.graphData.graph.canvasToDOM({ x: data.x, y: data.y });
 

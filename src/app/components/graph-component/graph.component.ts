@@ -25,8 +25,8 @@ export class GraphComponent implements AfterViewInit {
   ngAfterViewInit() {
     const container = this.graphContainer.nativeElement;
     const data = {
-      nodes: this.graphData.graphNodes,
-      edges: this.graphData.graphEdges,
+      nodes: this.graphData.getNodes,
+      edges: this.graphData.getEdges,
     };
     this.graphData.assignGraph(new Network(container, data, this.graphData.graphOptions));
   }
@@ -38,10 +38,10 @@ export class GraphComponent implements AfterViewInit {
   deleteElement(deleteEvent: GraphElementDeleteEvent) {
     switch (deleteEvent.type) {
       case 'node':
-        this.graphData.graphNodes.remove(deleteEvent.id);
+        this.graphData.getNodes.remove(deleteEvent.id);
         break;
       case 'edge':
-        this.graphData.graphEdges.remove(deleteEvent.id);
+        this.graphData.getEdges.remove(deleteEvent.id);
         break;
     }
   }
@@ -49,10 +49,10 @@ export class GraphComponent implements AfterViewInit {
   updateElement(updateEvent: GraphElementUpdateEvent) {
     switch (updateEvent.type) {
       case 'node':
-        this.graphData.graphNodes.update({ id: updateEvent.id, label: updateEvent.updatedData.label });
+        this.graphData.getNodes.update({ id: updateEvent.id, label: updateEvent.updatedData.label });
         break;
       case 'edge':
-        this.graphData.graphEdges.update({ id: updateEvent.id, label: updateEvent.updatedData.label });
+        this.graphData.getEdges.update({ id: updateEvent.id, label: updateEvent.updatedData.label });
         break;
     }
   }
