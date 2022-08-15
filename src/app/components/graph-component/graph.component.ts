@@ -15,10 +15,20 @@ import {
 })
 export class GraphComponent implements AfterViewInit {
   @ViewChild('graphContainer') graphContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('configComponent') configComponent!: GraphElementConfigComponent;
 
   // HostListener to close config element if a click outside occured
   @HostListener('document:click', ['$event'])
-  closeConfigs(event: MouseEvent) {}
+  clickedOutsideConfig(event: MouseEvent) {
+    if (!this.configComponent || this.elementDialog.openConfigClick) {
+      this.elementDialog.openConfigClick = false;
+      return;
+    }
+
+    if (event.target instanceof Node && !this.configComponent.container.nativeElement.contains(event.target)) {
+      this.closeElementConfig();
+    }
+  }
 
   constructor(private graphData: GraphDataService, public elementDialog: GraphElementDialogService) {}
 
@@ -33,6 +43,7 @@ export class GraphComponent implements AfterViewInit {
 
   closeElementConfig() {
     this.elementDialog.position$.next(null);
+    this.elementDialog.openConfigClick = false;
   }
 
   deleteElement(deleteEvent: GraphElementDeleteEvent) {
