@@ -63,6 +63,9 @@ export class GraphElementConfigComponent {
     }
   }
 
+  /**
+   * Deletes element if id and type are provided
+   */
   triggerDelete() {
     const elementId = this.elementId_;
     const elementType = this.elementType_;
@@ -77,7 +80,7 @@ export class GraphElementConfigComponent {
   }
 
   /**
-   * Checks provided id and label and shows error if a value is missing or the given id already exists in the graph. If everything is valid, the node is updated.
+   * Checks provided label and shows error if the label is missing. If everything is valid, the element gets updated and the dialog closed.
    */
   triggerUpdate() {
     if (!this.nodeConfigForm.valid) {
@@ -101,7 +104,7 @@ export class GraphElementConfigComponent {
   }
 
   /**
-   * Closes the node config component
+   * Closes the config dialog
    */
   closeConfig() {
     if (!this.nodeConfigForm.valid) {
@@ -112,7 +115,7 @@ export class GraphElementConfigComponent {
   }
 
   /**
-   * Resets error of the config. Triggered, when either one of the input fields is focused or when the config is closed.
+   * Resets error of the config. Triggered, when the input field is focused or when the config dialog is closed.
    */
   resetErrors() {
     this.configErrorState = ElementConfigErrorState.NONE;
