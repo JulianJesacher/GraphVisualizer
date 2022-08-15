@@ -32,6 +32,7 @@ export type GraphElementType = 'edge' | 'node';
 @Component({
   selector: 'app-graph-element-config',
   templateUrl: './graph-element-config.component.html',
+  styleUrls: ['./graph-element-config.component.css']
 })
 export class GraphElementConfigComponent {
   public nodeConfigForm!: FormGroup;
