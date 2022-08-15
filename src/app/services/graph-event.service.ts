@@ -15,7 +15,13 @@ export class GraphEventService {
   public initialLabel$ = new Subject<string>();
   public position$ = new Subject<Position>();
 
+  private currentNodeId_: number;
+  private currentEdgeId_: number;
+
   constructor(private graphData: GraphDataService) {
+    this.currentEdgeId_ = 0;
+    this.currentNodeId_ = 0;
+
     this.graphData.graph$.subscribe((graph) => {
       if (!graph) {
         return;
@@ -46,9 +52,8 @@ export class GraphEventService {
         this.initialLabel$.next(edge.label as string);
         this.position$.next(event.pointer.DOM);
       });
-      console.log("noqw", graph)
+
       graph.on('selectNode', (event) => {
-        console.log(event)
         const nodeId = event.nodes[0];
         const node: Node = this.graphData.graphNodes.get(nodeId) as Node;
 
@@ -78,6 +83,8 @@ export class GraphEventService {
     if (edgeExists) {
       return;
     }
+
+    data.id = this.currentEdgeId_++;
     this.graphData.graphEdges.add(data);
 
     const toNodePositionCanvas: Position = this.graphData.graph.getPositions(data.to)[data.to];
@@ -91,6 +98,7 @@ export class GraphEventService {
 
   private addNodeCallback = (data: any, callback: any) => {
     data.label = this.labelIterator.next().value.toString();
+    data.id = this.currentNodeId_++;
     this.graphData.graphNodes.add(data);
 
     const domClickPosition = this.graphData.graph.canvasToDOM({ x: data.x, y: data.y });
