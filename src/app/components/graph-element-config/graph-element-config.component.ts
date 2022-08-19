@@ -90,7 +90,7 @@ export class GraphElementConfigComponent {
 
     const elementId = this.elementId_;
     const elementType = this.elementType_;
-    if (!elementId || !elementType) {
+    if ((!elementId && elementId != '0') || !elementType) {
       return;
     }
 
