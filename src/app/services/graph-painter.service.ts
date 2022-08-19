@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { State } from './algorithm.service';
 import { GraphDataService } from './graph-data.service';
 
 @Injectable({
@@ -18,12 +19,21 @@ export class GraphPainterService {
       background: '#0E42C7',
     },
     none: {
-      background: '#FFFFFF'
-    }
+      background: '#FFFFFF',
+    },
   };
 
-  paintNodeByState(nodeId: number, state: NodeColorState) {
-    this.graphData.getNodes.update({ id: nodeId, color:  this.nodeColorOptions[state]});
+  paintNodeByState(nodeId: number | string, state: NodeColorState) {
+    this.graphData.getNodes.update({ id: nodeId, color: this.nodeColorOptions[state] });
+  }
+
+  paintNewState(newState: State) {
+    newState.nodes.forEach((singleEntry) => {
+      const id = singleEntry.node.id;
+      if (id) {
+        this.paintNodeByState(id, singleEntry.color);
+      }
+    });
   }
 }
 
