@@ -16,8 +16,8 @@ export function* bfsAlgorithm(input: GraphAlgorithmInput, graphData: GraphDataSe
     if (!currentNode?.id) {
       continue;
     }
-    
-    const neighbourNodes = graphData.graph.getConnectedNodes(currentNode.id) as IdType[];
+
+    const neighbourNodes = graphData.graph.getConnectedNodes(currentNode.id, 'to') as IdType[];
     for (const singleNeighbourId of neighbourNodes) {
       if (!visited.includes(singleNeighbourId)) {
         visited.push(singleNeighbourId);
@@ -25,6 +25,7 @@ export function* bfsAlgorithm(input: GraphAlgorithmInput, graphData: GraphDataSe
         const singleNeighbour = graphData.getNodes.get(singleNeighbourId);
         if (singleNeighbour) {
           currentState.nodes.update({ node: singleNeighbour, color: NodeColorState.EDIT });
+          queue.push(singleNeighbour);
         }
         yield currentState;
       }
