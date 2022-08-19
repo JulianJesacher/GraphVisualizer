@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { DataSet, Edge, Node } from 'vis';
 import { GraphDataService } from './graph-data.service';
+import { GraphPainterService, NodeColorState } from './graph-painter.service';
 
 //TODO: Extract
-interface State {
-  nodes: DataSet<Node>;
-  edges: DataSet<Edge>;
+export interface State {
+  nodes: DataSet<{ node: Node; color: NodeColorState }>;
+  edges: DataSet<{ edge: Edge; color: NodeColorState }>;
 }
 
-type GraphAlgorithmInput = { startNode: Node };
+export type GraphAlgorithmInput = { startNode: Node };
 
-type GraphAlgorithm = (input: GraphAlgorithmInput) => Iterator<State>;
+export type GraphAlgorithm = (input: GraphAlgorithmInput, graphData: GraphDataService) => Iterator<State>;
 
 @Injectable({
   providedIn: 'root',
@@ -18,12 +19,13 @@ type GraphAlgorithm = (input: GraphAlgorithmInput) => Iterator<State>;
 export class AlgorithmService {
   private stateHistory: State[] = [];
   private algorithm?: GraphAlgorithm;
+  private iterator?: Iterator<State>;
   private currentStateIndex = -1;
 
   private graphNodes: DataSet<Node>;
   private graphEdges: DataSet<Edge>;
 
-  constructor(private graphData: GraphDataService) {
+  constructor(private graphData: GraphDataService, private graphPainter: GraphPainterService) {
     this.graphNodes = this.graphData.getNodes;
     this.graphEdges = this.graphData.getEdges;
   }
@@ -33,16 +35,37 @@ export class AlgorithmService {
     this.algorithm = newAlgorithm;
   }
 
+  start(inputData: GraphAlgorithmInput) {
+    if (!this.algorithm) {
+      return;
+    }
+    this.iterator = this.algorithm(inputData, this.graphData);
+  }
+
   clear() {
     this.stateHistory = [];
     this.currentStateIndex = -1;
   }
 
   stepForward() {
-    // Iterator next oder weiter Function call
+    if (!this.iterator) {
+      return;
+    }
+
+    const newState = this.iterator.next();
+    if(newState.done){
+      //TODO: do something
+      console.log("finished")
+    }
+    this.stateHistory.push(newState.value);
+    this.currentStateIndex++;
+
+    this.graphPainter.paintNewState(this.stateHistory[this.currentStateIndex]);
   }
 
   stepBackward() {
-    // History eins zurück
+    //TODO: <0
+    this.currentStateIndex--;
+    this.graphPainter.paintNewState(this.stateHistory[this.currentStateIndex]);
   }
 }
