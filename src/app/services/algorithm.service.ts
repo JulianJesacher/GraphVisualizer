@@ -22,13 +22,7 @@ export class AlgorithmService {
   private iterator?: Iterator<State>;
   private currentStateIndex = -1;
 
-  private graphNodes: DataSet<Node>;
-  private graphEdges: DataSet<Edge>;
-
-  constructor(private graphData: GraphDataService, private graphPainter: GraphPainterService) {
-    this.graphNodes = this.graphData.getNodes;
-    this.graphEdges = this.graphData.getEdges;
-  }
+  constructor(private graphData: GraphDataService, private graphPainter: GraphPainterService) {}
 
   setAlgorithm(newAlgorithm: GraphAlgorithm) {
     this.clear();
@@ -53,9 +47,9 @@ export class AlgorithmService {
     }
 
     const newState = this.iterator.next();
-    if(newState.done){
+    if (newState.done) {
       //TODO: do something
-      console.log("finished")
+      console.log('finished');
     }
     this.stateHistory.push(newState.value);
     this.currentStateIndex++;
