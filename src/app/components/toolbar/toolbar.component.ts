@@ -17,11 +17,11 @@ export class ToolbarComponent implements OnInit {
   }
 
   addNode() {
-    this.graphData.addNode();
+    this.graphData.enterAddNodeMode();
   }
 
   addEdge() {
-    this.graphData.addEdge();
+    this.graphData.enterAddEdgeMode();
   }
 
   previousStep() {

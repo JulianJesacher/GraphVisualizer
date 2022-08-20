@@ -103,11 +103,11 @@ export class GraphDataService {
     ]);
   }
 
-  public addNode() {
+  public enterAddNodeMode() {
     this._graph.addNodeMode();
   }
 
-  public addEdge() {
+  public enterAddEdgeMode() {
     this._graph.addEdgeMode();
     this._graph.on('click', () => this._graph.disableEditMode());
   }
