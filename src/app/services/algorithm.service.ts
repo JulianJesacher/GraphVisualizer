@@ -21,6 +21,8 @@ export class AlgorithmService {
   private algorithm?: GraphAlgorithm;
   private iterator?: Iterator<State>;
   private currentStateIndex = -1;
+  private finished = false;
+  private started = false;
 
   constructor(private graphData: GraphDataService, private graphPainter: GraphPainterService) {}
 
@@ -34,6 +36,7 @@ export class AlgorithmService {
       return;
     }
     this.iterator = this.algorithm(inputData, this.graphData);
+    this.started = true;
   }
 
   clear() {
@@ -50,6 +53,8 @@ export class AlgorithmService {
     if (newState.done) {
       //TODO: do something
       console.log('finished');
+      this.finished = true;
+      return;
     }
     this.stateHistory.push(newState.value);
     this.currentStateIndex++;
@@ -61,5 +66,15 @@ export class AlgorithmService {
     //TODO: <0
     this.currentStateIndex--;
     this.graphPainter.paintNewState(this.stateHistory[this.currentStateIndex]);
+  }
+
+  runAlgorithm() {
+    const intervalId = setInterval(() => {
+      if(this.finished){
+        window.clearInterval(intervalId);
+        return;
+      }
+      this.stepForward();
+    }, 1000);
   }
 }
