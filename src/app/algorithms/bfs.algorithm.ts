@@ -7,8 +7,8 @@ export function* bfsAlgorithm(input: GraphAlgorithmInput, graphData: GraphDataSe
   const queue: Node[] = [input.startNode];
   const visited: IdType[] = [];
   const currentState: State = {
-    nodes: new DataSet<{ node: Node; color: NodeColorState }>(graphData.getNodes.map((singleNode) => {return { node: singleNode, color: NodeColorState.NONE };})),
-    edges: new DataSet<{ edge: Edge; color: NodeColorState }>(graphData.getEdges.map((singleEdge) => {return { edge: singleEdge, color: NodeColorState.NONE };})),
+    nodes: new Map(graphData.getNodes.map((node, id) => [id.toString(), { node: node, color: NodeColorState.NONE }])),
+    edges: new Map(graphData.getNodes.map((edge, id) => [id.toString(), { edge: edge, color: NodeColorState.NONE }])),
   };
 
   while (queue.length) {
@@ -16,30 +16,30 @@ export function* bfsAlgorithm(input: GraphAlgorithmInput, graphData: GraphDataSe
     if (!currentNode?.id) {
       continue;
     }
-
-    currentState.nodes.update({ node: currentNode, color: NodeColorState.CURRENT });
+    
+    currentState.nodes.set(currentNode.id.toString(), { node: currentNode, color: NodeColorState.CURRENT });
     yield currentState;
 
     const neighbourNodes = graphData.graph.getConnectedNodes(currentNode.id, 'to') as IdType[];
     for (const singleNeighbourId of neighbourNodes) {
-      currentState.nodes.update({ node: currentNode, color: NodeColorState.EDIT });
+      currentState.nodes.set(currentNode.id.toString(), { node: currentNode, color: NodeColorState.EDIT });
       if (!visited.includes(singleNeighbourId)) {
         visited.push(singleNeighbourId);
 
         const singleNeighbour = graphData.getNodes.get(singleNeighbourId);
-        if (singleNeighbour) {
-          currentState.nodes.update({ node: singleNeighbour, color: NodeColorState.CURRENT });
+        if (singleNeighbour && singleNeighbour.id) {
+          currentState.nodes.set(singleNeighbour.id.toString(), { node: singleNeighbour, color: NodeColorState.CURRENT });
           queue.push(singleNeighbour);
         }
         yield currentState;
       }
     }
 
-    currentState.nodes.update({ node: currentNode, color: NodeColorState.FINISHED });
+    currentState.nodes.set(currentNode.id.toString(), { node: currentNode, color: NodeColorState.FINISHED });
     for (const singleNeighbourId of neighbourNodes) {
       const singleNeighbour = graphData.getNodes.get(singleNeighbourId);
-      if (singleNeighbour) {
-        currentState.nodes.update({ node: singleNeighbour, color: NodeColorState.EDIT });
+      if (singleNeighbour && singleNeighbour.id) {
+        currentState.nodes.set(singleNeighbour.id.toString(), { node: singleNeighbour, color: NodeColorState.EDIT });
       }
     }
     yield currentState;

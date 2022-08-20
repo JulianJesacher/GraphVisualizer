@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { DataSet, Edge, Node } from 'vis';
+import { DataSet, Edge, IdType, Node } from 'vis';
 import { GraphDataService } from './graph-data.service';
 import { GraphPainterService, NodeColorState } from './graph-painter.service';
 
 //TODO: Extract
 export interface State {
-  nodes: DataSet<{ node: Node; color: NodeColorState }>;
-  edges: DataSet<{ edge: Edge; color: NodeColorState }>;
+  nodes: Map<string, { node: Node; color: NodeColorState }>;
+  edges: Map<string, { edge: Node; color: NodeColorState }>;
 }
 
 export type GraphAlgorithmInput = { startNode: Node };
@@ -56,21 +56,23 @@ export class AlgorithmService {
       this.finished = true;
       return;
     }
-    this.stateHistory.push(newState.value);
-    this.currentStateIndex++;
 
-    this.graphPainter.paintNewState(this.stateHistory[this.currentStateIndex]);
+    //@ts-ignore
+    this.stateHistory.push(structuredClone(newState.value));
+    this.currentStateIndex++;
+    this.graphPainter.paintState(this.stateHistory[this.currentStateIndex]);
   }
 
   stepBackward() {
     //TODO: <0
     this.currentStateIndex--;
-    this.graphPainter.paintNewState(this.stateHistory[this.currentStateIndex]);
+    this.graphPainter.paintState(this.stateHistory[this.currentStateIndex]);
+    this.stateHistory.forEach(console.log)
   }
 
   runAlgorithm() {
     const intervalId = setInterval(() => {
-      if(this.finished){
+      if (this.finished) {
         window.clearInterval(intervalId);
         return;
       }
