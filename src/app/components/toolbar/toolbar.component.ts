@@ -35,4 +35,8 @@ export class ToolbarComponent implements OnInit {
   start() {
     this.algorithmService.start({ startNode: this.graphData.getNodes.get(10) as unknown as Node });
   }
+
+  run(){
+    this.algorithmService.runAlgorithm();
+  }
 }
