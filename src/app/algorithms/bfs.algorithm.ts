@@ -17,18 +17,31 @@ export function* bfsAlgorithm(input: GraphAlgorithmInput, graphData: GraphDataSe
       continue;
     }
 
+    currentState.nodes.update({ node: currentNode, color: NodeColorState.CURRENT });
+    yield currentState;
+
     const neighbourNodes = graphData.graph.getConnectedNodes(currentNode.id, 'to') as IdType[];
     for (const singleNeighbourId of neighbourNodes) {
+      currentState.nodes.update({ node: currentNode, color: NodeColorState.EDIT });
       if (!visited.includes(singleNeighbourId)) {
         visited.push(singleNeighbourId);
 
         const singleNeighbour = graphData.getNodes.get(singleNeighbourId);
         if (singleNeighbour) {
-          currentState.nodes.update({ node: singleNeighbour, color: NodeColorState.EDIT });
+          currentState.nodes.update({ node: singleNeighbour, color: NodeColorState.CURRENT });
           queue.push(singleNeighbour);
         }
         yield currentState;
       }
     }
+
+    currentState.nodes.update({ node: currentNode, color: NodeColorState.FINISHED });
+    for (const singleNeighbourId of neighbourNodes) {
+      const singleNeighbour = graphData.getNodes.get(singleNeighbourId);
+      if (singleNeighbour) {
+        currentState.nodes.update({ node: singleNeighbour, color: NodeColorState.EDIT });
+      }
+    }
+    yield currentState;
   }
 }
