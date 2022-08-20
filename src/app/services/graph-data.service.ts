@@ -75,12 +75,20 @@ export class GraphDataService {
     this.graph$.next(newGraph);
   }
 
-  public get getNodes() {
+  public get graphNodes() {
     return this._graphNodes;
   }
 
-  public get getEdges() {
+  public get graphEdges() {
     return this._graphEdges;
+  }
+
+  public set graphNodes(newNodes: DataSet<Node>) {
+    this._graphNodes = newNodes;
+  }
+
+  public set graphEdges(newEdges: DataSet<Edge>) {
+    this._graphEdges = newEdges;
   }
 
   constructor() {

@@ -7,8 +7,8 @@ export function* bfsAlgorithm(input: GraphAlgorithmInput, graphData: GraphDataSe
   const queue: Node[] = [input.startNode];
   const visited: IdType[] = [];
   const currentState: State = {
-    nodes: new Map(graphData.getNodes.map((node, id) => [id.toString(), { node: node, color: NodeColorState.NONE }])),
-    edges: new Map(graphData.getNodes.map((edge, id) => [id.toString(), { edge: edge, color: NodeColorState.NONE }])),
+    nodes: new Map(graphData.graphNodes.map((node, id) => [id.toString(), { node: node, color: NodeColorState.NONE }])),
+    edges: new Map(graphData.graphNodes.map((edge, id) => [id.toString(), { edge: edge, color: NodeColorState.NONE }])),
   };
 
   while (queue.length) {
@@ -16,7 +16,7 @@ export function* bfsAlgorithm(input: GraphAlgorithmInput, graphData: GraphDataSe
     if (!currentNode?.id) {
       continue;
     }
-    
+
     currentState.nodes.set(currentNode.id.toString(), { node: currentNode, color: NodeColorState.CURRENT });
     yield currentState;
 
@@ -26,7 +26,7 @@ export function* bfsAlgorithm(input: GraphAlgorithmInput, graphData: GraphDataSe
       if (!visited.includes(singleNeighbourId)) {
         visited.push(singleNeighbourId);
 
-        const singleNeighbour = graphData.getNodes.get(singleNeighbourId);
+        const singleNeighbour = graphData.graphNodes.get(singleNeighbourId);
         if (singleNeighbour && singleNeighbour.id) {
           currentState.nodes.set(singleNeighbour.id.toString(), { node: singleNeighbour, color: NodeColorState.CURRENT });
           queue.push(singleNeighbour);
@@ -37,7 +37,7 @@ export function* bfsAlgorithm(input: GraphAlgorithmInput, graphData: GraphDataSe
 
     currentState.nodes.set(currentNode.id.toString(), { node: currentNode, color: NodeColorState.FINISHED });
     for (const singleNeighbourId of neighbourNodes) {
-      const singleNeighbour = graphData.getNodes.get(singleNeighbourId);
+      const singleNeighbour = graphData.graphNodes.get(singleNeighbourId);
       if (singleNeighbour && singleNeighbour.id) {
         currentState.nodes.set(singleNeighbour.id.toString(), { node: singleNeighbour, color: NodeColorState.EDIT });
       }
