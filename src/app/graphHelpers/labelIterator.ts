@@ -1,5 +1,5 @@
 export abstract class LabelIterator<T> implements Iterator<T> {
-  private currentValue = this.initialValue();
+  protected currentValue = this.initialValue();
 
   next(): IteratorResult<T> {
     const oldElement = this.currentValue;
@@ -8,6 +8,10 @@ export abstract class LabelIterator<T> implements Iterator<T> {
       done: false,
       value: oldElement,
     };
+  }
+
+  reset():void{
+    this.currentValue = this.initialValue();
   }
 
   protected abstract initialValue(): T;
@@ -35,6 +39,11 @@ export class AlphabeticLabelIterator extends LabelIterator<string> {
         return String.fromCharCode(64 + parseInt(digit, 26)); // Allow to show A... and not skip the A and start with B...
       })
       .join('');
+  }
+
+  override reset(): void {
+    this.currentValue = this.initialValue();
+    this.currentNumberBase27 = '0'
   }
 }
 
