@@ -24,7 +24,7 @@ export class GraphPainterService {
   };
 
   paintNodeByState(nodeId: number | string, state: NodeColorState) {
-    this.graphData.getNodes.update({ id: nodeId, color: this.nodeColorOptions[state] });
+    this.graphData.graphNodes.update({ id: nodeId, color: this.nodeColorOptions[state] });
   }
 
   paintState(newState: State) {
