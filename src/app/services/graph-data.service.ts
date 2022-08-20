@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { DataSet, Edge, Network, Node, Options, Position } from 'vis';
-import { LabelIterator, NumericalLabelIterator } from '../graphHelpers/labelIterator';
-import { GraphElementDialogService } from './graph-element-dialog.service';
-import { GraphEventService } from './graph-event.service';
+import { BehaviorSubject } from 'rxjs';
+import { DataSet, Edge, Network, Node, Options } from 'vis';
 
 @Injectable({
   providedIn: 'root',
