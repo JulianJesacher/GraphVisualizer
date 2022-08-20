@@ -20,7 +20,7 @@ export class AlgorithmService {
   private stateHistory: State[] = [];
   private algorithm?: GraphAlgorithm;
   private iterator?: Iterator<State>;
-  private currentStateIndex = -1;
+  private currentStateIndex = 0;
   private finished = false;
   private started = false;
 
@@ -41,11 +41,17 @@ export class AlgorithmService {
 
   clear() {
     this.stateHistory = [];
-    this.currentStateIndex = -1;
+    this.currentStateIndex = 0;
   }
 
   stepForward() {
     if (!this.iterator) {
+      return;
+    }
+
+    if(this.currentStateIndex<this.stateHistory.length){
+      this.graphPainter.paintState(this.stateHistory[this.currentStateIndex]);
+      this.currentStateIndex++;
       return;
     }
 
@@ -59,15 +65,14 @@ export class AlgorithmService {
 
     //@ts-ignore
     this.stateHistory.push(structuredClone(newState.value));
-    this.currentStateIndex++;
     this.graphPainter.paintState(this.stateHistory[this.currentStateIndex]);
+    this.currentStateIndex++;
   }
 
   stepBackward() {
     //TODO: <0
     this.currentStateIndex--;
     this.graphPainter.paintState(this.stateHistory[this.currentStateIndex]);
-    this.stateHistory.forEach(console.log)
   }
 
   runAlgorithm() {
