@@ -58,7 +58,10 @@ export class GraphDataService {
       selectConnectedEdges: false,
     },
     physics: {
-      enabled: false,
+      enabled: true,
+      barnesHut: {
+        avoidOverlap: 0.1,
+      },
     },
   };
 
