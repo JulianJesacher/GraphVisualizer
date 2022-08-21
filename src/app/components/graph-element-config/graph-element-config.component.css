@@ -44,7 +44,7 @@
   .config-container .grid {
     display: grid;
     grid-template-columns: auto auto;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr;
     grid-gap: 0.5rem 0.75rem;
     margin-bottom: 0.75rem;
   }
