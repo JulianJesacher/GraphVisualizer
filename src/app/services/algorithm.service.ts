@@ -1,17 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DataSet, Edge, IdType, Node } from 'vis';
+import { GraphAlgorithm, GraphAlgorithmInput, State } from '../types/algorithm.types';
 import { GraphDataService } from './graph-data.service';
-import { GraphPainterService, NodeColorState } from './graph-painter.service';
-
-//TODO: Extract
-export interface State {
-  nodes: Map<string, { node: Node; color: NodeColorState }>;
-  edges: Map<string, { edge: Node; color: NodeColorState }>;
-}
-
-export type GraphAlgorithmInput = { startNode: Node };
-
-export type GraphAlgorithm = (input: GraphAlgorithmInput, graphData: GraphDataService) => Iterator<State>;
+import { GraphPainterService } from './graph-painter.service';
 
 @Injectable({
   providedIn: 'root',

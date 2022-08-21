@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
 import { GraphDataService } from 'src/app/services/graph-data.service';
 import { DataSet, Edge, Network, Node } from 'vis';
+import { NumberInterval } from '../types/utils.types';
 import { GraphEventService } from './graph-event.service';
-
-//TODO: extract
-interface NumberInterval {
-  min: number;
-  max: number;
-}
 
 export type EdgeWeightInterval = NumberInterval;
 

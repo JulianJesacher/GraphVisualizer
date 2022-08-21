@@ -1,7 +1,7 @@
-import { DataSet, Edge, IdType, Node } from 'vis';
-import { GraphAlgorithmInput, State, GraphAlgorithm } from '../services/algorithm.service';
+import { IdType, Node } from 'vis';
 import { GraphDataService } from '../services/graph-data.service';
 import { NodeColorState } from '../services/graph-painter.service';
+import { GraphAlgorithmInput, State } from '../types/algorithm.types';
 
 export function* bfsAlgorithm(input: GraphAlgorithmInput, graphData: GraphDataService): Iterator<State> {
   const queue: Node[] = [input.startNode];

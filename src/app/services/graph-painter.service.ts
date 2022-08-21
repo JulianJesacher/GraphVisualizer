@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { State } from './algorithm.service';
+import { State } from '../types/algorithm.types';
 import { GraphDataService } from './graph-data.service';
 
 @Injectable({
