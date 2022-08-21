@@ -73,6 +73,10 @@ export class GraphDataService {
   public assignGraph(newGraph: Network) {
     this._graph = newGraph;
     this.graph$.next(newGraph);
+    //@ts-ignore
+    this._graphEdges = newGraph.body.data.edges;
+    //@ts-ignore
+    this._graphNodes = newGraph.body.data.nodes;
   }
 
   public get graphNodes() {
