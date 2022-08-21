@@ -3,6 +3,14 @@ import { GraphDataService } from 'src/app/services/graph-data.service';
 import { DataSet, Edge, Network, Node } from 'vis';
 import { GraphEventService } from './graph-event.service';
 
+//TODO: extract
+interface NumberInterval {
+  min: number;
+  max: number;
+}
+
+export type EdgeWeightInterval = NumberInterval;
+
 @Injectable({
   providedIn: 'root',
 })
@@ -22,7 +30,7 @@ export class GraphGeneratorService {
     return newNodes;
   }
 
-  private generateNewEdges(maxOutDegree: number, minOutDegree: number, nodes: Node[], minWeight: number, maxWeight: number): Edge[] {
+  private generateNewEdges(maxOutDegree: number, minOutDegree: number, nodes: Node[], weightInterval: EdgeWeightInterval): Edge[] {
     const newEdges: Edge[] = [];
 
     for (let currentNode of nodes) {
@@ -33,16 +41,17 @@ export class GraphGeneratorService {
         const randomNeighbour: Node = nodes[Math.floor(Math.random() * nodes.length)];
 
         // If not enough nodes provided to achieve the selected outDegree, and all nodes are chosen as neighbours, the loop gets exited
-        if (singleNodeNeighbours.length == (nodes.length-1)) { //-1 to account for the current node because self-edges are not desired
+        if (singleNodeNeighbours.length == nodes.length - 1) {
+          //-1 to account for the current node because self-edges are not desired
           break;
         }
         // If selected node is already a selected neighbour or it is the currently processed node, continue and choose another one
         if (singleNodeNeighbours.includes(randomNeighbour) || randomNeighbour === currentNode) {
           continue;
         }
-        
+
         singleNodeNeighbours.push(randomNeighbour);
-        const edgeWeight = this.randomBoundedInt(minWeight, maxWeight);
+        const edgeWeight = this.randomBoundedInt(weightInterval.min, weightInterval.max);
         newEdges.push({ id: this.graphEvents.currentEdgeId, from: currentNode.id, to: randomNeighbour.id, label: edgeWeight.toString() });
         this.graphEvents.incrementEdgeId();
         i++;
@@ -52,11 +61,11 @@ export class GraphGeneratorService {
     return newEdges;
   }
 
-  public generateGraph(amountNodes: number, minWeight: number, maxWeight: number, maxOutDegree: number, minOutDegree: number = 0) {
+  public generateGraph(amountNodes: number, edgeWeightInterval: EdgeWeightInterval, maxOutDegree: number, minOutDegree: number = 0) {
     this.graphEvents.clearNodesAndResetIteratorAndId();
     this.graphEvents.clearEdgesAndResetId();
     const newNodes = this.generateNewNodes(amountNodes);
-    const newEdges = this.generateNewEdges(maxOutDegree, minOutDegree, newNodes, minWeight, maxWeight);
+    const newEdges = this.generateNewEdges(maxOutDegree, minOutDegree, newNodes, edgeWeightInterval);
 
     const newGraphData = {
       nodes: new DataSet<Node>(newNodes),

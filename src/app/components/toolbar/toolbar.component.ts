@@ -11,7 +11,11 @@ import { AlgorithmService } from '../../services/algorithm.service';
   styleUrls: ['./toolbar.component.css'],
 })
 export class ToolbarComponent implements OnInit {
-  constructor(private graphData: GraphDataService, private algorithmService: AlgorithmService, private graphGenerator: GraphGeneratorService) {}
+  constructor(
+    private graphData: GraphDataService,
+    private algorithmService: AlgorithmService,
+    private graphGenerator: GraphGeneratorService
+  ) {}
 
   ngOnInit(): void {
     this.algorithmService.setAlgorithm(bfsAlgorithm);
@@ -41,7 +45,7 @@ export class ToolbarComponent implements OnInit {
     this.algorithmService.runAlgorithm();
   }
 
-  generateGraph(){
-    this.graphGenerator.generateGraph(4, 10, 10, 3);
+  generateGraph() {
+    this.graphGenerator.generateGraph(40, { min: 10, max: 10 }, 3);
   }
 }
