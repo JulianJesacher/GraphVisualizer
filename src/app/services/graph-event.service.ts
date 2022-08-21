@@ -9,7 +9,7 @@ import { GraphDataService } from './graph-data.service';
   providedIn: 'root',
 })
 export class GraphEventService {
-  public _labelIterator: LabelIterator<any> = new NumericalLabelIterator();
+  public labelIterator: LabelIterator<any> = new NumericalLabelIterator();
   public elementType$ = new Subject<GraphElementType>();
   public elementId$ = new Subject<string>();
   public initialLabel$ = new Subject<string>();
@@ -17,6 +17,19 @@ export class GraphEventService {
 
   private _currentNodeId: number;
   private _currentEdgeId: number;
+  get currentNodeId() {
+    return this._currentNodeId;
+  }
+  public incrementNodeId() {
+    this._currentNodeId++;
+  }
+
+  get currentEdgeId() {
+    return this._currentEdgeId;
+  }
+  public incrementEdgeId() {
+    this._currentEdgeId++;
+  }
 
   constructor(private graphData: GraphDataService) {
     this._currentEdgeId = 0;
@@ -97,7 +110,7 @@ export class GraphEventService {
   };
 
   private addNodeCallback = (data: any, callback: any) => {
-    data.label = this._labelIterator.next().value.toString();
+    data.label = this.labelIterator.next().value.toString();
     data.id = this._currentNodeId++;
     this.graphData.graphNodes.add(data);
 
@@ -109,26 +122,14 @@ export class GraphEventService {
     this.position$.next(domClickPosition);
   };
 
-  public generateNewNodes(amount: number) {
+  public clearNodesAndResetIteratorAndId() {
     this.graphData.graphNodes.clear();
     this._currentNodeId = 0;
-    this._labelIterator.reset();
+    this.labelIterator.reset();
+  }
 
-    const newNodes: Node[] = [];
-
-    for (let i = 0; i < amount; i++) {
-      newNodes.push({ id: this._currentNodeId, label: this._labelIterator.next().value });
-      this._currentNodeId++;
-    }
-    console.log(newNodes)
-    console.log(new DataSet<Node>(newNodes))
-    this.graphData.graphNodes = new DataSet<Node>(newNodes);
-
-    this.graphData.graphEdges = new DataSet<Edge>([
-      { from: 0, to: 2, label: '1' },
-      { from: 0, to: 1, label: '1' },
-      { from: 1, to: 3, label: '1' },
-      { from: 1, to: 4, label: '1' },
-    ]);
+  public clearEdgesAndResetId() {
+    this.graphData.graphEdges.clear();
+    this._currentEdgeId = 0;
   }
 }

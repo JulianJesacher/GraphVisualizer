@@ -42,6 +42,6 @@ export class ToolbarComponent implements OnInit {
   }
 
   generateGraph(){
-    this.graphGenerator.generateGraph(10, 10, 10, 20);
+    this.graphGenerator.generateGraph(4, 10, 10, 3);
   }
 }
