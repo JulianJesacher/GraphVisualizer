@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { GraphAlgorithm, GraphAlgorithmInput, State } from '../types/algorithm.types';
 import { GraphDataService } from './graph-data.service';
 import { GraphPainterService } from './graph-painter.service';
 
-enum AlgorithmState {
+export enum AlgorithmState {
+  NOT_SELECTED,
   RUNNING,
   FINISHED,
   PAUSE,
+  INITIAL_STATE,
 }
 
 @Injectable({
@@ -17,7 +20,7 @@ export class AlgorithmService {
   private algorithm?: GraphAlgorithm;
   private stateIterator?: Iterator<State>;
   private currentStateHistoryIndex = 0;
-  private algorithmState = AlgorithmState.PAUSE;
+  public algorithmState$ = new BehaviorSubject<AlgorithmState>(AlgorithmState.NOT_SELECTED);
 
   constructor(private graphData: GraphDataService, private graphPainter: GraphPainterService) {}
 
@@ -31,7 +34,7 @@ export class AlgorithmService {
       throw new Error('No algorithm selected!');
     }
     this.stateIterator = this.algorithm(inputData, this.graphData);
-    this.algorithmState = AlgorithmState.RUNNING;
+    this.algorithmState$.next(AlgorithmState.INITIAL_STATE);
   }
 
   clear() {
@@ -56,7 +59,7 @@ export class AlgorithmService {
     if (newState.done) {
       //TODO: do something
       console.log('finished');
-      this.algorithmState = AlgorithmState.FINISHED;
+      this.algorithmState$.next(AlgorithmState.FINISHED);
       return;
     }
 
@@ -67,17 +70,23 @@ export class AlgorithmService {
   }
 
   stepBackward() {
-    if(this.currentStateHistoryIndex<=0){
-      throw new Error("Can't go back further, already the initial state!")
+    if (this.algorithmState$.value === AlgorithmState.INITIAL_STATE) {
+      throw new Error("Can't go back further, already the initial state!");
     }
 
     this.currentStateHistoryIndex--;
     this.graphPainter.paintState(this.stateHistory[this.currentStateHistoryIndex]);
+
+    if (this.currentStateHistoryIndex === 0) {
+      this.algorithmState$.next(AlgorithmState.INITIAL_STATE);
+    }
   }
 
   runAlgorithm(intervalTime: number = 1000) {
+    this.algorithmState$.next(AlgorithmState.RUNNING);
+
     const intervalId = setInterval(() => {
-      if (this.algorithmState === AlgorithmState.FINISHED) {
+      if (this.algorithmState$.value === AlgorithmState.FINISHED) {
         clearInterval(intervalId);
         return;
       }
