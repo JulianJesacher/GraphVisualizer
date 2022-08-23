@@ -19,11 +19,11 @@ export class GraphDataService {
     },
     arrowStrikethrough: false,
     color: {
-      color: '#FFFFFF',
+      color: '#000000',
       highlight: '#011E39',
     },
     font: {
-      color: '#FFFFFF',
+      color: '#000000',
       strokeWidth: 0,
       size: this.labelFontsizeInPx,
       vadjust: this.labelFontsizeInPx,
@@ -35,7 +35,7 @@ export class GraphDataService {
   private nodeOptions = {
     borderWidth: 2,
     color: {
-      border: '#222222',
+      border: '#000000',
       background: '#FFFFFF',
       highlight: '#011E39',
     },
