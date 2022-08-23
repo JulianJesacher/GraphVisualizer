@@ -65,8 +65,11 @@ export class GraphGeneratorService {
       nodes: new DataSet<Node>(newNodes),
       edges: new DataSet<Edge>(newEdges),
     };
+
+    this.graphData.enablePhysics();
     //@ts-ignore
     const graphContainer = this.graphData.graph.body.container;
     this.graphData.assignGraph(new Network(graphContainer, newGraphData, this.graphData.graphOptions));
+    this.graphData.disablePhysics();
   }
 }

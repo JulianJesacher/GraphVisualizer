@@ -58,7 +58,7 @@ export class GraphDataService {
       selectConnectedEdges: false,
     },
     physics: {
-      enabled: true,
+      enabled: false,
       barnesHut: {
         avoidOverlap: 0.1,
       },
@@ -122,5 +122,15 @@ export class GraphDataService {
   public enterAddEdgeMode() {
     this._graph.addEdgeMode();
     this._graph.on('click', () => this._graph.disableEditMode());
+  }
+
+  public disablePhysics() {
+    //@ts-ignore
+    this._graph.physics.physicsEnabled = false;
+  }
+
+  public enablePhysics() {
+    //@ts-ignore
+    this._graph.physics.physicsEnabled = true;
   }
 }
