@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { DataSet, Edge, Node, Position } from 'vis';
+import { Edge, IdType, Node, Position } from 'vis';
 import { LabelIterator, NumericalLabelIterator } from '../graphHelpers/labelIterator';
 import { GraphElementType } from '../types/element-config-dialog.types';
 import { GraphDataService } from './graph-data.service';
@@ -17,19 +17,6 @@ export class GraphEventService {
 
   private _currentNodeId: number;
   private _currentEdgeId: number;
-  get currentNodeId() {
-    return this._currentNodeId;
-  }
-  public incrementNodeId() {
-    this._currentNodeId++;
-  }
-
-  get currentEdgeId() {
-    return this._currentEdgeId;
-  }
-  public incrementEdgeId() {
-    this._currentEdgeId++;
-  }
 
   constructor(private graphData: GraphDataService) {
     this._currentEdgeId = 0;
@@ -131,5 +118,25 @@ export class GraphEventService {
   public clearEdgesAndResetId() {
     this.graphData.graphEdges.clear();
     this._currentEdgeId = 0;
+  }
+
+  public generateNewNode(): Node {
+    const newNode = {
+      id: this._currentNodeId,
+      label: this.labelIterator.next().value.toString(10),
+    };
+    this._currentNodeId++;
+    return newNode;
+  }
+
+  public generateNewEdge(from: IdType | undefined, to: IdType | undefined, edgeWeight: string | number): Edge {
+    const newEdge = {
+      id: this._currentEdgeId,
+      from,
+      to,
+      label: edgeWeight.toString(10),
+    };
+    this._currentEdgeId++;
+    return newEdge;
   }
 }

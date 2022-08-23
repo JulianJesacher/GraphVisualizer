@@ -3,16 +3,21 @@ import { GraphAlgorithm, GraphAlgorithmInput, State } from '../types/algorithm.t
 import { GraphDataService } from './graph-data.service';
 import { GraphPainterService } from './graph-painter.service';
 
+enum AlgorithmState {
+  RUNNING,
+  FINISHED,
+  PAUSE,
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class AlgorithmService {
   private stateHistory: State[] = [];
   private algorithm?: GraphAlgorithm;
-  private iterator?: Iterator<State>;
-  private currentStateIndex = 0;
-  private finished = false;
-  private started = false;
+  private stateIterator?: Iterator<State>;
+  private currentStateHistoryIndex = 0;
+  private algorithmState = AlgorithmState.PAUSE;
 
   constructor(private graphData: GraphDataService, private graphPainter: GraphPainterService) {}
 
@@ -23,55 +28,60 @@ export class AlgorithmService {
 
   start(inputData: GraphAlgorithmInput) {
     if (!this.algorithm) {
-      return;
+      throw new Error('No algorithm selected!');
     }
-    this.iterator = this.algorithm(inputData, this.graphData);
-    this.started = true;
+    this.stateIterator = this.algorithm(inputData, this.graphData);
+    this.algorithmState = AlgorithmState.RUNNING;
   }
 
   clear() {
     this.stateHistory = [];
-    this.currentStateIndex = 0;
+    this.currentStateHistoryIndex = 0;
   }
 
   stepForward() {
-    if (!this.iterator) {
+    if (!this.stateIterator) {
+      throw new Error('No stateIterator available!');
+    }
+
+    // If the currently presented state is not the newest, no new state has to be calculated,
+    // so only the next state from the history is shown
+    if (this.currentStateHistoryIndex < this.stateHistory.length) {
+      this.graphPainter.paintState(this.stateHistory[this.currentStateHistoryIndex]);
+      this.currentStateHistoryIndex++;
       return;
     }
 
-    if(this.currentStateIndex<this.stateHistory.length){
-      this.graphPainter.paintState(this.stateHistory[this.currentStateIndex]);
-      this.currentStateIndex++;
-      return;
-    }
-
-    const newState = this.iterator.next();
+    const newState = this.stateIterator.next();
     if (newState.done) {
       //TODO: do something
       console.log('finished');
-      this.finished = true;
+      this.algorithmState = AlgorithmState.FINISHED;
       return;
     }
 
     //@ts-ignore
     this.stateHistory.push(structuredClone(newState.value));
-    this.graphPainter.paintState(this.stateHistory[this.currentStateIndex]);
-    this.currentStateIndex++;
+    this.graphPainter.paintState(this.stateHistory[this.currentStateHistoryIndex]);
+    this.currentStateHistoryIndex++;
   }
 
   stepBackward() {
-    //TODO: <0
-    this.currentStateIndex--;
-    this.graphPainter.paintState(this.stateHistory[this.currentStateIndex]);
+    if(this.currentStateHistoryIndex<=0){
+      throw new Error("Can't go back further, already the initial state!")
+    }
+
+    this.currentStateHistoryIndex--;
+    this.graphPainter.paintState(this.stateHistory[this.currentStateHistoryIndex]);
   }
 
-  runAlgorithm() {
+  runAlgorithm(intervalTime: number = 1000) {
     const intervalId = setInterval(() => {
-      if (this.finished) {
-        window.clearInterval(intervalId);
+      if (this.algorithmState === AlgorithmState.FINISHED) {
+        clearInterval(intervalId);
         return;
       }
       this.stepForward();
-    }, 1000);
+    }, intervalTime);
   }
 }

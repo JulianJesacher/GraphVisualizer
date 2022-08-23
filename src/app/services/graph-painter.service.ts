@@ -37,6 +37,7 @@ export class GraphPainterService {
   }
 }
 
+// TG: Einfach nur State, kein Color State
 export enum NodeColorState {
   NONE = 'none',
   CURRENT = 'current',
