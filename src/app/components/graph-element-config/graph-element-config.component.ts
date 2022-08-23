@@ -9,7 +9,7 @@ import { Position } from 'vis';
   styleUrls: ['./graph-element-config.component.css'],
 })
 export class GraphElementConfigComponent {
-  public nodeConfigForm!: FormGroup;
+  public elementConfigForm!: FormGroup;
   public ElementConfigErrorState = ElementConfigErrorState;
   public configErrorState = ElementConfigErrorState.NONE;
   @ViewChild('configContainer', { static: true }) container!: ElementRef<HTMLDivElement>;
@@ -27,7 +27,7 @@ export class GraphElementConfigComponent {
   }
 
   @Input() set initialLabel(newLabel: string | undefined | null) {
-    this.nodeConfigForm = this.fb.group({
+    this.elementConfigForm = this.fb.group({
       label: this.fb.control(newLabel, [Validators.required]),
     });
     this.resetErrors();
@@ -83,7 +83,7 @@ export class GraphElementConfigComponent {
    * Checks provided label and shows error if the label is missing. If everything is valid, the element gets updated and the dialog closed.
    */
   triggerUpdate() {
-    if (!this.nodeConfigForm.valid) {
+    if (!this.elementConfigForm.valid) {
       this.configErrorState = ElementConfigErrorState.LABEL_NOT_PROVIDED;
       return;
     }
@@ -97,7 +97,7 @@ export class GraphElementConfigComponent {
     this.update.next({
       id: elementId,
       type: elementType,
-      updatedData: this.nodeConfigForm.value,
+      updatedData: this.elementConfigForm.value,
     });
 
     this.closeConfig();
@@ -107,7 +107,7 @@ export class GraphElementConfigComponent {
    * Closes the config dialog
    */
   closeConfig() {
-    if (!this.nodeConfigForm.valid) {
+    if (!this.elementConfigForm.valid) {
       this.triggerDelete();
     }
     this.resetErrors();

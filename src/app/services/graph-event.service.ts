@@ -74,6 +74,7 @@ export class GraphEventService {
   };
 
   private addEdgeCallback = (data: any, callback: any) => {
+    console.log("eddge")
     let edgeExists: boolean = false;
     this.graphData.graphEdges.forEach((edge) => {
       if (edge.from === data.from && edge.to === data.to) {
