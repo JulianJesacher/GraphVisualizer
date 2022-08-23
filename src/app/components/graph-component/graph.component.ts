@@ -3,9 +3,7 @@ import { GraphElementDialogService } from 'src/app/services/graph-element-dialog
 import { GraphElementDeleteEvent, GraphElementUpdateEvent } from 'src/app/types/element-config-dialog.types';
 import { Network } from 'vis';
 import { GraphDataService } from '../../services/graph-data.service';
-import {
-  GraphElementConfigComponent,
-} from '../graph-element-config/graph-element-config.component';
+import { GraphElementConfigComponent } from '../graph-element-config/graph-element-config.component';
 
 @Component({
   selector: 'app-graph',
@@ -63,7 +61,7 @@ export class GraphComponent implements AfterViewInit {
         this.graphData.graphNodes.update({ id: updateEvent.id, label: updateEvent.updatedData.label });
         break;
       case 'edge':
-        this.graphData.graphNodes.update({ id: updateEvent.id, label: updateEvent.updatedData.label });
+        this.graphData.graphEdges.update({ id: updateEvent.id, label: updateEvent.updatedData.label });
         break;
     }
   }
