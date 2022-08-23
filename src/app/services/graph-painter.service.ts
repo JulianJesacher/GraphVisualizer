@@ -23,7 +23,7 @@ export class GraphPainterService {
     },
   };
 
-  paintNodeByState(nodeId: number | string, state: NodeColorState) {
+  paintNodeByState(nodeId: number | string, state: ColorState) {
     this.graphData.graphNodes.update({ id: nodeId, color: this.nodeColorOptions[state] });
   }
 
@@ -37,8 +37,7 @@ export class GraphPainterService {
   }
 }
 
-// TG: Einfach nur State, kein Color State
-export enum NodeColorState {
+export enum ColorState {
   NONE = 'none',
   CURRENT = 'current',
   FINISHED = 'finished',

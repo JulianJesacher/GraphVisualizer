@@ -1,11 +1,10 @@
-import { Node } from 'vis';
+import { EdgeOptions, Node } from 'vis';
 import { GraphDataService } from '../services/graph-data.service';
-import { NodeColorState } from '../services/graph-painter.service';
+import { ColorState } from '../services/graph-painter.service';
 
 export interface State {
-  nodes: Map<string, { node: Node; color: NodeColorState }>;
-  // TG: Edges sind wohl jetzt nodes
-  edges: Map<string, { edge: Node; color: NodeColorState }>;
+  nodes: Map<string, { node: Node; color: ColorState }>;
+  edges: Map<string, { edge: EdgeOptions; color: ColorState }>;
 }
 
 export type GraphAlgorithmInput = { startNode: Node };
