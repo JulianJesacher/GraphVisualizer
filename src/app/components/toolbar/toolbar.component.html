@@ -1,6 +1,8 @@
 <div class="toolbar-wrapper">
   <div class="left-items">
-    <button class="dropdown-toggle" id="dropdown-toggle-left" (click)="toggleDropdown(toggleDropdownLeft)" #toggleDropdownLeft>Graph manipulation</button>
+    <button class="dropdown-toggle" id="dropdown-toggle-left" (click)="toggleDropdown(toggleDropdownLeft)" #toggleDropdownLeft>
+      Graph manipulation <i class="fa-solid fa-arrow-down"></i>
+    </button>
     <div class="dropdown-items-container" #dropdownContainerLeft>
       <button (click)="addNode()">Add node</button>
       <button (click)="addEdge()">Add edge</button>
@@ -17,7 +19,10 @@
     <button (click)="nextStep()" [disabled]="forwardButtonDisabled"><i class="fa-solid fa-forward-step"></i></button>
   </div>
   <div class="right-items">
-    <button class="dropdown-toggle" id="dropdown-toggle-right" (click)="toggleDropdown(toggleDropdownRight)" #toggleDropdownRight>Select algorithm</button>
+    <button class="dropdown-toggle" id="dropdown-toggle-right" (click)="toggleDropdown(toggleDropdownRight)" #toggleDropdownRight>
+      Select algorithm
+      <i class="fa-solid fa-arrow-down"></i>
+    </button>
     <div class="dropdown-items-container" #dropdownContainerRight>
       <button>BFS</button>
     </div>
