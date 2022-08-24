@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { bfsAlgorithm } from 'src/app/algorithms/bfs.algorithm';
 import { GraphDataService } from 'src/app/services/graph-data.service';
 import { GraphGeneratorService } from 'src/app/services/graph-generator.service';
@@ -17,6 +17,12 @@ enum ControlButtonState {
   styleUrls: ['./toolbar.component.css'],
 })
 export class ToolbarComponent implements OnInit {
+  @ViewChild('dropdownContainerLeft') dropdownContainerLeft!: ElementRef<HTMLDivElement>;
+  @ViewChild('dropdownContainerRight') dropdownContainerRight!: ElementRef<HTMLDivElement>;
+
+  @ViewChild('toggleDropdownLeft') toggleDropdownLeft!: ElementRef<HTMLButtonElement>;
+  @ViewChild('toggleDropdownRight') toggleDropdownRight!: ElementRef<HTMLButtonElement>;
+
   public middleButtonState = ControlButtonState.PLAY;
   public buttonStates = ControlButtonState;
 
@@ -91,5 +97,24 @@ export class ToolbarComponent implements OnInit {
 
   generateGraph() {
     this.graphGenerator.generateGraph(40, { min: 10, max: 10 }, 3);
+  }
+
+  toggleDropdown(button: HTMLButtonElement) {
+    if (button === this.toggleDropdownRight.nativeElement) {
+      this.dropdownContainerRight.nativeElement.classList.toggle('visible');
+    } else if (button === this.toggleDropdownLeft.nativeElement) {
+      this.dropdownContainerLeft.nativeElement.classList.toggle('visible');
+    }
+  }
+
+  // HostListener to close dropdown menus, if a click outside of the toggle buttons was detected
+  @HostListener('document:click', ['$event'])
+  clickedOutsideDropdownToggle(event: MouseEvent) {
+    if (event.target instanceof Node && !this.toggleDropdownLeft.nativeElement.contains(event.target)) {
+      this.dropdownContainerLeft.nativeElement.classList.remove('visible');
+    }
+    if (event.target instanceof Node && !this.toggleDropdownRight.nativeElement.contains(event.target)) {
+      this.dropdownContainerRight.nativeElement.classList.remove('visible');
+    }
   }
 }
