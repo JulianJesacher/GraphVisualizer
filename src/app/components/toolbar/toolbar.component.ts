@@ -2,14 +2,9 @@ import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular
 import { bfsAlgorithm } from 'src/app/algorithms/bfs.algorithm';
 import { GraphDataService } from 'src/app/services/graph-data.service';
 import { GraphGeneratorService } from 'src/app/services/graph-generator.service';
+import { GraphPainterService } from 'src/app/services/graph-painter.service';
 import { Node } from 'vis';
-import { AlgorithmService, AlgorithmState } from '../../services/algorithm.service';
-
-enum ControlButtonState {
-  PLAY,
-  PAUSE,
-  REPEAT,
-}
+import { AlgorithmService, AutoRunButtonState } from '../../services/algorithm.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -23,55 +18,22 @@ export class ToolbarComponent implements OnInit {
   @ViewChild('toggleDropdownLeft') toggleDropdownLeft!: ElementRef<HTMLButtonElement>;
   @ViewChild('toggleDropdownRight') toggleDropdownRight!: ElementRef<HTMLButtonElement>;
 
-  public middleButtonState = ControlButtonState.PLAY;
-  public buttonStates = ControlButtonState;
-
-  public forwardButtonDisabled = true;
-  public backwardButtonDisabled = true;
+  public middleButtonState = AutoRunButtonState.RUN;
+  public buttonStates = AutoRunButtonState;
 
   constructor(
     private graphData: GraphDataService,
-    private algorithmService: AlgorithmService,
-    private graphGenerator: GraphGeneratorService
+    public algorithmService: AlgorithmService,
+    private graphGenerator: GraphGeneratorService,
+    private graphPainter: GraphPainterService
   ) {
-    this.algorithmService.algorithmState$.subscribe((newState: AlgorithmState) => {
-      console.log('newstate', AlgorithmState[newState]);
-      switch (newState) {
-        case AlgorithmState.INITIAL_STATE:
-          this.middleButtonState = ControlButtonState.PLAY;
-          this.forwardButtonDisabled = false;
-          this.backwardButtonDisabled = true;
-          break;
-
-        case AlgorithmState.PAUSE:
-          this.middleButtonState = ControlButtonState.PLAY;
-          this.forwardButtonDisabled = false;
-          this.backwardButtonDisabled = false;
-          break;
-
-        case AlgorithmState.RUNNING:
-          this.middleButtonState = ControlButtonState.PAUSE;
-          this.forwardButtonDisabled = false;
-          this.backwardButtonDisabled = false;
-          break;
-
-        case AlgorithmState.FINISHED:
-          this.middleButtonState = ControlButtonState.REPEAT;
-          this.forwardButtonDisabled = true;
-          this.backwardButtonDisabled = false;
-          break;
-
-        case AlgorithmState.NOT_SELECTED:
-          this.middleButtonState = ControlButtonState.PLAY;
-          this.forwardButtonDisabled = true;
-          this.backwardButtonDisabled = true;
-          break;
-      }
-    });
+    this.algorithmService.autoRunButtoonState$.subscribe((newState) => (this.middleButtonState = newState));
   }
 
   ngOnInit(): void {
     this.algorithmService.setAlgorithm(bfsAlgorithm);
+    //TODO: Remove
+    this.algorithmService.initializeAlgorithmWithInputValue({ startNode: this.graphData.graphNodes.get(10) as unknown as Node }); //TODO: remove
   }
 
   addNode() {
@@ -83,20 +45,32 @@ export class ToolbarComponent implements OnInit {
   }
 
   previousStep() {
+    this.algorithmService.stopAutoStepAlgorithm();
     this.algorithmService.stepBackward();
   }
 
   nextStep() {
+    this.algorithmService.stopAutoStepAlgorithm();
     this.algorithmService.stepForward();
   }
 
-  runPauseAlgorithm() {
-    this.algorithmService.start({ startNode: this.graphData.graphNodes.get(10) as unknown as Node });
-    this.algorithmService.runAlgorithm();
+  algorithmAutoStepButtonClicked() {
+    switch (this.middleButtonState) {
+      case AutoRunButtonState.RUN:
+        this.algorithmService.runAutoStepAlgorithm();
+        break;
+      case AutoRunButtonState.STOPP:
+        this.algorithmService.stopAutoStepAlgorithm();
+        break;
+      case AutoRunButtonState.REPEAT:
+        this.algorithmService.repeatAlgorithm();
+        break;
+    }
   }
 
   generateGraph() {
-    this.graphGenerator.generateGraph(40, { min: 10, max: 10 }, 3);
+    //this.graphGenerator.generateGraph(40, { min: 10, max: 10 }, 3);
+    this.graphPainter.removePaintFromAllNodes();
   }
 
   toggleDropdown(button: HTMLButtonElement) {

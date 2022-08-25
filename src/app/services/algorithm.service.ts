@@ -1,96 +1,141 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Node } from 'vis';
+import { PeekingIterator } from '../helper/peekingIterator';
 import { GraphAlgorithm, GraphAlgorithmInput, State } from '../types/algorithm.types';
 import { GraphDataService } from './graph-data.service';
 import { GraphPainterService } from './graph-painter.service';
 
-export enum AlgorithmState {
-  NOT_SELECTED,
-  RUNNING,
-  FINISHED,
-  PAUSE,
-  INITIAL_STATE,
+export enum AutoRunButtonState {
+  RUN,
+  STOPP,
+  REPEAT,
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AlgorithmService {
-  private stateHistory: State[] = [];
-  private algorithm?: GraphAlgorithm;
-  private stateIterator?: Iterator<State>;
-  private currentStateHistoryIndex = 0;
-  public algorithmState$ = new BehaviorSubject<AlgorithmState>(AlgorithmState.NOT_SELECTED);
+  private _stateHistory: State[] = [];
+  private _currentStateHistoryIndex = -1;
+  private _autoStepAlgorithm = false;
+
+  private _algorithm?: GraphAlgorithm;
+  private _stateIterator?: PeekingIterator<State>;
+  private _iteratorFinished = false;
+  private _inputData?: GraphAlgorithmInput;
+
+  public backwardButtonDisabled$ = new BehaviorSubject<boolean>(true);
+  public forwardButtonDisabled$ = new BehaviorSubject<boolean>(true);
+  public autoRunButtoonState$ = new BehaviorSubject<AutoRunButtonState>(AutoRunButtonState.RUN);
 
   constructor(private graphData: GraphDataService, private graphPainter: GraphPainterService) {}
 
   setAlgorithm(newAlgorithm: GraphAlgorithm) {
     this.clear();
-    this.algorithm = newAlgorithm;
+    this._algorithm = newAlgorithm;
   }
 
-  start(inputData: GraphAlgorithmInput) {
-    if (!this.algorithm) {
+  initializeAlgorithmWithInputValue(inputData: GraphAlgorithmInput) {
+    if (!this._algorithm) {
       throw new Error('No algorithm selected!');
     }
-    this.stateIterator = this.algorithm(inputData, this.graphData);
-    this.algorithmState$.next(AlgorithmState.INITIAL_STATE);
+
+    this._inputData = inputData;
+    this._stateIterator = new PeekingIterator(this._algorithm(inputData, this.graphData));
+    this._currentStateHistoryIndex = -1;
+
+    this.backwardButtonDisabled$.next(true);
+    this.forwardButtonDisabled$.next(false);
+    this.autoRunButtoonState$.next(AutoRunButtonState.RUN);
+    this.graphPainter.removePaintFromAllNodes();
   }
 
   clear() {
-    this.stateHistory = [];
-    this.currentStateHistoryIndex = 0;
+    this._stateHistory = [];
+    this._currentStateHistoryIndex = -1;
+
+    this.backwardButtonDisabled$.next(true);
+    this.forwardButtonDisabled$.next(true);
+    this.autoRunButtoonState$.next(AutoRunButtonState.RUN);
   }
 
   stepForward() {
-    if (!this.stateIterator) {
+    if (!this._stateIterator) {
       throw new Error('No stateIterator available!');
     }
 
-    // If the currently presented state is not the newest, no new state has to be calculated,
-    // so only the next state from the history is shown
-    if (this.currentStateHistoryIndex < this.stateHistory.length) {
-      this.graphPainter.paintState(this.stateHistory[this.currentStateHistoryIndex]);
-      this.currentStateHistoryIndex++;
-      return;
+    this._currentStateHistoryIndex++;
+
+    const newStateRequired = this._currentStateHistoryIndex >= this._stateHistory.length;
+    //If the currently presented state is the newest, a new one has to be calculated
+    //otherwise it is sufficient to increase the index and paint the next state
+    if (newStateRequired) {
+      const newState = this._stateIterator?.next();
+      if (!newState) {
+        throw new Error('The next state is not available');
+      }
+
+      //@ts-ignore
+      this._stateHistory.push(structuredClone(newState.value));
+    }
+    this.graphPainter.paintState(this._stateHistory[this._currentStateHistoryIndex]);
+    this.backwardButtonDisabled$.next(false);
+
+    if (!this._stateIterator.hasNext()) {
+      this._iteratorFinished = true;
     }
 
-    const newState = this.stateIterator.next();
-    if (newState.done) {
-      //TODO: do something
-      console.log('finished');
-      this.algorithmState$.next(AlgorithmState.FINISHED);
-      return;
+    const lastStateReached = this._iteratorFinished && this._currentStateHistoryIndex === this._stateHistory.length - 1;
+    if (lastStateReached) {
+      this.autoRunButtoonState$.next(AutoRunButtonState.REPEAT);
+      this.forwardButtonDisabled$.next(true);
     }
-
-    //@ts-ignore
-    this.stateHistory.push(structuredClone(newState.value));
-    this.graphPainter.paintState(this.stateHistory[this.currentStateHistoryIndex]);
-    this.currentStateHistoryIndex++;
   }
 
   stepBackward() {
-    if (this.algorithmState$.value === AlgorithmState.INITIAL_STATE) {
+    if (this._currentStateHistoryIndex === -1) {
       throw new Error("Can't go back further, already the initial state!");
     }
 
-    this.currentStateHistoryIndex--;
-    this.graphPainter.paintState(this.stateHistory[this.currentStateHistoryIndex]);
-
-    if (this.currentStateHistoryIndex === 0) {
-      this.algorithmState$.next(AlgorithmState.INITIAL_STATE);
+    if (this._currentStateHistoryIndex === 0) {
+      this.backwardButtonDisabled$.next(true);
+      this.graphPainter.removePaintFromAllNodes();
+      this._currentStateHistoryIndex--;
+      return;
     }
+
+    this._currentStateHistoryIndex--;
+    this.graphPainter.paintState(this._stateHistory[this._currentStateHistoryIndex]);
+    this.forwardButtonDisabled$.next(false);
   }
 
-  runAlgorithm(intervalTime: number = 1000) {
-    this.algorithmState$.next(AlgorithmState.RUNNING);
+  stopAutoStepAlgorithm() {
+    this._autoStepAlgorithm = false;
+    this.autoRunButtoonState$.next(AutoRunButtonState.RUN);
+  }
+
+  runAutoStepAlgorithm(intervalTime: number = 500) {
+    this._autoStepAlgorithm = true;
+    this.autoRunButtoonState$.next(AutoRunButtonState.STOPP);
 
     const intervalId = setInterval(() => {
-      if (this.algorithmState$.value === AlgorithmState.FINISHED) {
+      const lastStateReached = this._iteratorFinished && this._currentStateHistoryIndex === this._stateHistory.length - 1;
+      const autoStepActive = this._autoStepAlgorithm;
+      if (lastStateReached || !autoStepActive) {
         clearInterval(intervalId);
         return;
       }
+
       this.stepForward();
     }, intervalTime);
+  }
+
+  repeatAlgorithm() {
+    if (!this._inputData) {
+      throw Error('No input data for the algoritm was stored');
+    }
+    this.initializeAlgorithmWithInputValue(this._inputData);
+    this.runAutoStepAlgorithm();
   }
 }

@@ -42,6 +42,7 @@ export function* bfsAlgorithm(input: GraphAlgorithmInput, graphData: GraphDataSe
         currentState.nodes.set(singleNeighbour.id.toString(), { node: singleNeighbour, color: ColorState.EDIT });
       }
     }
+
     yield currentState;
   }
 }

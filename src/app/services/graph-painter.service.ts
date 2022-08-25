@@ -28,12 +28,11 @@ export class GraphPainterService {
   }
 
   paintState(newState: State) {
-    newState.nodes.forEach((singleEntry) => {
-      const id = singleEntry.node.id;
-      if (id) {
-        this.paintNodeByState(id, singleEntry.color);
-      }
-    });
+    newState.nodes.forEach((singleEntry, id) => this.paintNodeByState(id, singleEntry.color));
+  }
+
+  removePaintFromAllNodes() {
+    this.graphData.graphNodes.forEach((node, id) => this.paintNodeByState(id, ColorState.NONE)); //todo: optimize
   }
 }
 

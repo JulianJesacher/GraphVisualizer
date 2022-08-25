@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Edge, IdType, Node, Position } from 'vis';
-import { LabelIterator, NumericalLabelIterator } from '../graphHelpers/labelIterator';
+import { LabelIterator, NumericalLabelIterator } from '../helper/labelIterator';
 import { GraphElementType } from '../types/element-config-dialog.types';
 import { GraphDataService } from './graph-data.service';
 
@@ -74,7 +74,6 @@ export class GraphEventService {
   };
 
   private addEdgeCallback = (data: any, callback: any) => {
-    console.log("eddge")
     let edgeExists: boolean = false;
     this.graphData.graphEdges.forEach((edge) => {
       if (edge.from === data.from && edge.to === data.to) {

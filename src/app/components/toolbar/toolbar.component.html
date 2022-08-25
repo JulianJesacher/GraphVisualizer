@@ -10,13 +10,13 @@
     </div>
   </div>
   <div class="middle-items">
-    <button (click)="previousStep()" [disabled]="backwardButtonDisabled"><i class="fa-solid fa-backward-step"></i></button>
-    <button (click)="runPauseAlgorithm()">
-      <i *ngIf="middleButtonState === buttonStates.PAUSE" class="fa-solid fa-pause"></i>
-      <i *ngIf="middleButtonState === buttonStates.PLAY" class="fa-solid fa-play"></i>
+    <button (click)="previousStep()" [disabled]="algorithmService.backwardButtonDisabled$ | async"><i class="fa-solid fa-backward-step"></i></button>
+    <button (click)="algorithmAutoStepButtonClicked()">
+      <i *ngIf="middleButtonState === buttonStates.STOPP" class="fa-solid fa-pause"></i>
+      <i *ngIf="middleButtonState === buttonStates.RUN" class="fa-solid fa-play"></i>
       <i *ngIf="middleButtonState === buttonStates.REPEAT" class="fa-solid fa-repeat"></i>
     </button>
-    <button (click)="nextStep()" [disabled]="forwardButtonDisabled"><i class="fa-solid fa-forward-step"></i></button>
+    <button (click)="nextStep()" [disabled]="algorithmService.forwardButtonDisabled$ | async"><i class="fa-solid fa-forward-step"></i></button>
   </div>
   <div class="right-items">
     <button class="dropdown-toggle" id="dropdown-toggle-right" (click)="toggleDropdown(toggleDropdownRight)" #toggleDropdownRight>
