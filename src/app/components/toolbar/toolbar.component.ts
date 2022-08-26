@@ -1,11 +1,10 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { bfsAlgorithm } from 'src/app/algorithms/bfs.algorithm';
 import { GraphDataService } from 'src/app/services/graph-data.service';
 import { GraphGeneratorService } from 'src/app/services/graph-generator.service';
-import { GraphPainterService } from 'src/app/services/graph-painter.service';
 import { AutoRunButtonState } from 'src/app/types/algorithm.types';
-import { Node } from 'vis';
 import { AlgorithmService } from '../../services/algorithm.service';
+import { AlgorithmInitializerService } from '../../services/algorithm-initializer.service';
+import { BfsAlgorithm } from '../../algorithms/bfs.algorithm';
 
 @Component({
   selector: 'app-toolbar',
@@ -26,16 +25,12 @@ export class ToolbarComponent implements OnInit {
     private graphData: GraphDataService,
     public algorithmService: AlgorithmService,
     private graphGenerator: GraphGeneratorService,
-    private graphPainter: GraphPainterService
+    private algorithmInitializer: AlgorithmInitializerService
   ) {
     this.algorithmService.autoRunButtoonState$.subscribe((newState) => (this.middleButtonState = newState));
   }
 
-  ngOnInit(): void {
-    this.algorithmService.setAlgorithm(bfsAlgorithm);
-    //TODO: Remove
-    this.algorithmService.initializeAlgorithmWithInputValue({ startNode: this.graphData.graphNodes.get(10) as unknown as Node }); //TODO: remove
-  }
+  ngOnInit(): void {}
 
   addNode() {
     this.graphData.enterAddNodeMode();
@@ -90,5 +85,9 @@ export class ToolbarComponent implements OnInit {
     if (event.target instanceof Node && !this.toggleDropdownRight.nativeElement.contains(event.target)) {
       this.dropdownContainerRight.nativeElement.classList.remove('visible');
     }
+  }
+
+  selectBFS() {
+    this.algorithmInitializer.set_algorithm(new BfsAlgorithm());
   }
 }
