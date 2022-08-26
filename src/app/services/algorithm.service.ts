@@ -1,16 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Node } from 'vis';
 import { PeekingIterator } from '../helper/peekingIterator';
-import { GraphAlgorithm, GraphAlgorithmInput, State } from '../types/algorithm.types';
+import { AutoRunButtonState, GraphAlgorithm, GraphAlgorithmInput, State } from '../types/algorithm.types';
 import { GraphDataService } from './graph-data.service';
 import { GraphPainterService } from './graph-painter.service';
-
-export enum AutoRunButtonState {
-  RUN,
-  STOPP,
-  REPEAT,
-}
 
 @Injectable({
   providedIn: 'root',

@@ -3,8 +3,9 @@ import { bfsAlgorithm } from 'src/app/algorithms/bfs.algorithm';
 import { GraphDataService } from 'src/app/services/graph-data.service';
 import { GraphGeneratorService } from 'src/app/services/graph-generator.service';
 import { GraphPainterService } from 'src/app/services/graph-painter.service';
+import { AutoRunButtonState } from 'src/app/types/algorithm.types';
 import { Node } from 'vis';
-import { AlgorithmService, AutoRunButtonState } from '../../services/algorithm.service';
+import { AlgorithmService } from '../../services/algorithm.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -69,8 +70,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   generateGraph() {
-    //this.graphGenerator.generateGraph(40, { min: 10, max: 10 }, 3);
-    this.graphPainter.removePaintFromAllNodes();
+    this.graphGenerator.generateGraph(40, { min: 10, max: 10 }, 3);
   }
 
   toggleDropdown(button: HTMLButtonElement) {

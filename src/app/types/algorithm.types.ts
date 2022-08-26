@@ -10,3 +10,9 @@ export interface State {
 export type GraphAlgorithmInput = { startNode: Node };
 
 export type GraphAlgorithm = (input: GraphAlgorithmInput, graphData: GraphDataService) => Iterator<State>;
+
+export enum AutoRunButtonState {
+  RUN,
+  STOPP,
+  REPEAT,
+}
