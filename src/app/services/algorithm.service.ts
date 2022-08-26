@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { PeekingIterator } from '../helper/peekingIterator';
-import { AutoRunButtonState, GraphAlgorithm, GraphAlgorithmInput, State } from '../types/algorithm.types';
+import { AutoRunButtonState, GraphAlgorithmType, GraphAlgorithmInput, State } from '../types/algorithm.types';
 import { GraphDataService } from './graph-data.service';
 import { GraphPainterService } from './graph-painter.service';
 
@@ -13,7 +13,7 @@ export class AlgorithmService {
   private _currentStateHistoryIndex = -1;
   private _autoStepAlgorithm = false;
 
-  private _algorithm?: GraphAlgorithm;
+  private _algorithm?: GraphAlgorithmType;
   private _stateIterator?: PeekingIterator<State>;
   private _iteratorFinished = false;
   private _inputData?: GraphAlgorithmInput;
@@ -24,7 +24,7 @@ export class AlgorithmService {
 
   constructor(private graphData: GraphDataService, private graphPainter: GraphPainterService) {}
 
-  setAlgorithm(newAlgorithm: GraphAlgorithm) {
+  setAlgorithm(newAlgorithm: GraphAlgorithmType) {
     this.clear();
     this._algorithm = newAlgorithm;
   }
