@@ -18,6 +18,8 @@ export class GraphEventService {
   private _currentNodeId: number;
   private _currentEdgeId: number;
 
+  public selectedNode$ = new Subject<Node>();
+
   constructor(private graphData: GraphDataService) {
     this._currentEdgeId = 0;
     this._currentNodeId = 0;
@@ -56,6 +58,7 @@ export class GraphEventService {
       graph.on('selectNode', (event) => {
         const nodeId = event.nodes[0];
         const node: Node = this.graphData.graphNodes.get(nodeId) as Node;
+        this.selectedNode$.next(node);
 
         this.elementType$.next('node');
         this.elementId$.next(nodeId);
