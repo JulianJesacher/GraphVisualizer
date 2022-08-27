@@ -12,6 +12,7 @@ import { AlgorithmInitializerComponent } from './components/algorithm-initialize
 
 import { CardModule } from 'primeng/card';
 import { StepsModule } from 'primeng/steps';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [AppComponent, GraphComponent, ToolbarComponent, GraphElementConfigComponent, AlgorithmInitializerComponent],
@@ -22,6 +23,7 @@ import { StepsModule } from 'primeng/steps';
     CardModule,
     StepsModule,
     RouterModule.forRoot([{ path: '', component: AppComponent }]),
+    ButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
