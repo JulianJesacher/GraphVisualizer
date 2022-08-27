@@ -47,7 +47,7 @@ export class GraphEventService {
 
       graph.on('selectEdge', (event) => {
         const edgeId = event.edges[0];
-        const edge: Edge = this.graphData.graphNodes.get(edgeId);
+        const edge: Edge = this.graphData.graphEdges.get(edgeId);
 
         this.elementType$.next('edge');
         this.elementId$.next(edgeId);
