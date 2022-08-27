@@ -1,0 +1,40 @@
+:host ::ng-deep .p-card {
+  width: 40rem;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+:host ::ng-deep .p-card-header {
+  font-size: 1.45rem;
+  text-align: center;
+  font-family: "PT Sans", sans-serif;
+}
+
+:host ::ng-deep .p-steps .p-steps-item {
+  width: 25%;
+}
+
+:host ::ng-deep .p-steps {
+  margin-bottom: 30px;
+}
+
+:host ::ng-deep .p-steps .p-steps-item .p-menptem-link {
+  padding: 0 1em;
+  overflow: visible;
+}
+
+:host ::ng-deep .p-steps .p-steps-item .p-steps-number {
+  background-color: #eff6ff;
+  color: #000000;
+  display: inline-block;
+  border-radius: 50%;
+  min-width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  font-size: 1.143rem;
+  text-align: center;
+}
+
+:host ::ng-deep .p-steps .p-steps-item .p-steps-title {
+  color: #555555;
+}
