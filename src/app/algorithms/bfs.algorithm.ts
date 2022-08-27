@@ -1,6 +1,6 @@
 import { IdType, Node } from 'vis';
+import { ColorState } from '../graphConfig/colorConfig';
 import { GraphDataService } from '../services/graph-data.service';
-import { ColorState } from '../services/graph-painter.service';
 import { GraphAlgorithmInput, State, GraphAlgorithm, AlgorithmGroup } from '../types/algorithm.types';
 
 export class BfsAlgorithm extends GraphAlgorithm {

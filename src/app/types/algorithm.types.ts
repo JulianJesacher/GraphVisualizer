@@ -1,6 +1,6 @@
 import { EdgeOptions, Node } from 'vis';
+import { ColorState } from '../graphConfig/colorConfig';
 import { GraphDataService } from '../services/graph-data.service';
-import { ColorState } from '../services/graph-painter.service';
 
 export type TraversalAlgorithmInput = { startNode: Node };
 
