@@ -30,10 +30,23 @@ export class AlgorithmInitializerComponent implements OnInit {
     this.updateSteps();
   }
 
-  @Input() selectedNodesInformation: SelectedNodeInformation[] | null = [];
+  public _selectedNodesInformation: SelectedNodeInformation[] = [];
+  @Input() set selectedNodesInformation(newInformation: SelectedNodeInformation[] | null) {
+    if (!newInformation) {
+      return;
+    }
+    this._selectedNodesInformation = newInformation;
+    if (this._selectedNodesInformation.length === this.requiredSteps.length) {
+      this.confirmButtonVisible = true;
+    }
+  }
 
   @Output() updateCurrentNodeSelection = new EventEmitter<UpdateCurrentNodeSelectionEvent>();
   @Output() confirmInputData = new EventEmitter<void>();
+
+  public confirmButtonVisible = false;
+  public backButtonVisible = false;
+  public nextButtonVisible = false;
 
   constructor() {}
 
@@ -50,13 +63,20 @@ export class AlgorithmInitializerComponent implements OnInit {
     this.requiredSteps = this._initializationInformation.map((nodeInformation, index) => {
       return {
         label: nodeInformation.nodeName,
-        command: (event: any) => (this.activeIndex = index),
+        command: (event: any) => this.stepClicked(index),
         fullInformation: nodeInformation,
       };
     });
-    this.activeIndex = 0;
-    const firstStep = this.requiredSteps[0];
-    this.triggerNodeUpdate(firstStep);
+
+    this.confirmButtonVisible = false;
+    this.stepClicked(0);
+  }
+
+  stepClicked(index: number) {
+    this.activeIndex = index;
+    this.backButtonVisible = this.activeIndex === 0 ? false : true;
+    this.nextButtonVisible = this.activeIndex != this.requiredSteps.length - 1 ? true : false;
+    this.triggerNodeUpdate(this.requiredSteps[this.activeIndex]);
   }
 
   triggerNodeUpdate(newNodeSelection: MenuItemWithInitializationInformation) {
