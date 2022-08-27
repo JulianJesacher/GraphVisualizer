@@ -43,6 +43,7 @@ export class AlgorithmInitializerComponent implements OnInit {
 
   @Output() updateCurrentNodeSelection = new EventEmitter<UpdateCurrentNodeSelectionEvent>();
   @Output() confirmInputData = new EventEmitter<void>();
+  @Output() close = new EventEmitter<void>();
 
   public confirmButtonDisabled = true;
   public backButtonVisible = false;
@@ -97,5 +98,9 @@ export class AlgorithmInitializerComponent implements OnInit {
       throw new Error('No initialization information available!');
     }
     return this._initializationInformation[index].nodeName;
+  }
+
+  closeInitializingDialog() {
+    this.close.next();
   }
 }

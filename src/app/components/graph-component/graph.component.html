@@ -7,7 +7,7 @@
   [position]="elementDialog.position$ | async"
   (update)="updateElement($event)"
   (delete)="deleteElement($event)"
-  (close)="closeElementConfig()"
+  (close)="closeElementConfigDialog()"
   #configComponent
 ></app-graph-element-config>
 <div id="node-selector-container" *ngIf="algorithmInitializer.initializingProcessActive$ | async">
@@ -16,5 +16,6 @@
     [selectedNodesInformation]="algorithmInitializer.selectedNodesInformation$ | async"
     (updateCurrentNodeSelection)="updateCurrentNodeSelection($event)"
     (confirmInputData)="confirmInputData()"
+    (close)="closeInitializingDialog()"
   ></app-algorithm-initializer>
 </div>

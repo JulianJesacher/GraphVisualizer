@@ -25,7 +25,7 @@ export class GraphComponent implements AfterViewInit {
     }
 
     if (event.target instanceof Node && !this.configComponent.container.nativeElement.contains(event.target)) {
-      this.closeElementConfig();
+      this.closeElementConfigDialog();
     }
   }
 
@@ -44,7 +44,7 @@ export class GraphComponent implements AfterViewInit {
     this.graphData.assignGraph(new Network(container, data, this.graphData.graphOptions));
   }
 
-  closeElementConfig() {
+  closeElementConfigDialog() {
     this.elementDialog.position$.next(null);
     this.elementDialog.openConfigClick = false;
   }
@@ -58,7 +58,7 @@ export class GraphComponent implements AfterViewInit {
         this.graphData.graphNodes.remove(deleteEvent.id);
         break;
     }
-    this.closeElementConfig();
+    this.closeElementConfigDialog();
   }
 
   updateElement(updateEvent: GraphElementUpdateEvent) {
@@ -78,5 +78,9 @@ export class GraphComponent implements AfterViewInit {
 
   confirmInputData() {
     this.algorithmInitializer.startAlgorithm();
+  }
+
+  closeInitializingDialog() {
+    this.algorithmInitializer.clear();
   }
 }

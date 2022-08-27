@@ -2,6 +2,7 @@
   width: 40rem;
   background-color: #ffffff;
   color: #000000;
+  position: relative;
 }
 
 :host ::ng-deep .p-card-header {
@@ -37,6 +38,12 @@
 
 :host ::ng-deep .p-steps .p-steps-item .p-steps-title {
   color: #555555;
+}
+
+.close-btn {
+  top: 0.25rem;
+  right: 0.25rem;
+  font-size: 1.15rem;
 }
 
 .task-container {

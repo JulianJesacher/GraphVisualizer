@@ -48,7 +48,7 @@ export class AlgorithmInitializerService {
 
     this.algorithmService.setAlgorithm(this._algorithm.startAlgorithm);
     this.algorithmService.initializeAlgorithmWithInputValue(this.currentGraphPayload$.value);
-    this.resetState();
+    this.clear();
   }
 
   handleSelectedNode(selectedNode: Node) {
@@ -85,11 +85,12 @@ export class AlgorithmInitializerService {
     this.currentGraphPayload$.next({ startNode: selectedNode });
   }
 
-  resetState() {
+  clear() {
     this._currentNodeSelection = null;
     this._algorithm = null;
     this.currentGraphPayload$.next(null);
     this.selectedNodesInformation$.next([]);
     this.initializingProcessActive$.next(false);
+    this.graphPainter.removePaintFromAllNodes();
   }
 }

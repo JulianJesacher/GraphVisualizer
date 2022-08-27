@@ -1,4 +1,5 @@
 <p-card>
+  <button class="close-btn" (click)="closeInitializingDialog()">✖</button>
   <ng-template pTemplate="header"> Set parameters for algorithm execution </ng-template>
   <p-steps [model]="requiredSteps" [readonly]="false"></p-steps>
   <div class="task-container">

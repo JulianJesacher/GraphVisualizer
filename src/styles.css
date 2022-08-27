@@ -18,3 +18,18 @@ button {
   display: flex;
   align-items: center;
 }
+
+.close-btn {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  background-color: transparent;
+  border: none;
+  font-size: 1.15rem;
+  transition: transform 0.5s;
+}
+
+.close-btn:hover {
+  color: red;
+  transform: rotate(90deg);
+}
