@@ -9,14 +9,19 @@ export type GraphAlgorithmInput = TraversalAlgorithmInput;
 export type GraphAlgorithmType = (input: GraphAlgorithmInput, graphData: GraphDataService) => Iterator<State>;
 
 export enum AlgorithmGroup {
-  TRAVERSAL,
-  APSP,
-  SPSP,
-  SSSP,
+  TRAVERSAL = 'traversal',
+  APSP = 'apsp',
+  SPSP = 'spsp',
+  SSSP = 'sssp',
+}
+
+export enum AlgorithmInputNodeType {
+  START_NODE,
+  TARGET_NODE,
 }
 
 export abstract class GraphAlgorithm {
-  constructor(public type: AlgorithmGroup) {}
+  constructor(public group: AlgorithmGroup) {}
 
   abstract startAlgorithm: GraphAlgorithmType;
 }

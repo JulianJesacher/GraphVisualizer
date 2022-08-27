@@ -88,6 +88,6 @@ export class ToolbarComponent implements OnInit {
   }
 
   selectBFS() {
-    this.algorithmInitializer.set_algorithm(new BfsAlgorithm());
+    this.algorithmInitializer.setAlgorithm(new BfsAlgorithm());
   }
 }
