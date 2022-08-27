@@ -70,9 +70,19 @@ i.margin-right {
   vertical-align: middle;
 }
 
+.selected-nodes-information {
+  display: flex;
+  align-items: center;
+}
+
+.selected-nodes-information > * {
+  margin: 0 0.25rem;
+}
+
 .node-color {
   display: inline-block;
   aspect-ratio: 1;
-  height: 1.15rem;
+  height: 1.3rem;
   outline: 1px solid black;
+  border-radius: 50%;
 }

@@ -5,10 +5,12 @@
     <span>{{ requiredSteps[activeIndex].fullInformation.taskDescription }}</span>
   </div>
   <ul class="selected-nodes-container">
-    <li class="selected-nodes-information" *ngFor="let nodeInformation of _selectedNodesInformation">
-        <span class="node-name">{{ getNodeName(nodeInformation.nodeStepIndex) }}</span>:
-        <span class="node-label">{{ nodeInformation.node.label }}</span> 
-        ( <span class="node-color" [style.background]="nodeColorOptions[nodeInformation.color].background"></span> )
+    <li *ngFor="let nodeInformation of _selectedNodesInformation">
+      <div class="selected-nodes-information">
+        <span class="node-name">{{ getNodeName(nodeInformation.nodeStepIndex) }}:</span>
+        <span class="node-label">'{{ nodeInformation.node.label }}'</span> 
+        <span class="node-color" [style.background]="nodeColorOptions[nodeInformation.color].background"></span>
+      </div>
     </li>
   </ul>
   <div class="button-container">
