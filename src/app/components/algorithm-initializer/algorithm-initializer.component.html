@@ -15,7 +15,7 @@
   </ul>
   <div class="button-container">
     <p-button *ngIf="backButtonVisible" type="button" class="p-button-success"><i class="fa-solid fa-arrow-left margin-right"></i>Back</p-button>
-    <p-button *ngIf="confirmButtonVisible" type="button" class="p-button-success" (click)="triggerConfirmInputData()">Confirm<i class="fa-solid fa-check margin-left"></i></p-button>
+    <p-button [disabled]="confirmButtonDisabled" type="button" class="p-button-success" (click)="triggerConfirmInputData()">Confirm<i class="fa-solid fa-check margin-left"></i></p-button>
     <p-button *ngIf="nextButtonVisible" type="button" class="p-button-success">Next<i class="fa-solid fa-arrow-right margin-left"></i></p-button>
   </div>
 </p-card>

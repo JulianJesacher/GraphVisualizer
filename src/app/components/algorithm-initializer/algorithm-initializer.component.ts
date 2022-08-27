@@ -37,14 +37,14 @@ export class AlgorithmInitializerComponent implements OnInit {
     }
     this._selectedNodesInformation = newInformation;
     if (this._selectedNodesInformation.length === this.requiredSteps.length) {
-      this.confirmButtonVisible = true;
+      this.confirmButtonDisabled = false;
     }
   }
 
   @Output() updateCurrentNodeSelection = new EventEmitter<UpdateCurrentNodeSelectionEvent>();
   @Output() confirmInputData = new EventEmitter<void>();
 
-  public confirmButtonVisible = false;
+  public confirmButtonDisabled = true;
   public backButtonVisible = false;
   public nextButtonVisible = false;
 
@@ -68,7 +68,7 @@ export class AlgorithmInitializerComponent implements OnInit {
       };
     });
 
-    this.confirmButtonVisible = false;
+    this.confirmButtonDisabled = true;
     this.stepClicked(0);
   }
 
