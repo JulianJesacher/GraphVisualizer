@@ -22,12 +22,15 @@ export class BfsAlgorithm extends GraphAlgorithm {
         continue;
       }
 
+      //Set color of current node to CURRENT
       currentState.nodes.set(currentNode.id.toString(), { node: currentNode, color: ColorState.CURRENT });
       yield currentState;
 
+      //Iterate over neighbours
       const neighbourNodes = graphData.graph.getConnectedNodes(currentNode.id, 'to') as IdType[];
       for (const singleNeighbourId of neighbourNodes) {
         currentState.nodes.set(currentNode.id.toString(), { node: currentNode, color: ColorState.EDIT });
+
         if (!visited.includes(singleNeighbourId)) {
           visited.push(singleNeighbourId);
 
@@ -36,13 +39,16 @@ export class BfsAlgorithm extends GraphAlgorithm {
             currentState.nodes.set(singleNeighbour.id.toString(), { node: singleNeighbour, color: ColorState.CURRENT });
             queue.push(singleNeighbour);
           }
+
           yield currentState;
         }
       }
 
+      //Set all nodes with CURRENT color to EDIT color
       currentState.nodes.set(currentNode.id.toString(), { node: currentNode, color: ColorState.FINISHED });
       for (const singleNeighbourId of neighbourNodes) {
         const singleNeighbour = graphData.graphNodes.get(singleNeighbourId);
+
         if (singleNeighbour && singleNeighbour.id) {
           currentState.nodes.set(singleNeighbour.id.toString(), { node: singleNeighbour, color: ColorState.EDIT });
         }
