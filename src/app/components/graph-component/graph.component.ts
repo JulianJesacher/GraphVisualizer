@@ -5,6 +5,7 @@ import { Network } from 'vis';
 import { GraphDataService } from '../../services/graph-data.service';
 import { GraphElementConfigComponent } from '../graph-element-config/graph-element-config.component';
 import { AlgorithmInitializerService } from '../../services/algorithm-initializer.service';
+import { UpdateCurrentNodeSelectionEvent } from '../../types/algorithm-intializer-dialog.types';
 
 @Component({
   selector: 'app-graph',
@@ -69,5 +70,9 @@ export class GraphComponent implements AfterViewInit {
         this.graphData.graphEdges.update({ id: updateEvent.id, label: updateEvent.updatedData.label });
         break;
     }
+  }
+
+  updateCurrentNodeSelection(updateEvent: UpdateCurrentNodeSelectionEvent) {
+    this.algorithmInitializer.setCurrentNodeSelection(updateEvent);
   }
 }
