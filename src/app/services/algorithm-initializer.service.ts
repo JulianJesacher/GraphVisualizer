@@ -11,8 +11,8 @@ import { GraphPainterService } from './graph-painter.service';
   providedIn: 'root',
 })
 export class AlgorithmInitializerService {
-  private _algorithm?: GraphAlgorithm;
-  private _currentNodeSelection?: NodeSelection;
+  private _algorithm?: GraphAlgorithm | null;
+  private _currentNodeSelection?: NodeSelection | null;
 
   public initializingProcessActive$ = new BehaviorSubject<boolean>(false);
   public currentGraphPayload$ = new BehaviorSubject<GraphAlgorithmInput | null>(null);
@@ -33,7 +33,6 @@ export class AlgorithmInitializerService {
   }
 
   setCurrentNodeSelection(newSelection: NodeSelection) {
-    console.log(newSelection);
     this._currentNodeSelection = newSelection;
   }
 
@@ -44,8 +43,10 @@ export class AlgorithmInitializerService {
     if (!this.currentGraphPayload$.value) {
       throw new Error('Can not start because no algorithm input value selected!');
     }
+
     this.algorithmService.setAlgorithm(this._algorithm.startAlgorithm);
     this.algorithmService.initializeAlgorithmWithInputValue(this.currentGraphPayload$.value);
+    this.resetState();
   }
 
   handleSelectedNode(selectedNode: Node) {
@@ -69,5 +70,12 @@ export class AlgorithmInitializerService {
 
     this.currentGraphPayload$.next({ startNode: selectedNode });
     this.graphPainter.paintNodeByState(selectedNode.id, this._currentNodeSelection.color);
+  }
+
+  resetState() {
+    this._currentNodeSelection = null;
+    this._algorithm = null;
+    this.currentGraphPayload$.next(null);
+    this.initializingProcessActive$.next(false);
   }
 }
