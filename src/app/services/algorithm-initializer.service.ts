@@ -4,7 +4,7 @@ import { GraphEventService } from './graph-event.service';
 import { BehaviorSubject } from 'rxjs';
 import { Node } from 'vis';
 import { AlgorithmService } from './algorithm.service';
-import { NodeSelection } from '../types/algorithm-intializer-dialog.types';
+import { NodeSelection, SelectedNodeInformation } from '../types/algorithm-intializer-dialog.types';
 import { GraphPainterService } from './graph-painter.service';
 
 @Injectable({
@@ -17,6 +17,7 @@ export class AlgorithmInitializerService {
   public initializingProcessActive$ = new BehaviorSubject<boolean>(false);
   public currentGraphPayload$ = new BehaviorSubject<GraphAlgorithmInput | null>(null);
   public algorithmGroup$ = new BehaviorSubject<AlgorithmGroup | null>(null);
+  public selectedNodesInformation$ = new BehaviorSubject<SelectedNodeInformation[]>([]);
 
   constructor(
     private graphEvent: GraphEventService,
@@ -30,6 +31,7 @@ export class AlgorithmInitializerService {
     this._algorithm = newAlgorithm;
     this.initializingProcessActive$.next(true);
     this.algorithmGroup$.next(newAlgorithm.group);
+    this.selectedNodesInformation$.next([]);
   }
 
   setCurrentNodeSelection(newSelection: NodeSelection) {
@@ -54,6 +56,18 @@ export class AlgorithmInitializerService {
       return;
     }
 
+    const currentNodesInformation = this.selectedNodesInformation$.value;
+    if (!currentNodesInformation) {
+      throw new Error('No node information is available!');
+    }
+
+    const updatedNodeInformation = currentNodesInformation
+      .filter((nodeInformation) => nodeInformation.nodeStepIndex != this._currentNodeSelection?.nodeStepIndex)
+      .concat({ ...this._currentNodeSelection, node: selectedNode }); // Concat because push returns the length of the new array
+
+    this.selectedNodesInformation$.next(updatedNodeInformation);
+    this.graphPainter.paintBySelectedNodeInformation(updatedNodeInformation);
+
     switch (this._algorithm.group) {
       case AlgorithmGroup.TRAVERSAL:
         this.handleNodeForTraversal(selectedNode);
@@ -69,13 +83,13 @@ export class AlgorithmInitializerService {
     }
 
     this.currentGraphPayload$.next({ startNode: selectedNode });
-    this.graphPainter.paintNodeByState(selectedNode.id, this._currentNodeSelection.color);
   }
 
   resetState() {
     this._currentNodeSelection = null;
     this._algorithm = null;
     this.currentGraphPayload$.next(null);
+    this.selectedNodesInformation$.next([]);
     this.initializingProcessActive$.next(false);
   }
 }

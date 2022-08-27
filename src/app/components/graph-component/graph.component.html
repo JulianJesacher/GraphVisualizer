@@ -13,6 +13,7 @@
 <div id="node-selector-container" *ngIf="algorithmInitializer.initializingProcessActive$ | async">
   <app-algorithm-initializer
     [algorithmGroup]="algorithmInitializer.algorithmGroup$ | async"
+    [selectedNodesInformation]="algorithmInitializer.selectedNodesInformation$ | async"
     (updateCurrentNodeSelection)="updateCurrentNodeSelection($event)"
     (confirmInputData)="confirmInputData()"
   ></app-algorithm-initializer>

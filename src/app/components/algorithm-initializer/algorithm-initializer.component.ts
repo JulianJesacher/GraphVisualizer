@@ -2,7 +2,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { InitializationInformation, inputNodesInitializationInformation } from 'src/app/types/algorithm-intializer-dialog.types';
 import { AlgorithmGroup } from '../../types/algorithm.types';
-import { UpdateCurrentNodeSelectionEvent } from '../../types/algorithm-intializer-dialog.types';
+import { UpdateCurrentNodeSelectionEvent, SelectedNodeInformation } from '../../types/algorithm-intializer-dialog.types';
+import { nodeColorOptions } from '../../graphConfig/colorConfig';
+
+interface MenuItemWithInitializationInformation extends MenuItem {
+  fullInformation: InitializationInformation;
+}
 
 @Component({
   selector: 'app-algorithm-initializer',
@@ -10,8 +15,9 @@ import { UpdateCurrentNodeSelectionEvent } from '../../types/algorithm-intialize
   styleUrls: ['./algorithm-initializer.component.css'],
 })
 export class AlgorithmInitializerComponent implements OnInit {
-  public requiredSteps: MenuItem[] = [];
+  public requiredSteps: MenuItemWithInitializationInformation[] = [];
   public activeIndex: number = 1;
+  public nodeColorOptions = nodeColorOptions;
 
   private _initializationInformation?: InitializationInformation[];
   private _algorithmGroup?: AlgorithmGroup;
@@ -23,6 +29,8 @@ export class AlgorithmInitializerComponent implements OnInit {
     this._initializationInformation = inputNodesInitializationInformation[newGroup];
     this.updateSteps();
   }
+
+  @Input() selectedNodesInformation: SelectedNodeInformation[] | null = [];
 
   @Output() updateCurrentNodeSelection = new EventEmitter<UpdateCurrentNodeSelectionEvent>();
   @Output() confirmInputData = new EventEmitter<void>();
@@ -51,17 +59,23 @@ export class AlgorithmInitializerComponent implements OnInit {
     this.triggerNodeUpdate(firstStep);
   }
 
-  triggerNodeUpdate(newNodeSelection: MenuItem) {
+  triggerNodeUpdate(newNodeSelection: MenuItemWithInitializationInformation) {
     this.updateCurrentNodeSelection.next({
-      //@ts-ignore
       nodeType: newNodeSelection.fullInformation.nodeType,
-      //@ts-ignore
       color: newNodeSelection.fullInformation.color,
+      nodeStepIndex: this.activeIndex,
     });
   }
 
   triggerConfirmInputData() {
     //TODO: Check for validity
     this.confirmInputData.next();
+  }
+
+  getNodeName(index: number) {
+    if (!this._initializationInformation) {
+      throw new Error('No initialization information available!');
+    }
+    return this._initializationInformation[index].nodeName;
   }
 }

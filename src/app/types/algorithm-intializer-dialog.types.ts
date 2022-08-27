@@ -1,9 +1,10 @@
-import { ColorState } from '../services/graph-painter.service';
+import { Node } from 'vis';
+import { ColorState } from '../graphConfig/colorConfig';
 import { AlgorithmInputNodeType } from './algorithm.types';
 
 export interface InitializationInformation {
   nodeName: string;
-  nodeDescription: string;
+  taskDescription: string;
   color: ColorState;
   nodeType: AlgorithmInputNodeType;
 }
@@ -12,7 +13,7 @@ export const inputNodesInitializationInformation = {
   traversal: [
     {
       nodeName: 'Start node',
-      nodeDescription: 'Select the start node for the algorithm',
+      taskDescription: 'Please select the start node for the algorithm',
       color: ColorState.START,
       nodeType: AlgorithmInputNodeType.START_NODE,
     },
@@ -21,7 +22,7 @@ export const inputNodesInitializationInformation = {
   apsp: [
     {
       nodeName: 'Start node',
-      nodeDescription: 'Select the start node for the algorithm',
+      taskDescription: 'Please select the start node for the algorithm',
       color: ColorState.START,
       nodeType: AlgorithmInputNodeType.START_NODE,
     },
@@ -30,7 +31,7 @@ export const inputNodesInitializationInformation = {
   spsp: [
     {
       nodeName: 'Start node',
-      nodeDescription: 'Select the start node for the algorithm',
+      taskDescription: 'Please select the start node for the algorithm',
       color: ColorState.START,
       nodeType: AlgorithmInputNodeType.START_NODE,
     },
@@ -39,7 +40,7 @@ export const inputNodesInitializationInformation = {
   sssp: [
     {
       nodeName: 'Start node',
-      nodeDescription: 'Select the start node for the algorithm',
+      taskDescription: 'Please select the start node for the algorithm',
       color: ColorState.START,
       nodeType: AlgorithmInputNodeType.START_NODE,
     },
@@ -49,6 +50,11 @@ export const inputNodesInitializationInformation = {
 export interface NodeSelection {
   nodeType: AlgorithmInputNodeType;
   color: ColorState;
+  nodeStepIndex: number;
 }
 
 export type UpdateCurrentNodeSelectionEvent = NodeSelection;
+
+export interface SelectedNodeInformation extends NodeSelection {
+  node: Node;
+}

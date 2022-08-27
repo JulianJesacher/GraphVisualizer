@@ -38,3 +38,37 @@
 :host ::ng-deep .p-steps .p-steps-item .p-steps-title {
   color: #555555;
 }
+
+.task-container {
+  margin-top: -0.5rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+i.margin-left {
+  margin-left: 0.5rem;
+}
+
+i.margin-right {
+  margin-right: 0.5rem;
+}
+
+.selected-nodes-container {
+  font-size: 1.15rem;
+  vertical-align: middle;
+}
+
+.node-color {
+  display: inline-block;
+  aspect-ratio: 1;
+  height: 1.15rem;
+  outline: 1px solid black;
+}
