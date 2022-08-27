@@ -47,6 +47,7 @@ export class AlgorithmService {
   clear() {
     this._stateHistory = [];
     this._currentStateHistoryIndex = -1;
+    this._autoStepAlgorithm = false;
 
     this.backwardButtonDisabled$.next(true);
     this.forwardButtonDisabled$.next(true);
@@ -55,6 +56,7 @@ export class AlgorithmService {
 
   stepForward() {
     if (!this._stateIterator) {
+      this.clear();
       throw new Error('No stateIterator available!');
     }
 
