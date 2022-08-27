@@ -4,6 +4,7 @@ import { GraphElementDeleteEvent, GraphElementUpdateEvent } from 'src/app/types/
 import { Network } from 'vis';
 import { GraphDataService } from '../../services/graph-data.service';
 import { GraphElementConfigComponent } from '../graph-element-config/graph-element-config.component';
+import { AlgorithmInitializerService } from '../../services/algorithm-initializer.service';
 
 @Component({
   selector: 'app-graph',
@@ -27,7 +28,11 @@ export class GraphComponent implements AfterViewInit {
     }
   }
 
-  constructor(private graphData: GraphDataService, public elementDialog: GraphElementDialogService) {}
+  constructor(
+    private graphData: GraphDataService,
+    public elementDialog: GraphElementDialogService,
+    public algorithmInitializer: AlgorithmInitializerService
+  ) {}
 
   ngAfterViewInit() {
     const container = this.graphContainer.nativeElement;

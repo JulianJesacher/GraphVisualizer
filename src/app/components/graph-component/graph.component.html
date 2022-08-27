@@ -10,3 +10,6 @@
   (close)="closeElementConfig()"
   #configComponent
 ></app-graph-element-config>
+<div id="node-selector-container" *ngIf="algorithmInitializer.initializingProcessActive$ | async">
+  <app-algorithm-initializer [algorithmGroup]="algorithmInitializer.algorithmGroup$ | async"></app-algorithm-initializer>
+</div>

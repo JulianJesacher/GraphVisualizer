@@ -5,3 +5,11 @@
   background-color: var(--background-color);
   position: relative;
 }
+
+#node-selector-container {
+  width: 100%;
+  position: absolute;
+  top: var(--toolbar-height);
+  display: grid;
+  place-items: center;
+}
