@@ -1,19 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { AlgorithmGroup } from '../../types/algorithm.types';
 
 @Component({
-  selector: 'app-node-selector',
-  templateUrl: './node-selector.component.html',
-  styleUrls: ['./node-selector.component.css'],
+  selector: 'app-algorithm-initializer',
+  templateUrl: './algorithm-initializer.component.html',
+  styleUrls: ['./algorithm-initializer.component.css'],
 })
-export class NodeSelectorComponent implements OnInit {
-  public items: MenuItem[] = [];
-  activeIndex: number = 1;
+export class AlgorithmInitializerComponent implements OnInit {
+  public requiredSteps: MenuItem[] = [];
+  public activeIndex: number = 1;
+
+  private _algorithmGroup?: AlgorithmGroup;
+  @Input() set algorithmGroup(newGroup: AlgorithmGroup | null) {
+  }
 
   constructor() {}
 
   ngOnInit(): void {
-    this.items = [
+    this.requiredSteps = [
       {
         label: 'Personal',
         command: (event: any) => {

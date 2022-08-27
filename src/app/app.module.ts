@@ -8,13 +8,13 @@ import { GraphComponent } from './components/graph-component/graph.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { GraphElementConfigComponent } from './components/graph-element-config/graph-element-config.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NodeSelectorComponent } from './components/node-selector/node-selector.component';
+import { AlgorithmInitializerComponent } from './components/algorithm-initializer/algorithm-initializer.component';
 
 import { CardModule } from 'primeng/card';
 import { StepsModule } from 'primeng/steps';
 
 @NgModule({
-  declarations: [AppComponent, GraphComponent, ToolbarComponent, GraphElementConfigComponent, NodeSelectorComponent],
+  declarations: [AppComponent, GraphComponent, ToolbarComponent, GraphElementConfigComponent, AlgorithmInitializerComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
