@@ -14,5 +14,6 @@
   <app-algorithm-initializer
     [algorithmGroup]="algorithmInitializer.algorithmGroup$ | async"
     (updateCurrentNodeSelection)="updateCurrentNodeSelection($event)"
+    (confirmInputData)="confirmInputData()"
   ></app-algorithm-initializer>
 </div>

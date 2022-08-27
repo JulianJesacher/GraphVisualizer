@@ -25,6 +25,7 @@ export class AlgorithmInitializerComponent implements OnInit {
   }
 
   @Output() updateCurrentNodeSelection = new EventEmitter<UpdateCurrentNodeSelectionEvent>();
+  @Output() confirmInputData = new EventEmitter<void>();
 
   constructor() {}
 
@@ -41,27 +42,26 @@ export class AlgorithmInitializerComponent implements OnInit {
     this.requiredSteps = this._initializationInformation.map((nodeInformation, index) => {
       return {
         label: nodeInformation.nodeName,
-        command: (event: any) => this.handleStepClick(index),
+        command: (event: any) => (this.activeIndex = index),
         fullInformation: nodeInformation,
       };
     });
     this.activeIndex = 0;
     const firstStep = this.requiredSteps[0];
-    this.triggerUpdate(firstStep);
+    this.triggerNodeUpdate(firstStep);
   }
 
-  handleStepClick(index: number) {
-    const currentStep = this.requiredSteps[this.activeIndex];
-    this.activeIndex++;
-    this.triggerUpdate(currentStep);
-  }
-
-  triggerUpdate(newNodeSelection: MenuItem) {
+  triggerNodeUpdate(newNodeSelection: MenuItem) {
     this.updateCurrentNodeSelection.next({
       //@ts-ignore
       nodeType: newNodeSelection.fullInformation.nodeType,
       //@ts-ignore
       color: newNodeSelection.fullInformation.color,
     });
+  }
+
+  triggerConfirmInputData() {
+    //TODO: Check for validity
+    this.confirmInputData.next();
   }
 }

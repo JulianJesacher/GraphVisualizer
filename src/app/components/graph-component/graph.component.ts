@@ -75,4 +75,8 @@ export class GraphComponent implements AfterViewInit {
   updateCurrentNodeSelection(updateEvent: UpdateCurrentNodeSelectionEvent) {
     this.algorithmInitializer.setCurrentNodeSelection(updateEvent);
   }
+
+  confirmInputData() {
+    this.algorithmInitializer.startAlgorithm();
+  }
 }
