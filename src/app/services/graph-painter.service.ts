@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { State } from '../types/algorithm.types';
 import { GraphDataService } from './graph-data.service';
+import { IdType } from 'vis';
 
 @Injectable({
   providedIn: 'root',
@@ -21,9 +22,15 @@ export class GraphPainterService {
     none: {
       background: '#FFFFFF',
     },
+    start: {
+      background: '#EBC034',
+    },
   };
 
-  paintNodeByState(nodeId: number | string, state: ColorState) {
+  paintNodeByState(nodeId: IdType | undefined, state: ColorState) {
+    if (!nodeId) {
+      throw new Error('No id of the node to paint was provided!');
+    }
     this.graphData.graphNodes.update({ id: nodeId, color: this.nodeColorOptions[state] });
   }
 
@@ -41,4 +48,5 @@ export enum ColorState {
   CURRENT = 'current',
   FINISHED = 'finished',
   EDIT = 'edit',
+  START = 'start',
 }
