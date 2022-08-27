@@ -1,6 +1,6 @@
 <div #graphContainer id="graph-container"></div>
 <app-graph-element-config
-  *ngIf="elementDialog.position$ | async"
+  *ngIf="(elementDialog.position$ | async) && !(algorithmInitializer.initializingProcessActive$ | async)"
   [elementId]="elementDialog.elementId$ | async"
   [elementType]="elementDialog.elementType$ | async"
   [initialLabel]="elementDialog.initialLabel$ | async"
@@ -11,5 +11,8 @@
   #configComponent
 ></app-graph-element-config>
 <div id="node-selector-container" *ngIf="algorithmInitializer.initializingProcessActive$ | async">
-  <app-algorithm-initializer [algorithmGroup]="algorithmInitializer.algorithmGroup$ | async"></app-algorithm-initializer>
+  <app-algorithm-initializer
+    [algorithmGroup]="algorithmInitializer.algorithmGroup$ | async"
+    (updateCurrentNodeSelection)="updateCurrentNodeSelection($event)"
+  ></app-algorithm-initializer>
 </div>
