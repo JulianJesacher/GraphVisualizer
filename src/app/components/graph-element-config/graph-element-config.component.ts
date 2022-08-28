@@ -94,6 +94,12 @@ export class GraphElementConfigComponent {
       return;
     }
 
+    //If an edge is edited, only numeric labels are allowed to compare in the algorithms
+    if (elementType === 'edge' && isNaN(this.elementConfigForm.value.label)) {
+      this.configErrorState = ElementConfigErrorState.NUMERIC_VALUE_REQUIRED;
+      return;
+    }
+
     this.update.next({
       id: elementId,
       type: elementType,
@@ -125,4 +131,5 @@ export class GraphElementConfigComponent {
 enum ElementConfigErrorState {
   NONE = '',
   LABEL_NOT_PROVIDED = 'No label was provided',
+  NUMERIC_VALUE_REQUIRED = 'For an edge, a numeric value is required',
 }
