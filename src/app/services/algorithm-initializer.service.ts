@@ -27,11 +27,13 @@ export class AlgorithmInitializerService {
     this.graphEvent.selectedNode$.subscribe((selectedNode) => this.handleSelectedNode(selectedNode));
   }
 
-  setAlgorithm(newAlgorithm: GraphAlgorithm) {
+  setAlgorithmAndStartInitialization(newAlgorithm: GraphAlgorithm) {
     this._algorithm = newAlgorithm;
     this.initializingProcessActive$.next(true);
     this.algorithmGroup$.next(newAlgorithm.group);
     this.selectedNodesInformation$.next([]);
+    this.graphPainter.removePaintFromAllNodes();
+    this.algorithmService.clear();
   }
 
   setCurrentNodeSelection(newSelection: NodeSelection) {
