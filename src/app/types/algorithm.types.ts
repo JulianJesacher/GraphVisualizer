@@ -4,9 +4,11 @@ import { GraphDataService } from '../services/graph-data.service';
 
 export type TraversalAlgorithmInput = { startNode: Node };
 
-export type GraphAlgorithmInput = TraversalAlgorithmInput;
+export type SPSPAlgorithmInput = { startNode: Node; targetNode: Node };
 
-export type GraphAlgorithmType = (input: GraphAlgorithmInput, graphData: GraphDataService) => Iterator<State>;
+export type GraphAlgorithmInput = TraversalAlgorithmInput | SPSPAlgorithmInput;
+
+export type GraphAlgorithmType = (input: TraversalAlgorithmInput | SPSPAlgorithmInput, graphData: GraphDataService) => Iterator<State>;
 
 export enum AlgorithmGroup {
   TRAVERSAL = 'traversal',
@@ -35,4 +37,8 @@ export enum AutoRunButtonState {
   RUN,
   STOPP,
   REPEAT,
+}
+
+export interface NodeWithPriority extends Node {
+  priority: number;
 }
