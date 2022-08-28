@@ -1,14 +1,18 @@
 import { IdType, Node } from 'vis';
 import { ColorState } from '../../graphConfig/colorConfig';
 import { GraphDataService } from '../../services/graph-data.service';
-import { GraphAlgorithmInput, State, GraphAlgorithm, AlgorithmGroup } from '../../types/algorithm.types';
+import { GraphAlgorithmInput, State, GraphAlgorithm, AlgorithmGroup, TraversalAlgorithmInput } from '../../types/algorithm.types';
 
 export class BfsAlgorithm extends GraphAlgorithm {
   constructor() {
-    super(AlgorithmGroup.TRAVERSAL);
+    super(AlgorithmGroup.TRAVERSAL, { startNode: undefined });
   }
 
   public startAlgorithm = function* (input: GraphAlgorithmInput, graphData: GraphDataService): Iterator<State> {
+    if (!input.startNode) {
+      throw new Error('Invalid input data, no startNode was provided!');
+    }
+
     const queue: Node[] = [input.startNode];
     const visited: IdType[] = [];
     const currentState: State = {

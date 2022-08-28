@@ -14,6 +14,9 @@ export const nodeColorOptions = {
   start: {
     background: '#EBC034',
   },
+  target: {
+    background: '#21781A',
+  },
 };
 
 export enum ColorState {
@@ -22,4 +25,5 @@ export enum ColorState {
   FINISHED = 'finished',
   EDIT = 'edit',
   START = 'start',
+  TARGET = 'target',
 }

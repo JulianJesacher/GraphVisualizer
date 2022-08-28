@@ -13,9 +13,9 @@ import { GraphPainterService } from './graph-painter.service';
 export class AlgorithmInitializerService {
   private _algorithm?: GraphAlgorithm | null;
   private _currentNodeSelection?: NodeSelection | null;
+  private _currentGraphPayload: GraphAlgorithmInput | null = null;
 
   public initializingProcessActive$ = new BehaviorSubject<boolean>(false);
-  public currentGraphPayload$ = new BehaviorSubject<GraphAlgorithmInput | null>(null);
   public algorithmGroup$ = new BehaviorSubject<AlgorithmGroup | null>(null);
   public selectedNodesInformation$ = new BehaviorSubject<SelectedNodeInformation[]>([]);
 
@@ -34,6 +34,7 @@ export class AlgorithmInitializerService {
     this.selectedNodesInformation$.next([]);
     this.graphPainter.removePaintFromAllNodes();
     this.algorithmService.clear();
+    this._currentGraphPayload = newAlgorithm.emptyInputData;
   }
 
   setCurrentNodeSelection(newSelection: NodeSelection) {
@@ -44,12 +45,15 @@ export class AlgorithmInitializerService {
     if (!this._algorithm) {
       throw new Error('Can not start because no algorithm is selected!');
     }
-    if (!this.currentGraphPayload$.value) {
+    if (!this._currentGraphPayload) {
       throw new Error('Can not start because no algorithm input value selected!');
+    }
+    if (Object.values(this._currentGraphPayload).some((value) => !value)) {
+      throw new Error('Can not start because not all required algorithm input properties were set!');
     }
 
     this.algorithmService.setAlgorithm(this._algorithm.startAlgorithm);
-    this.algorithmService.initializeAlgorithmWithInputValue(this.currentGraphPayload$.value);
+    this.algorithmService.initializeAlgorithmWithInputValue(this._currentGraphPayload);
     this.clear();
   }
 
@@ -63,34 +67,52 @@ export class AlgorithmInitializerService {
       throw new Error('No node information is available!');
     }
 
+    switch (this._algorithm.group) {
+      case AlgorithmGroup.TRAVERSAL:
+        this.handleNodeForTraversal(selectedNode);
+        break;
+      case AlgorithmGroup.SPSP:
+        this.handleNodeForSPSP(selectedNode);
+        break;
+      default:
+        throw new Error('Not implemented');
+    }
+
     const updatedNodeInformation = currentNodesInformation
       .filter((nodeInformation) => nodeInformation.nodeStepIndex != this._currentNodeSelection?.nodeStepIndex)
       .concat({ ...this._currentNodeSelection, node: selectedNode }); // Concat because push returns the length of the new array
 
     this.selectedNodesInformation$.next(updatedNodeInformation);
     this.graphPainter.paintBySelectedNodeInformation(updatedNodeInformation);
-
-    switch (this._algorithm.group) {
-      case AlgorithmGroup.TRAVERSAL:
-        this.handleNodeForTraversal(selectedNode);
-        break;
-      default:
-        throw new Error('Not implemented');
-    }
   }
 
   handleNodeForTraversal(selectedNode: Node) {
+    if (!this._currentGraphPayload) {
+      throw new Error('No input data available!');
+    }
     if (this._currentNodeSelection?.nodeType !== AlgorithmInputNodeType.START_NODE) {
       throw new Error('For traversal algorithms, only start nodes are allowe as input!');
     }
 
-    this.currentGraphPayload$.next({ startNode: selectedNode });
+    this._currentGraphPayload[AlgorithmInputNodeType.START_NODE] = selectedNode;
+  }
+
+  handleNodeForSPSP(selectedNode: Node) {
+    if (!this._currentGraphPayload) {
+      throw new Error('No input data available!');
+    }
+    if (!this._currentNodeSelection) {
+      throw new Error('No node selection was provided!');
+    }
+
+    //@ts-ignore
+    this._currentGraphPayload[this._currentNodeSelection.nodeType] = selectedNode;
   }
 
   clear() {
     this._currentNodeSelection = null;
     this._algorithm = null;
-    this.currentGraphPayload$.next(null);
+    this._currentGraphPayload = null;
     this.selectedNodesInformation$.next([]);
     this.initializingProcessActive$.next(false);
     this.graphPainter.removePaintFromAllNodes();

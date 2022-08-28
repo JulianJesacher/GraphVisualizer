@@ -5,6 +5,7 @@ import { AutoRunButtonState } from 'src/app/types/algorithm.types';
 import { AlgorithmService } from '../../services/algorithm.service';
 import { AlgorithmInitializerService } from '../../services/algorithm-initializer.service';
 import { BfsAlgorithm } from '../../algorithms/traversal/bfs.algorithm';
+import { DijkstraAlgorithm } from 'src/app/algorithms/spsp/dijksta.algorithm';
 
 @Component({
   selector: 'app-toolbar',
@@ -89,5 +90,9 @@ export class ToolbarComponent implements OnInit {
 
   selectBFS() {
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new BfsAlgorithm());
+  }
+  selectDijkstra() {
+    //@ts-ignore
+    this.algorithmInitializer.setAlgorithmAndStartInitialization(new DijkstraAlgorithm());
   }
 }

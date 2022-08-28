@@ -6,7 +6,7 @@ import { NodePriorityQueue } from '../helper/nodePriorityQueue';
 
 export class DijkstraAlgorithm extends GraphAlgorithm {
   constructor() {
-    super(AlgorithmGroup.SPSP);
+    super(AlgorithmGroup.SPSP, { startNode: undefined, targetNode: undefined });
   }
 
   //@ts-ignore

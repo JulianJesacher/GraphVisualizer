@@ -2,9 +2,9 @@ import { EdgeOptions, Node, IdType } from 'vis';
 import { ColorState } from '../graphConfig/colorConfig';
 import { GraphDataService } from '../services/graph-data.service';
 
-export type TraversalAlgorithmInput = { startNode: Node };
+export type TraversalAlgorithmInput = { startNode: Node | undefined };
 
-export type SPSPAlgorithmInput = { startNode: Node; targetNode: Node };
+export type SPSPAlgorithmInput = { startNode: Node | undefined; targetNode: Node | undefined };
 
 export type GraphAlgorithmInput = TraversalAlgorithmInput | SPSPAlgorithmInput;
 
@@ -18,12 +18,12 @@ export enum AlgorithmGroup {
 }
 
 export enum AlgorithmInputNodeType {
-  START_NODE,
-  TARGET_NODE,
+  START_NODE = 'startNode',
+  TARGET_NODE = 'targetNode',
 }
 
 export abstract class GraphAlgorithm {
-  constructor(public group: AlgorithmGroup) {}
+  constructor(public group: AlgorithmGroup, public emptyInputData: GraphAlgorithmInput) {}
 
   abstract startAlgorithm: GraphAlgorithmType;
 }

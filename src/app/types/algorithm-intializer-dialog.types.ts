@@ -35,6 +35,12 @@ export const inputNodesInitializationInformation = {
       color: ColorState.START,
       nodeType: AlgorithmInputNodeType.START_NODE,
     },
+    {
+      nodeName: 'Target node',
+      taskDescription: 'Please select the target node for which the shortest path is calculated',
+      color: ColorState.TARGET,
+      nodeType: AlgorithmInputNodeType.TARGET_NODE,
+    },
   ],
   //TODO: Adapt accordingly
   sssp: [

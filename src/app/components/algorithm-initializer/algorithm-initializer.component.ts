@@ -89,8 +89,9 @@ export class AlgorithmInitializerComponent implements OnInit {
   }
 
   triggerConfirmInputData() {
-    //TODO: Check for validity
-    this.confirmInputData.next();
+    if (this._selectedNodesInformation.length === this.requiredSteps.length) {
+      this.confirmInputData.next();
+    }
   }
 
   getNodeName(index: number) {
