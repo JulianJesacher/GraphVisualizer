@@ -1,4 +1,4 @@
-import { EdgeOptions, Node } from 'vis';
+import { EdgeOptions, Node, IdType } from 'vis';
 import { ColorState } from '../graphConfig/colorConfig';
 import { GraphDataService } from '../services/graph-data.service';
 
@@ -27,8 +27,8 @@ export abstract class GraphAlgorithm {
 }
 
 export interface State {
-  nodes: Map<string, { node: Node; color: ColorState }>;
-  edges: Map<string, { edge: EdgeOptions; color: ColorState }>;
+  nodes: Map<IdType | string, { node: Node; color: ColorState }>;
+  edges: Map<IdType | string, { edge: EdgeOptions; color: ColorState }>;
 }
 
 export enum AutoRunButtonState {
