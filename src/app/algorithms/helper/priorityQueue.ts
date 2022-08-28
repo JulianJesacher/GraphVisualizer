@@ -1,22 +1,6 @@
-import { NodeWithPriority } from 'src/app/types/algorithm.types';
-import { Node } from 'vis';
-
 const left = (parentIndex: number): number => (parentIndex << 1) + 1;
-
 const right = (parentIndex: number): number => (parentIndex + 1) << 1;
-
 const parent = (childIndex: number): number => ((childIndex + 1) >>> 1) - 1;
-
-export const compareNodePriority = (nodeA: NodeWithPriority, nodeB: NodeWithPriority): number => nodeA.priority - nodeB.priority;
-export const equalNodePriorityId = (nodeA: NodeWithPriority, nodeB: NodeWithPriority): boolean => nodeA.id === nodeB.id;
-export const getNodePriority = (node: NodeWithPriority): number => node.priority;
-export const setNodePriority = (node: NodeWithPriority, newPriority: number): NodeWithPriority => {
-  node.priority = newPriority;
-  return node;
-};
-export const initializeNodeWithPriority = (node: Node, priority: number = 0): NodeWithPriority => {
-  return { ...node, priority };
-};
 
 export class PriorityQueue<T> {
   private _heap: T[];
@@ -61,7 +45,7 @@ export class PriorityQueue<T> {
     });
   }
 
-  decreaseKey(node: T, newKey: number) {
+  decreaseKey(node: T, newKey: number): void {
     const currentKey = this.getKey(node);
     if (newKey > currentKey) {
       throw new Error('New key can not be greate than current key!');

@@ -1,15 +1,8 @@
 import { IdType, Node } from 'vis';
 import { ColorState } from '../../graphConfig/colorConfig';
 import { GraphDataService } from '../../services/graph-data.service';
-import { State, GraphAlgorithm, AlgorithmGroup, SPSPAlgorithmInput, NodeWithPriority } from '../../types/algorithm.types';
-import {
-  compareNodePriority,
-  equalNodePriorityId,
-  getNodePriority,
-  initializeNodeWithPriority,
-  PriorityQueue,
-  setNodePriority,
-} from '../helper/priorityQueue';
+import { State, GraphAlgorithm, AlgorithmGroup, SPSPAlgorithmInput } from '../../types/algorithm.types';
+import { NodePriorityQueue } from '../helper/nodePriorityQueue';
 
 export class DijkstraAlgorithm extends GraphAlgorithm {
   constructor() {
@@ -40,15 +33,9 @@ export class DijkstraAlgorithm extends GraphAlgorithm {
     };
 
     //Initialize priority queue with the start node as the only element with priority 0, so it will be the first to be removed
-    const priorityQueue = new PriorityQueue<NodeWithPriority>(
-      compareNodePriority,
-      equalNodePriorityId,
-      getNodePriority,
-      setNodePriority,
-      initializeNodeWithPriority(input.startNode)
-    );
+    const priorityQueue = new NodePriorityQueue();
 
-    let previousNode: NodeWithPriority | null = null;
+    let previousNode: Node | null = null;
     while (!priorityQueue.isEmpty()) {
       const currentNode = priorityQueue.deleteMin();
       if (!currentNode?.id) {
@@ -77,9 +64,9 @@ export class DijkstraAlgorithm extends GraphAlgorithm {
           }
 
           if (distances[currentNeighbourId] === Infinity) {
-            priorityQueue.insert(initializeNodeWithPriority(currentNeighbour, newDistance));
+            priorityQueue.insert(currentNeighbour, newDistance);
           } else {
-            priorityQueue.decreaseKey(currentNeighbour as NodeWithPriority, newDistance);
+            priorityQueue.decreaseKey(currentNeighbour, newDistance);
           }
 
           previous[currentNeighbourId] = currentNode;

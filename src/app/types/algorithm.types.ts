@@ -38,7 +38,3 @@ export enum AutoRunButtonState {
   STOPP,
   REPEAT,
 }
-
-export interface NodeWithPriority extends Node {
-  priority: number;
-}
