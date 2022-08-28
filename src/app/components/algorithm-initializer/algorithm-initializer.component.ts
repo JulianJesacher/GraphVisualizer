@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { InitializationInformation, inputNodesInitializationInformation } from 'src/app/types/algorithm-intializer-dialog.types';
 import { AlgorithmGroup } from '../../types/algorithm.types';
 import { UpdateCurrentNodeSelectionEvent, SelectedNodeInformation } from '../../types/algorithm-intializer-dialog.types';
 import { nodeColorOptions } from '../../graphConfig/colorConfig';
+import { Steps } from 'primeng/steps';
 
 interface MenuItemWithInitializationInformation extends MenuItem {
   fullInformation: InitializationInformation;
@@ -40,6 +41,8 @@ export class AlgorithmInitializerComponent implements OnInit {
       this.confirmButtonDisabled = false;
     }
   }
+
+  @ViewChild('stepsContainer') stepsContainer!: ElementRef<Steps>;
 
   @Output() updateCurrentNodeSelection = new EventEmitter<UpdateCurrentNodeSelectionEvent>();
   @Output() confirmInputData = new EventEmitter<void>();
@@ -103,5 +106,23 @@ export class AlgorithmInitializerComponent implements OnInit {
 
   closeInitializingDialog() {
     this.close.next();
+  }
+  //TODO: Makes problems
+  previousStep() {
+    if (this.activeIndex <= 0) {
+      throw new Error('Can not decrement the index any further, because the first step is already active!');
+    }
+    this.activeIndex--;
+    //@ts-ignore
+    this.stepsContainer.activeIndex = this.activeIndex;
+  }
+  //TODO: Makes problems
+  nextStep() {
+    if (this.activeIndex >= this.requiredSteps.length - 1) {
+      throw new Error('Can not increment the index any further, because the last step is already active!');
+    }
+    this.activeIndex++;
+    //@ts-ignore
+    this.stepsContainer.activeIndex = this.activeIndex;
   }
 }
