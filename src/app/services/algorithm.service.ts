@@ -111,6 +111,11 @@ export class AlgorithmService {
   }
 
   runAutoStepAlgorithm(intervalTime: number = 500) {
+    if (!this._stateIterator) {
+      //TODO: Show error
+      this.clear();
+      throw new Error('No stateIterator available!');
+    }
     this._autoStepAlgorithm = true;
     this.autoRunButtoonState$.next(AutoRunButtonState.STOPP);
 
