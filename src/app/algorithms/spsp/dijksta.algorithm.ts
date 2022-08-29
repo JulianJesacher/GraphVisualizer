@@ -1,6 +1,5 @@
-import { IdType, Node } from 'vis';
+import { DataSet, IdType, Network, Node } from 'vis';
 import { ColorState } from '../../graphConfig/colorConfig';
-import { GraphDataService } from '../../services/graph-data.service';
 import { State, GraphAlgorithm, AlgorithmGroup, SPSPAlgorithmInput } from '../../types/algorithm.types';
 import { NodePriorityQueue } from '../helper/nodePriorityQueue';
 
@@ -9,16 +8,20 @@ export class DijkstraAlgorithm extends GraphAlgorithm {
     super(AlgorithmGroup.SPSP, { startNode: undefined, targetNode: undefined });
   }
 
-  //@ts-ignore
-  public startAlgorithm = function* (input: SPSPAlgorithmInput, graphData: GraphDataService): Iterator<State> {
+  public *startAlgorithm(input: SPSPAlgorithmInput, graph: Network): Iterator<State> {
     if (!input.startNode || !input.targetNode || !input.startNode.id || !input.targetNode.id) {
       throw new Error('Wrong input provided!');
     }
 
+    //@ts-ignore
+    const nodes = graph.body.data.nodes as DataSet<Node>;
+    //@ts-ignore
+    const edges = graph.body.data.edges as DataSet<Edge>;
+
     //Initialize all datatypes to execute the algorithm
     const distances: { [key: IdType]: number } = {};
     const previous: { [key: IdType]: Node | null } = {};
-    graphData.graphNodes.forEach((node) => {
+    nodes.forEach((node: Node) => {
       if (!node.id) {
         return;
       }
@@ -28,8 +31,8 @@ export class DijkstraAlgorithm extends GraphAlgorithm {
     distances[input.startNode.id] = 0;
 
     const currentState: State = {
-      nodes: new Map(graphData.graphNodes.map((node, id) => [id, { node: node, color: ColorState.NONE }])),
-      edges: new Map(graphData.graphEdges.map((edge, id) => [id, { edge: edge, color: ColorState.NONE }])),
+      nodes: new Map(nodes.map((node, id) => [id, { node: node, color: ColorState.NONE }])),
+      edges: new Map(edges.map((edge, id) => [id, { edge: edge, color: ColorState.NONE }])),
     };
 
     //Initialize priority queue with the start node as the only element with priority 0, so it will be the first to be removed
@@ -50,7 +53,7 @@ export class DijkstraAlgorithm extends GraphAlgorithm {
       yield currentState;
 
       //Iterate over neighbours
-      const neighbourNodes = graphData.graph.getConnectedNodes(currentNode.id, 'to') as IdType[];
+      const neighbourNodes = graph.getConnectedNodes(currentNode.id, 'to') as IdType[];
       for (const currentNeighbourId of neighbourNodes) {
         const currentDistance = distances[currentNeighbourId];
         const newDistance = distances[currentNode.id] + currentDistance;
@@ -58,7 +61,7 @@ export class DijkstraAlgorithm extends GraphAlgorithm {
         //If distance over the current node to the neighbour is shorten than currently, update distance and predecessor
         if (newDistance < currentDistance) {
           //Add neighbour to priority queue if it was not inserted before, otherwise decrease the key to the new distance
-          const currentNeighbour = graphData.graphNodes.get(currentNeighbourId);
+          const currentNeighbour = nodes.get(currentNeighbourId);
           if (!currentNeighbour) {
             continue;
           }
@@ -76,5 +79,5 @@ export class DijkstraAlgorithm extends GraphAlgorithm {
 
       previousNode = currentNode;
     }
-  };
+  }
 }

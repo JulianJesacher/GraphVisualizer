@@ -1,23 +1,27 @@
-import { IdType, Node } from 'vis';
+import { DataSet, IdType, Network, Node } from 'vis';
 import { ColorState } from '../../graphConfig/colorConfig';
-import { GraphDataService } from '../../services/graph-data.service';
-import { GraphAlgorithmInput, State, GraphAlgorithm, AlgorithmGroup, TraversalAlgorithmInput } from '../../types/algorithm.types';
+import { GraphAlgorithmInput, State, GraphAlgorithm, AlgorithmGroup } from '../../types/algorithm.types';
 
 export class BfsAlgorithm extends GraphAlgorithm {
   constructor() {
     super(AlgorithmGroup.TRAVERSAL, { startNode: undefined });
   }
 
-  public startAlgorithm = function* (input: GraphAlgorithmInput, graphData: GraphDataService): Iterator<State> {
+  public *startAlgorithm(input: GraphAlgorithmInput, graph: Network): Iterator<State> {
     if (!input.startNode) {
       throw new Error('Invalid input data, no startNode was provided!');
     }
 
+    //@ts-ignore
+    const nodes = graph.body.data.nodes as DataSet<Node>;
+    //@ts-ignore
+    const edges = graph.body.data.edges as DataSet<Edge>;
+
     const queue: Node[] = [input.startNode];
     const visited: IdType[] = [];
     const currentState: State = {
-      nodes: new Map(graphData.graphNodes.map((node, id) => [id, { node: node, color: ColorState.NONE }])),
-      edges: new Map(graphData.graphEdges.map((edge, id) => [id, { edge: edge, color: ColorState.NONE }])),
+      nodes: new Map(nodes.map((node, id) => [id, { node: node, color: ColorState.NONE }])),
+      edges: new Map(edges.map((edge, id) => [id, { edge: edge, color: ColorState.NONE }])),
     };
 
     if (!input.startNode.id) {
@@ -39,7 +43,7 @@ export class BfsAlgorithm extends GraphAlgorithm {
       const nodesToSetEdit = [];
 
       //Iterate over neighbours
-      const neighbourNodes = graphData.graph.getConnectedNodes(currentNode.id, 'to') as IdType[];
+      const neighbourNodes = graph.getConnectedNodes(currentNode.id, 'to') as IdType[];
       for (const singleNeighbourId of neighbourNodes) {
         currentState.nodes.set(currentNode.id, { node: currentNode, color: ColorState.EDIT });
 
@@ -47,7 +51,7 @@ export class BfsAlgorithm extends GraphAlgorithm {
         if (!visited.some((visitedId) => visitedId == singleNeighbourId)) {
           visited.push(singleNeighbourId);
 
-          const singleNeighbour = graphData.graphNodes.get(singleNeighbourId);
+          const singleNeighbour = nodes.get(singleNeighbourId);
           if (singleNeighbour && singleNeighbour.id) {
             currentState.nodes.set(singleNeighbour.id, { node: singleNeighbour, color: ColorState.CURRENT });
             queue.push(singleNeighbour);
@@ -68,5 +72,5 @@ export class BfsAlgorithm extends GraphAlgorithm {
 
       yield currentState;
     }
-  };
+  }
 }

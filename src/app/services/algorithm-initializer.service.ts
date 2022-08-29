@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AlgorithmGroup, AlgorithmInputNodeType, GraphAlgorithm, GraphAlgorithmInput } from '../types/algorithm.types';
+import { AlgorithmGroup, AlgorithmInputNodeType, GraphAlgorithm, GraphAlgorithmInput, isSPSPAlgorithInput } from '../types/algorithm.types';
 import { GraphEventService } from './graph-event.service';
 import { BehaviorSubject } from 'rxjs';
 import { Node } from 'vis';
 import { AlgorithmService } from './algorithm.service';
 import { NodeSelection, SelectedNodeInformation } from '../types/algorithm-intializer-dialog.types';
 import { GraphPainterService } from './graph-painter.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -59,6 +60,9 @@ export class AlgorithmInitializerService {
 
   handleSelectedNode(selectedNode: Node) {
     if (!this._algorithm || !this.initializingProcessActive$.value || !this._currentNodeSelection) {
+      if (!environment.production) {
+        console.log('DC 1000: The node selection has not been handled due to a missing property.');
+      }
       return;
     }
 
@@ -105,7 +109,10 @@ export class AlgorithmInitializerService {
       throw new Error('No node selection was provided!');
     }
 
-    //@ts-ignore
+    if (!isSPSPAlgorithInput(this._currentGraphPayload)) {
+      throw new Error('Something');
+    }
+
     this._currentGraphPayload[this._currentNodeSelection.nodeType] = selectedNode;
   }
 

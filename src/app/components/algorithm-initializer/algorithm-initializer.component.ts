@@ -107,22 +107,18 @@ export class AlgorithmInitializerComponent implements OnInit {
   closeInitializingDialog() {
     this.close.next();
   }
-  //TODO: Makes problems
+
   previousStep() {
     if (this.activeIndex <= 0) {
       throw new Error('Can not decrement the index any further, because the first step is already active!');
     }
     this.activeIndex--;
-    //@ts-ignore
-    this.stepsContainer.activeIndex = this.activeIndex;
   }
-  //TODO: Makes problems
+
   nextStep() {
     if (this.activeIndex >= this.requiredSteps.length - 1) {
       throw new Error('Can not increment the index any further, because the last step is already active!');
     }
     this.activeIndex++;
-    //@ts-ignore
-    this.stepsContainer.activeIndex = this.activeIndex;
   }
 }

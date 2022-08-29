@@ -35,7 +35,7 @@ export class AlgorithmService {
     }
 
     this._inputData = inputData;
-    this._stateIterator = new PeekingIterator(this._algorithm(inputData, this.graphData));
+    this._stateIterator = new PeekingIterator(this._algorithm(inputData, this.graphData.graph));
     this._currentStateHistoryIndex = -1;
 
     this.backwardButtonDisabled$.next(true);
