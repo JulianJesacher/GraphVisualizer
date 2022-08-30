@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlgorithmGroup, AlgorithmInputNodeType, GraphAlgorithm, GraphAlgorithmInput, isSPSPAlgorithInput } from '../types/algorithm.types';
+import { AlgorithmGroup, AlgorithmInputNodeType, GraphAlgorithm, GraphAlgorithmInput, isSPSPAlgorithmInput } from '../types/algorithm.types';
 import { GraphEventService } from './graph-event.service';
 import { BehaviorSubject } from 'rxjs';
 import { Node } from 'vis';
@@ -109,8 +109,8 @@ export class AlgorithmInitializerService {
       throw new Error('No node selection was provided!');
     }
 
-    if (!isSPSPAlgorithInput(this._currentGraphPayload)) {
-      throw new Error('Something');
+    if (!isSPSPAlgorithmInput(this._currentGraphPayload)) {
+      throw new Error('The wrong input type is set, expected SPSPAlgorithmInput!');
     }
 
     this._currentGraphPayload[this._currentNodeSelection.nodeType] = selectedNode;

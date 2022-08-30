@@ -1,6 +1,6 @@
 import { EdgeOptions, Node, IdType, Network } from 'vis';
 import { ColorState } from '../graphConfig/colorConfig';
-import { GraphDataService } from '../services/graph-data.service';
+import { equalArrays } from '../helper/arrayComparator';
 
 export type TraversalAlgorithmInput = { startNode: Node | undefined };
 
@@ -8,8 +8,8 @@ export type SPSPAlgorithmInput = { startNode: Node | undefined; targetNode: Node
 
 export type GraphAlgorithmInput = TraversalAlgorithmInput | SPSPAlgorithmInput;
 
-export const isSPSPAlgorithInput = (input: GraphAlgorithmInput): input is SPSPAlgorithmInput => {
-  return Object.keys(input) == ['startNode', 'targetNode'];
+export const isSPSPAlgorithmInput = (input: GraphAlgorithmInput): input is SPSPAlgorithmInput => {
+  return equalArrays(Object.keys(input), ['startNode', 'targetNode']);
 };
 
 export type GraphAlgorithmType = (input: GraphAlgorithmInput, graph: Network) => Iterator<State>;
