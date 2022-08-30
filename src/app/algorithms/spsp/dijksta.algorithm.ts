@@ -3,7 +3,7 @@ import { ColorState } from '../../graphConfig/colorConfig';
 import { State, GraphAlgorithm, AlgorithmGroup, SPSPAlgorithmInput } from '../../types/algorithm.types';
 import { NodePriorityQueue } from '../helper/nodePriorityQueue';
 
-export class DijkstraAlgorithm extends GraphAlgorithm {
+export class DijkstraSPSPAlgorithm extends GraphAlgorithm {
   constructor() {
     super(AlgorithmGroup.SPSP, { startNode: undefined, targetNode: undefined });
   }
