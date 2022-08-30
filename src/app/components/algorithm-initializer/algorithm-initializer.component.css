@@ -3,12 +3,12 @@
   background-color: #ffffff;
   color: #000000;
   position: relative;
+  font-family: "PT Sans", sans-serif;
 }
 
 :host ::ng-deep .p-card-header {
   font-size: 1.45rem;
   text-align: center;
-  font-family: "PT Sans", sans-serif;
 }
 
 :host ::ng-deep .p-steps .p-steps-item {
@@ -52,6 +52,7 @@
   display: flex;
   justify-content: center;
   font-size: 1.25rem;
+  text-align:center;
 }
 
 .button-container {

@@ -51,6 +51,7 @@ export class AlgorithmInitializerComponent implements OnInit {
   public confirmButtonDisabled = true;
   public backButtonVisible = false;
   public nextButtonVisible = false;
+  public confirmButtonVisible = false;
 
   constructor() {}
 
@@ -67,19 +68,20 @@ export class AlgorithmInitializerComponent implements OnInit {
     this.requiredSteps = this._initializationInformation.map((nodeInformation, index) => {
       return {
         label: nodeInformation.nodeName,
-        command: (event: any) => this.stepClicked(index),
+        command: (event: any) => this.stepChanged(index),
         fullInformation: nodeInformation,
       };
     });
 
     this.confirmButtonDisabled = true;
-    this.stepClicked(0);
+    this.stepChanged(0);
   }
 
-  stepClicked(index: number) {
+  stepChanged(index: number) {
     this.activeIndex = index;
     this.backButtonVisible = this.activeIndex === 0 ? false : true;
     this.nextButtonVisible = this.activeIndex != this.requiredSteps.length - 1 ? true : false;
+    this.confirmButtonVisible = !this.nextButtonVisible;
     this.triggerNodeUpdate(this.requiredSteps[this.activeIndex]);
   }
 
@@ -113,6 +115,7 @@ export class AlgorithmInitializerComponent implements OnInit {
       throw new Error('Can not decrement the index any further, because the first step is already active!');
     }
     this.activeIndex--;
+    this.stepChanged(this.activeIndex);
   }
 
   nextStep() {
@@ -120,5 +123,6 @@ export class AlgorithmInitializerComponent implements OnInit {
       throw new Error('Can not increment the index any further, because the last step is already active!');
     }
     this.activeIndex++;
+    this.stepChanged(this.activeIndex);
   }
 }
