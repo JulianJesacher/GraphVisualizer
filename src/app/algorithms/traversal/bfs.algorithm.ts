@@ -2,7 +2,7 @@ import { DataSet, IdType, Network, Node } from 'vis';
 import { ColorState } from '../../graphConfig/colorConfig';
 import { GraphAlgorithmInput, State, GraphAlgorithm, AlgorithmGroup } from '../../types/algorithm.types';
 
-export class BfsAlgorithm extends GraphAlgorithm {
+export class BfsTraversalAlgorithm extends GraphAlgorithm {
   constructor() {
     super(AlgorithmGroup.TRAVERSAL, { startNode: undefined });
   }
@@ -39,38 +39,42 @@ export class BfsAlgorithm extends GraphAlgorithm {
       currentState.nodes.set(currentNode.id, { node: currentNode, color: ColorState.CURRENT });
       yield currentState;
 
-      //List of nodes which have to be set to "EDIT" after all neighbours were explored.
-      const nodesToSetEdit = [];
-
       //Iterate over neighbours
       const neighbourNodes = graph.getConnectedNodes(currentNode.id, 'to') as IdType[];
       for (const singleNeighbourId of neighbourNodes) {
-        currentState.nodes.set(currentNode.id, { node: currentNode, color: ColorState.EDIT });
-
         //Includes uses strict equality (===) and therefore does not work here
         if (!visited.some((visitedId) => visitedId == singleNeighbourId)) {
           visited.push(singleNeighbourId);
 
           const singleNeighbour = nodes.get(singleNeighbourId);
           if (singleNeighbour && singleNeighbour.id) {
-            currentState.nodes.set(singleNeighbour.id, { node: singleNeighbour, color: ColorState.CURRENT });
+            currentState.nodes.set(singleNeighbour.id, { node: singleNeighbour, color: ColorState.EDIT });
             queue.push(singleNeighbour);
-            nodesToSetEdit.push(singleNeighbour);
           }
 
           yield currentState;
         }
       }
 
-      //Set all nodes with CURRENT color to EDIT color (not part of the actual algorithm)
       currentState.nodes.set(currentNode.id, { node: currentNode, color: ColorState.FINISHED });
-      for (const singleNode of nodesToSetEdit) {
-        if (singleNode && singleNode.id) {
-          currentState.nodes.set(singleNode.id, { node: singleNode, color: ColorState.EDIT });
+      yield currentState;
+
+      //Push unexplored node to the queue to traverse the whole algorithm
+      if (!queue.length) {
+        let newNode: Node | undefined = undefined;
+        nodes.forEach((node) => {
+          //-1 as default becuase such an id does not exist
+          //Includes uses strict equality (===) and therefore does not work here
+          if (!visited.some((visitedId) => visitedId == node.id)) {
+            newNode = node;
+          }
+        });
+
+        if (newNode && newNode['id']) {
+          queue.push(newNode);
+          visited.push(newNode['id']);
         }
       }
-
-      yield currentState;
     }
   }
 }
