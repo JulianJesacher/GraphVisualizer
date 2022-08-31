@@ -92,7 +92,6 @@ export class ToolbarComponent implements OnInit {
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new BfsTraversalAlgorithm());
   }
   selectDijkstra() {
-    //@ts-ignore
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new DijkstraSPSPAlgorithm());
   }
 }

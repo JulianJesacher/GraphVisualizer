@@ -1,6 +1,6 @@
 import { EdgeOptions, Node, IdType, Network } from 'vis';
 import { ColorState } from '../graphConfig/colorConfig';
-import { equalArrays } from '../helper/arrayComparator';
+import { equalArrays } from '../helper/comparators';
 
 export type TraversalAlgorithmInput = { startNode: Node | undefined };
 
