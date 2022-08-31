@@ -35,6 +35,7 @@ export class PriorityQueue<T> {
     const currentMin = this.getMin();
     this._swap(0, this.size() - 1);
     this._siftDown(0);
+    this._heap.pop();
     return currentMin;
   }
 
