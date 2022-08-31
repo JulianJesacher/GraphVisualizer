@@ -66,7 +66,7 @@ export class AlgorithmService {
     //If the currently presented state is the newest, a new one has to be calculated
     //otherwise it is sufficient to increase the index and paint the next state
     if (newStateRequired) {
-      const newState = this._stateIterator?.next();
+      const newState = this._stateIterator.next();
       if (!newState) {
         throw new Error('The next state is not available');
       }
