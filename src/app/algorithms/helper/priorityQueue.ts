@@ -34,8 +34,8 @@ export class PriorityQueue<T> {
   deleteMin(): T {
     const currentMin = this.getMin();
     this._swap(0, this.size() - 1);
-    this._siftDown(0);
     this._heap.pop();
+    this._siftDown(0);
     return currentMin;
   }
 
@@ -49,7 +49,7 @@ export class PriorityQueue<T> {
   decreaseKey(node: T, newKey: number): void {
     const currentKey = this.getKey(node);
     if (newKey > currentKey) {
-      throw new Error('New key can not be greate than current key!');
+      throw new Error('New key can not be greater than current key!');
     }
 
     const elementIndex = this._heap.findIndex((currentElement) => this.equalElements(currentElement, node));
