@@ -5,7 +5,8 @@ import { AutoRunButtonState } from 'src/app/types/algorithm.types';
 import { AlgorithmService } from '../../services/algorithm.service';
 import { AlgorithmInitializerService } from '../../services/algorithm-initializer.service';
 import { BfsTraversalAlgorithm } from '../../algorithms/traversal/bfs.algorithm';
-import { DijkstraSSSPAlgorithm } from 'src/app/algorithms/spsp/dijksta.algorithm';
+import { DijkstraSSSPAlgorithm } from 'src/app/algorithms/sssp/dijksta-sssp.algorithm';
+import { DijkstraSPSPAlgorithm } from '../../algorithms/spsp/dijkstra-spsp.algorithm';
 
 @Component({
   selector: 'app-toolbar',
@@ -28,7 +29,7 @@ export class ToolbarComponent implements OnInit {
     private graphGenerator: GraphGeneratorService,
     private algorithmInitializer: AlgorithmInitializerService
   ) {
-    this.algorithmService.autoRunButtoonState$.subscribe((newState) => (this.middleButtonState = newState));
+    this.algorithmService.autoRunButtonState$.subscribe((newState) => (this.middleButtonState = newState));
   }
 
   ngOnInit(): void {}
@@ -56,7 +57,7 @@ export class ToolbarComponent implements OnInit {
       case AutoRunButtonState.RUN:
         this.algorithmService.runAutoStepAlgorithm();
         break;
-      case AutoRunButtonState.STOPP:
+      case AutoRunButtonState.STOP:
         this.algorithmService.stopAutoStepAlgorithm();
         break;
       case AutoRunButtonState.REPEAT:
@@ -91,7 +92,10 @@ export class ToolbarComponent implements OnInit {
   selectBFS() {
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new BfsTraversalAlgorithm());
   }
-  selectDijkstra() {
+  selectDijkstraSSSP() {
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new DijkstraSSSPAlgorithm());
+  }
+  selectDijkstraSPSP() {
+    this.algorithmInitializer.setAlgorithmAndStartInitialization(new DijkstraSPSPAlgorithm());
   }
 }

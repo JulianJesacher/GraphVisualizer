@@ -14,7 +14,7 @@
       <i class="fa-solid fa-backward-step" title="Previous algorithm step"></i>
     </button>
     <button (click)="algorithmAutoStepButtonClicked()">
-      <i *ngIf="middleButtonState === buttonStates.STOPP" class="fa-solid fa-pause" title="Stopp automatic execution"></i>
+      <i *ngIf="middleButtonState === buttonStates.STOP" class="fa-solid fa-pause" title="Stopp automatic execution"></i>
       <i *ngIf="middleButtonState === buttonStates.RUN" class="fa-solid fa-play" title="Start automatic execution"></i>
       <i *ngIf="middleButtonState === buttonStates.REPEAT" class="fa-solid fa-repeat" title="Repeat automatic execution"></i>
     </button>
@@ -31,8 +31,9 @@
       <h6>Traversal</h6>
       <button (click)="selectBFS()">BFS</button>
       <h6>SSSP</h6>
-      <button (click)="selectDijkstra()">Dijkstra</button>
+      <button (click)="selectDijkstraSSSP()">Dijkstra</button>
       <h6>SPSP</h6>
+      <button (click)="selectDijkstraSPSP()">Dijkstra</button>
     </div>
   </div>
 </div>
