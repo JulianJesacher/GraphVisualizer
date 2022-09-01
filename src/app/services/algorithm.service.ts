@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { PeekingIterator } from '../helper/peekingIterator';
-import { AutoRunButtonState, GraphAlgorithmType, GraphAlgorithmInput, State } from '../types/algorithm.types';
+import { AutoRunButtonState, GraphAlgorithmType, GraphAlgorithmInput, State, GraphAlgorithm } from '../types/algorithm.types';
 import { GraphDataService } from './graph-data.service';
 import { GraphPainterService } from './graph-painter.service';
+import { DijkstraSSSPAlgorithm } from '../algorithms/spsp/dijksta.algorithm';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class AlgorithmService {
   private _currentStateHistoryIndex = -1;
   private _autoStepAlgorithm = false;
 
-  private _algorithm?: GraphAlgorithmType;
+  private _algorithm?: GraphAlgorithm;
   private _stateIterator?: PeekingIterator<State>;
   private _iteratorFinished = false;
   private _inputData?: GraphAlgorithmInput;
@@ -24,7 +25,7 @@ export class AlgorithmService {
 
   constructor(private graphData: GraphDataService, private graphPainter: GraphPainterService) {}
 
-  setAlgorithm(newAlgorithm: GraphAlgorithmType) {
+  setAlgorithm(newAlgorithm: GraphAlgorithm) {
     this.clear();
     this._algorithm = newAlgorithm;
   }
@@ -35,13 +36,13 @@ export class AlgorithmService {
     }
 
     this._inputData = inputData;
-    this._stateIterator = new PeekingIterator(this._algorithm(inputData, this.graphData.graph));
+    this._stateIterator = new PeekingIterator(this._algorithm.startAlgorithm(inputData, this.graphData.graph));
     this._currentStateHistoryIndex = -1;
 
     this.backwardButtonDisabled$.next(true);
     this.forwardButtonDisabled$.next(false);
     this.autoRunButtoonState$.next(AutoRunButtonState.RUN);
-    this.graphPainter.removePaintFromAllNodes();
+    this.graphPainter.clearPaint();
   }
 
   clear() {
@@ -95,7 +96,7 @@ export class AlgorithmService {
 
     if (this._currentStateHistoryIndex === 0) {
       this.backwardButtonDisabled$.next(true);
-      this.graphPainter.removePaintFromAllNodes();
+      this.graphPainter.clearPaint();
       this._currentStateHistoryIndex--;
       return;
     }

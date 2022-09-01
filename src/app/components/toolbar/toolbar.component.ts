@@ -5,7 +5,7 @@ import { AutoRunButtonState } from 'src/app/types/algorithm.types';
 import { AlgorithmService } from '../../services/algorithm.service';
 import { AlgorithmInitializerService } from '../../services/algorithm-initializer.service';
 import { BfsTraversalAlgorithm } from '../../algorithms/traversal/bfs.algorithm';
-import { DijkstraSPSPAlgorithm } from 'src/app/algorithms/spsp/dijksta.algorithm';
+import { DijkstraSSSPAlgorithm } from 'src/app/algorithms/spsp/dijksta.algorithm';
 
 @Component({
   selector: 'app-toolbar',
@@ -66,7 +66,7 @@ export class ToolbarComponent implements OnInit {
   }
 
   generateGraph() {
-    this.graphGenerator.generateGraph(40, { min: 10, max: 10 }, 3);
+    this.graphGenerator.generateGraph(15, { min: 2, max: 10 }, 2);
   }
 
   toggleDropdown(button: HTMLButtonElement) {
@@ -92,6 +92,6 @@ export class ToolbarComponent implements OnInit {
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new BfsTraversalAlgorithm());
   }
   selectDijkstra() {
-    this.algorithmInitializer.setAlgorithmAndStartInitialization(new DijkstraSPSPAlgorithm());
+    this.algorithmInitializer.setAlgorithmAndStartInitialization(new DijkstraSSSPAlgorithm());
   }
 }

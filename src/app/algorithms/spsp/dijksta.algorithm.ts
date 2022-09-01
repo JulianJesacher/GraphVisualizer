@@ -1,25 +1,32 @@
-import { DataSet, Edge, IdType, Network, Node } from 'vis';
-import { ColorState } from '../../graphConfig/colorConfig';
+import { DataSet, Edge, EdgeOptions, IdType, Network, Node } from 'vis';
+import { NodeColorState, EdgeColorState } from '../../graphConfig/colorConfig';
 import { State, GraphAlgorithm, AlgorithmGroup, SPSPAlgorithmInput } from '../../types/algorithm.types';
 import { NodePriorityQueue } from '../helper/nodePriorityQueue';
 import { dataSetToArray } from '../../helper/datasetOperators';
 import { nonStrictIncludes } from '../../helper/comparators';
 
-export class DijkstraSPSPAlgorithm extends GraphAlgorithm {
+export class DijkstraSSSPAlgorithm extends GraphAlgorithm {
   constructor() {
     super(AlgorithmGroup.SPSP, { startNode: undefined, targetNode: undefined });
   }
+
+  private _edgesDataSet?: DataSet<Edge>;
+  private _edgeArray?: Edge[];
 
   public *startAlgorithm(input: SPSPAlgorithmInput, graph: Network): Iterator<State> {
     if (!input.startNode || !input.targetNode || !input.startNode.id || !input.targetNode.id) {
       throw new Error('Wrong input provided!');
     }
 
+    //Extract nodes and edges from graph
     //@ts-ignore
     const nodesDataset = graph.body.data.nodes as DataSet<Node>;
     //@ts-ignore
     const edgesDataSet = graph.body.data.edges as DataSet<Edge>;
-    const edgesArray = dataSetToArray(edgesDataSet);
+    const edgesArray: Edge[] = dataSetToArray(edgesDataSet);
+
+    this._edgesDataSet = edgesDataSet;
+    this._edgeArray = edgesArray;
 
     //Initialize all datatypes to execute the algorithm
     const distances: { [key: IdType]: number } = {};
@@ -31,19 +38,21 @@ export class DijkstraSPSPAlgorithm extends GraphAlgorithm {
       }
     });
     distances[input.startNode.id] = 0;
+    previous[input.startNode.id] = input.startNode;
 
     const currentState: State = {
-      nodes: new Map(nodesDataset.map((node, id) => [id, { node: node, color: ColorState.NONE }])),
-      edges: new Map(edgesDataSet.map((edge, id) => [id, { edge: edge, color: ColorState.NONE }])),
+      nodes: new Map(nodesDataset.map((node, id) => [id, { node: node, color: NodeColorState.NONE }])),
+      edges: new Map(edgesDataSet.map((edge, id) => [id, { edge: edge, color: EdgeColorState.NONE }])),
     };
 
     //Initialize priority queue with the start node as the only element with priority 0, so it will be the first to be removed
     const priorityQueue = new NodePriorityQueue();
     priorityQueue.insert(input.startNode, 0);
 
-    //Helpers for the colors
-    const visitedNodes: IdType[] = [];
-    const nodeIdToNeighbours: { [key: IdType]: IdType[] } = {};
+    //Helper for the colors
+    const nodeIdToNeighbours: { [key: IdType]: number } = {};
+    let previousEdges: Edge[] = [];
+    let previousUpdatedEdges: Edge[] = [];
 
     let previousNode: Node | null = null;
     while (!priorityQueue.isEmpty()) {
@@ -52,41 +61,52 @@ export class DijkstraSPSPAlgorithm extends GraphAlgorithm {
         continue;
       }
 
-      visitedNodes.push(currentNode.id);
-
       //Set color of current node to CURRENT and color of previous node to EDIT
-      currentState.nodes.set(currentNode.id, { node: currentNode, color: ColorState.CURRENT });
+      currentState.nodes.set(currentNode.id, { node: currentNode, color: NodeColorState.CURRENT });
       if (previousNode && previousNode['id']) {
-        currentState.nodes.set(previousNode['id'], { node: previousNode, color: ColorState.EDIT });
+        currentState.nodes.set(previousNode['id'], { node: previousNode, color: NodeColorState.EDIT });
       }
+
+      //Set color of all previously considered edges to none or to selected, if the distance was updated
+      for (const edge of previousEdges) {
+        if (!edge.id) {
+          continue;
+        }
+        const colorState = nonStrictIncludes(previousUpdatedEdges, edge) ? EdgeColorState.SELETED_PATH : EdgeColorState.NONE;
+        currentState.edges.set(edge.id, { edge: edge, color: colorState });
+      }
+
+      previousEdges = [];
+      previousUpdatedEdges = [];
 
       // Check if the currently considered node leads to a node having visited all neighbours and
       // in that case, set this node as finished
       const backwardNeighbours = graph.getConnectedNodes(currentNode.id, 'from') as IdType[];
       for (const currentNeighbourId of backwardNeighbours) {
-        if (
-          currentNeighbourId in nodeIdToNeighbours &&
-          nodeIdToNeighbours[currentNeighbourId].every((neighbour) => nonStrictIncludes(visitedNodes, neighbour))
-        ) {
+        if (currentNeighbourId in nodeIdToNeighbours && nodeIdToNeighbours[currentNeighbourId] == 1) {
           const neighbour = nodesDataset.get(currentNeighbourId);
           if (!neighbour || !neighbour.id) {
             continue;
           }
-          currentState.nodes.set(neighbour.id, { node: neighbour, color: ColorState.FINISHED });
+          currentState.nodes.set(neighbour.id, { node: neighbour, color: NodeColorState.FINISHED });
+        } else if (currentNeighbourId in nodeIdToNeighbours) {
+          nodeIdToNeighbours[currentNeighbourId] -= 1;
         }
       }
 
-      yield currentState;
-
       //Iterate over neighbours
       const neighbourNodes = graph.getConnectedNodes(currentNode.id, 'to') as IdType[];
-      nodeIdToNeighbours[currentNode.id] = neighbourNodes;
+      nodeIdToNeighbours[currentNode.id] = neighbourNodes.length;
+      const consideredEdges: Edge[] = [];
+
       for (const currentNeighbourId of neighbourNodes) {
         const connectingEdge = edgesArray.find((edge) => edge.from == currentNode.id && edge.to == currentNeighbourId) as Edge;
         if (!connectingEdge || !connectingEdge.label || !connectingEdge.id) {
           continue;
         }
+        previousEdges.push(connectingEdge);
 
+        consideredEdges.push(connectingEdge);
         const currentDistance = distances[currentNeighbourId];
         const newDistance = distances[currentNode.id] + parseInt(connectingEdge.label, 10);
 
@@ -106,17 +126,59 @@ export class DijkstraSPSPAlgorithm extends GraphAlgorithm {
 
           previous[currentNeighbourId] = currentNode;
           distances[currentNeighbourId] = newDistance;
-
-          //currentState.edges.set(connectingEdge.id, { edge: connectingEdge, color: ColorState.START });
+          previousUpdatedEdges.push(connectingEdge);
         }
       }
 
       previousNode = currentNode;
+
+      //Set color of all considered Edges to current
+      for (const edge of consideredEdges) {
+        if (!edge.id) {
+          continue;
+        }
+        currentState.edges.set(edge.id, { edge: edge, color: EdgeColorState.CURRENT });
+      }
+      yield currentState;
     }
 
-    if (previousNode && previousNode['id']) {
-      currentState.nodes.set(previousNode['id'], { node: previousNode, color: ColorState.FINISHED });
-    }
+    const finishedNodesState = new Map(nodesDataset.map((node, id) => [id, { node: node, color: NodeColorState.FINISHED }]));
+    currentState.nodes = finishedNodesState;
+
     yield currentState;
+  }
+
+  private _getBacktraceEdgeStates(
+    currentNodeId: IdType,
+    startNodeId: IdType,
+    previousNodes: { [key: IdType]: Node | null },
+    colorStateToPaint: EdgeColorState
+  ): Map<IdType | string, { edge: EdgeOptions; color: EdgeColorState }> {
+    const selectedEdges: IdType[] = [];
+    if (!this._edgeArray || !this._edgesDataSet) {
+      throw new Error('Edge array or edge Dataset not available, painting the edges not possible!');
+    }
+
+    while (currentNodeId != null && currentNodeId != startNodeId) {
+      const previousNode = previousNodes[currentNodeId as number];
+      if (!previousNode || !previousNode.id) {
+        break;
+      }
+
+      const connectingEdge = this._edgeArray.find((edge) => edge.from == previousNode.id && edge.to == currentNodeId);
+      if (connectingEdge && connectingEdge.id) {
+        selectedEdges.push(connectingEdge.id);
+      }
+
+      currentNodeId = previousNode.id;
+    }
+
+    const edgeState = new Map(
+      this._edgesDataSet.map((edge: Edge, id: IdType) => {
+        const colorState = nonStrictIncludes(selectedEdges, id) ? colorStateToPaint : EdgeColorState.NONE;
+        return [id, { edge: edge, color: colorState }];
+      })
+    );
+    return edgeState;
   }
 }

@@ -1,5 +1,5 @@
 import { DataSet, IdType, Network, Node } from 'vis';
-import { ColorState } from '../../graphConfig/colorConfig';
+import { NodeColorState, EdgeColorState } from '../../graphConfig/colorConfig';
 import { GraphAlgorithmInput, State, GraphAlgorithm, AlgorithmGroup } from '../../types/algorithm.types';
 
 export class BfsTraversalAlgorithm extends GraphAlgorithm {
@@ -20,8 +20,8 @@ export class BfsTraversalAlgorithm extends GraphAlgorithm {
     const queue: Node[] = [input.startNode];
     const visited: IdType[] = [];
     const currentState: State = {
-      nodes: new Map(nodes.map((node, id) => [id, { node: node, color: ColorState.NONE }])),
-      edges: new Map(edges.map((edge, id) => [id, { edge: edge, color: ColorState.NONE }])),
+      nodes: new Map(nodes.map((node, id) => [id, { node: node, color: NodeColorState.NONE }])),
+      edges: new Map(edges.map((edge, id) => [id, { edge: edge, color: EdgeColorState.NONE }])),
     };
 
     if (!input.startNode.id) {
@@ -36,7 +36,7 @@ export class BfsTraversalAlgorithm extends GraphAlgorithm {
       }
 
       //Set color of current node to CURRENT
-      currentState.nodes.set(currentNode.id, { node: currentNode, color: ColorState.CURRENT });
+      currentState.nodes.set(currentNode.id, { node: currentNode, color: NodeColorState.CURRENT });
       yield currentState;
 
       //Iterate over neighbours
@@ -48,7 +48,7 @@ export class BfsTraversalAlgorithm extends GraphAlgorithm {
 
           const singleNeighbour = nodes.get(singleNeighbourId);
           if (singleNeighbour && singleNeighbour.id) {
-            currentState.nodes.set(singleNeighbour.id, { node: singleNeighbour, color: ColorState.EDIT });
+            currentState.nodes.set(singleNeighbour.id, { node: singleNeighbour, color: NodeColorState.EDIT });
             queue.push(singleNeighbour);
           }
 
@@ -56,7 +56,7 @@ export class BfsTraversalAlgorithm extends GraphAlgorithm {
         }
       }
 
-      currentState.nodes.set(currentNode.id, { node: currentNode, color: ColorState.FINISHED });
+      currentState.nodes.set(currentNode.id, { node: currentNode, color: NodeColorState.FINISHED });
       yield currentState;
 
       //Push unexplored node to the queue to traverse the whole algorithm

@@ -33,7 +33,7 @@ export class AlgorithmInitializerService {
     this.initializingProcessActive$.next(true);
     this.algorithmGroup$.next(newAlgorithm.group);
     this.selectedNodesInformation$.next([]);
-    this.graphPainter.removePaintFromAllNodes();
+    this.graphPainter.clearPaint();
     this.algorithmService.clear();
     this._currentGraphPayload = newAlgorithm.emptyInputData;
   }
@@ -53,7 +53,7 @@ export class AlgorithmInitializerService {
       throw new Error('Can not start because not all required algorithm input properties were set!');
     }
 
-    this.algorithmService.setAlgorithm(this._algorithm.startAlgorithm);
+    this.algorithmService.setAlgorithm(this._algorithm);
     this.algorithmService.initializeAlgorithmWithInputValue(this._currentGraphPayload);
     this.clear();
   }
@@ -122,6 +122,6 @@ export class AlgorithmInitializerService {
     this._currentGraphPayload = null;
     this.selectedNodesInformation$.next([]);
     this.initializingProcessActive$.next(false);
-    this.graphPainter.removePaintFromAllNodes();
+    this.graphPainter.clearPaint();
   }
 }
