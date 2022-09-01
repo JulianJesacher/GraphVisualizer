@@ -1,6 +1,7 @@
 import { DataSet, IdType, Network, Node } from 'vis';
 import { NodeColorState, EdgeColorState } from '../../graphConfig/colorConfig';
-import { GraphAlgorithmInput, State, GraphAlgorithm, AlgorithmGroup } from '../../types/algorithm.types';
+import { GraphAlgorithmInput, State, AlgorithmGroup } from '../../types/algorithm.types';
+import { GraphAlgorithm } from '../abstract/base.algorithm';
 
 export class BfsTraversalAlgorithm extends GraphAlgorithm {
   constructor() {

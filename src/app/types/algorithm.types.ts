@@ -28,19 +28,16 @@ export enum AlgorithmInputNodeType {
   TARGET_NODE = 'targetNode',
 }
 
-export abstract class GraphAlgorithm {
-  constructor(public group: AlgorithmGroup, public emptyInputData: GraphAlgorithmInput) {}
-
-  abstract startAlgorithm(input: GraphAlgorithmInput, graph: Network): Iterator<State>;
-}
+export type NodeState = Map<IdType | string, { node: Node; color: NodeColorState }>;
+export type EdgeState = Map<IdType | string, { edge: Edge; color: EdgeColorState }>;
 
 export interface State {
-  nodes: Map<IdType | string, { node: Node; color: NodeColorState }>;
-  edges: Map<IdType | string, { edge: Edge; color: EdgeColorState }>;
+  nodes: NodeState;
+  edges: EdgeState;
 }
 
 export enum AutoRunButtonState {
   RUN,
-  STOPP,
+  STOP,
   REPEAT,
 }

@@ -45,7 +45,7 @@ export enum NodeColorState {
 
 export enum EdgeColorState {
   NONE = 'none',
-  SELETED_PATH = 'selectedPath',
+  SELECTED_PATH = 'selectedPath',
   FINAL_PATH = 'finalPath',
   CURRENT = 'current',
 }

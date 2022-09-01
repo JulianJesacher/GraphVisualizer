@@ -1,8 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { InitializationInformation, inputNodesInitializationInformation } from 'src/app/types/algorithm-intializer-dialog.types';
+import { InitializationInformation, inputNodesInitializationInformation } from 'src/app/types/algorithm-initializer-dialog.types';
 import { AlgorithmGroup } from '../../types/algorithm.types';
-import { UpdateCurrentNodeSelectionEvent, SelectedNodeInformation } from '../../types/algorithm-intializer-dialog.types';
+import { UpdateCurrentNodeSelectionEvent, SelectedNodeInformation } from '../../types/algorithm-initializer-dialog.types';
 import { nodeColorOptions } from '../../graphConfig/colorConfig';
 import { Steps } from 'primeng/steps';
 

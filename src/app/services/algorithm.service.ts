@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { PeekingIterator } from '../helper/peekingIterator';
-import { AutoRunButtonState, GraphAlgorithmType, GraphAlgorithmInput, State, GraphAlgorithm } from '../types/algorithm.types';
+import { AutoRunButtonState, GraphAlgorithmInput, State } from '../types/algorithm.types';
 import { GraphDataService } from './graph-data.service';
 import { GraphPainterService } from './graph-painter.service';
-import { DijkstraSSSPAlgorithm } from '../algorithms/spsp/dijksta.algorithm';
+import { GraphAlgorithm } from '../algorithms/abstract/base.algorithm';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class AlgorithmService {
 
   public backwardButtonDisabled$ = new BehaviorSubject<boolean>(true);
   public forwardButtonDisabled$ = new BehaviorSubject<boolean>(true);
-  public autoRunButtoonState$ = new BehaviorSubject<AutoRunButtonState>(AutoRunButtonState.RUN);
+  public autoRunButtonState$ = new BehaviorSubject<AutoRunButtonState>(AutoRunButtonState.RUN);
 
   constructor(private graphData: GraphDataService, private graphPainter: GraphPainterService) {}
 
@@ -41,7 +41,7 @@ export class AlgorithmService {
 
     this.backwardButtonDisabled$.next(true);
     this.forwardButtonDisabled$.next(false);
-    this.autoRunButtoonState$.next(AutoRunButtonState.RUN);
+    this.autoRunButtonState$.next(AutoRunButtonState.RUN);
     this.graphPainter.clearPaint();
   }
 
@@ -52,7 +52,7 @@ export class AlgorithmService {
 
     this.backwardButtonDisabled$.next(true);
     this.forwardButtonDisabled$.next(true);
-    this.autoRunButtoonState$.next(AutoRunButtonState.RUN);
+    this.autoRunButtonState$.next(AutoRunButtonState.RUN);
   }
 
   stepForward() {
@@ -84,7 +84,7 @@ export class AlgorithmService {
 
     const lastStateReached = this._iteratorFinished && this._currentStateHistoryIndex === this._stateHistory.length - 1;
     if (lastStateReached) {
-      this.autoRunButtoonState$.next(AutoRunButtonState.REPEAT);
+      this.autoRunButtonState$.next(AutoRunButtonState.REPEAT);
       this.forwardButtonDisabled$.next(true);
     }
   }
@@ -108,17 +108,16 @@ export class AlgorithmService {
 
   stopAutoStepAlgorithm() {
     this._autoStepAlgorithm = false;
-    this.autoRunButtoonState$.next(AutoRunButtonState.RUN);
+    this.autoRunButtonState$.next(AutoRunButtonState.RUN);
   }
 
   runAutoStepAlgorithm(intervalTime: number = 500) {
     if (!this._stateIterator) {
-      //TODO: Show error
       this.clear();
       throw new Error('No stateIterator available!');
     }
     this._autoStepAlgorithm = true;
-    this.autoRunButtoonState$.next(AutoRunButtonState.STOPP);
+    this.autoRunButtonState$.next(AutoRunButtonState.STOP);
 
     const intervalId = setInterval(() => {
       const lastStateReached = this._iteratorFinished && this._currentStateHistoryIndex === this._stateHistory.length - 1;
@@ -134,7 +133,7 @@ export class AlgorithmService {
 
   repeatAlgorithm() {
     if (!this._inputData) {
-      throw Error('No input data for the algoritm was stored');
+      throw Error('No input data for the algorithm was stored');
     }
     this.initializeAlgorithmWithInputValue(this._inputData);
     this.runAutoStepAlgorithm();

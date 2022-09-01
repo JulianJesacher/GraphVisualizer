@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { AlgorithmGroup, AlgorithmInputNodeType, GraphAlgorithm, GraphAlgorithmInput, isSPSPAlgorithmInput } from '../types/algorithm.types';
+import { AlgorithmGroup, AlgorithmInputNodeType, GraphAlgorithmInput, isSPSPAlgorithmInput } from '../types/algorithm.types';
 import { GraphEventService } from './graph-event.service';
 import { BehaviorSubject } from 'rxjs';
 import { Node } from 'vis';
 import { AlgorithmService } from './algorithm.service';
-import { NodeSelection, SelectedNodeInformation } from '../types/algorithm-intializer-dialog.types';
+import { NodeSelection, SelectedNodeInformation } from '../types/algorithm-initializer-dialog.types';
 import { GraphPainterService } from './graph-painter.service';
 import { environment } from 'src/environments/environment';
+import { GraphAlgorithm } from '../algorithms/abstract/base.algorithm';
 
 @Injectable({
   providedIn: 'root',
@@ -78,6 +79,9 @@ export class AlgorithmInitializerService {
       case AlgorithmGroup.SPSP:
         this.handleNodeForSPSP(selectedNode);
         break;
+      case AlgorithmGroup.SSSP:
+        this.handleNodeForSSSP(selectedNode);
+        break;
       default:
         throw new Error('Not implemented');
     }
@@ -95,7 +99,7 @@ export class AlgorithmInitializerService {
       throw new Error('No input data available!');
     }
     if (this._currentNodeSelection?.nodeType !== AlgorithmInputNodeType.START_NODE) {
-      throw new Error('For traversal algorithms, only start nodes are allowe as input!');
+      throw new Error('For traversal algorithms, only start nodes are allowed as input!');
     }
 
     this._currentGraphPayload[AlgorithmInputNodeType.START_NODE] = selectedNode;
@@ -114,6 +118,16 @@ export class AlgorithmInitializerService {
     }
 
     this._currentGraphPayload[this._currentNodeSelection.nodeType] = selectedNode;
+  }
+
+  handleNodeForSSSP(selectedNode: Node) {
+    if (!this._currentGraphPayload) {
+      throw new Error('No input data available!');
+    }
+    if (this._currentNodeSelection?.nodeType !== AlgorithmInputNodeType.START_NODE) {
+      throw new Error('For traversal algorithms, only start nodes are allowed as input!');
+    }
+    this._currentGraphPayload[AlgorithmInputNodeType.START_NODE] = selectedNode;
   }
 
   clear() {

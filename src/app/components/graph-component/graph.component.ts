@@ -5,7 +5,7 @@ import { Network } from 'vis';
 import { GraphDataService } from '../../services/graph-data.service';
 import { GraphElementConfigComponent } from '../graph-element-config/graph-element-config.component';
 import { AlgorithmInitializerService } from '../../services/algorithm-initializer.service';
-import { UpdateCurrentNodeSelectionEvent } from '../../types/algorithm-intializer-dialog.types';
+import { UpdateCurrentNodeSelectionEvent } from '../../types/algorithm-initializer-dialog.types';
 
 @Component({
   selector: 'app-graph',

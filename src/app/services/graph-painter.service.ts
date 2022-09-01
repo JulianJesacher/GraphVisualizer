@@ -3,7 +3,7 @@ import { State } from '../types/algorithm.types';
 import { GraphDataService } from './graph-data.service';
 import { IdType } from 'vis';
 import { NodeColorState, nodeColorOptions, EdgeColorState, edgeColorOptions } from '../graphConfig/colorConfig';
-import { SelectedNodeInformation } from '../types/algorithm-intializer-dialog.types';
+import { SelectedNodeInformation } from '../types/algorithm-initializer-dialog.types';
 
 @Injectable({
   providedIn: 'root',
