@@ -19,11 +19,33 @@ export const nodeColorOptions = {
   },
 };
 
-export enum ColorState {
+export const edgeColorOptions = {
+  none: {
+    color: '#000000',
+  },
+  selectedPath: {
+    color: '#ff8c00',
+  },
+  finalPath: {
+    color: '#21781A',
+  },
+  current: {
+    color: '#D61111',
+  },
+};
+
+export enum NodeColorState {
   NONE = 'none',
   CURRENT = 'current',
   FINISHED = 'finished',
   EDIT = 'edit',
   START = 'start',
   TARGET = 'target',
+}
+
+export enum EdgeColorState {
+  NONE = 'none',
+  SELETED_PATH = 'selectedPath',
+  FINAL_PATH = 'finalPath',
+  CURRENT = 'current',
 }

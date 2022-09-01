@@ -1,11 +1,11 @@
 import { Node } from 'vis';
-import { ColorState } from '../graphConfig/colorConfig';
+import { NodeColorState } from '../graphConfig/colorConfig';
 import { AlgorithmInputNodeType } from './algorithm.types';
 
 export interface InitializationInformation {
   nodeName: string;
   taskDescription: string;
-  color: ColorState;
+  color: NodeColorState;
   nodeType: AlgorithmInputNodeType;
 }
 
@@ -14,7 +14,7 @@ export const inputNodesInitializationInformation = {
     {
       nodeName: 'Start node',
       taskDescription: 'Please select the start node for the algorithm',
-      color: ColorState.START,
+      color: NodeColorState.START,
       nodeType: AlgorithmInputNodeType.START_NODE,
     },
   ],
@@ -23,7 +23,7 @@ export const inputNodesInitializationInformation = {
     {
       nodeName: 'Start node',
       taskDescription: 'Please select the start node for the algorithm',
-      color: ColorState.START,
+      color: NodeColorState.START,
       nodeType: AlgorithmInputNodeType.START_NODE,
     },
   ],
@@ -32,13 +32,13 @@ export const inputNodesInitializationInformation = {
     {
       nodeName: 'Start node',
       taskDescription: 'Please select the start node for the algorithm',
-      color: ColorState.START,
+      color: NodeColorState.START,
       nodeType: AlgorithmInputNodeType.START_NODE,
     },
     {
       nodeName: 'Target node',
       taskDescription: 'Please select the target node for which the shortest path is calculated',
-      color: ColorState.TARGET,
+      color: NodeColorState.TARGET,
       nodeType: AlgorithmInputNodeType.TARGET_NODE,
     },
   ],
@@ -47,7 +47,7 @@ export const inputNodesInitializationInformation = {
     {
       nodeName: 'Start node',
       taskDescription: 'Please select the start node for the algorithm',
-      color: ColorState.START,
+      color: NodeColorState.START,
       nodeType: AlgorithmInputNodeType.START_NODE,
     },
   ],
@@ -55,7 +55,7 @@ export const inputNodesInitializationInformation = {
 
 export interface NodeSelection {
   nodeType: AlgorithmInputNodeType;
-  color: ColorState;
+  color: NodeColorState;
   nodeStepIndex: number;
 }
 

@@ -1,5 +1,5 @@
-import { EdgeOptions, Node, IdType, Network } from 'vis';
-import { ColorState } from '../graphConfig/colorConfig';
+import { Node, IdType, Network, Edge } from 'vis';
+import { NodeColorState, EdgeColorState } from '../graphConfig/colorConfig';
 import { equalArrays } from '../helper/comparators';
 
 export type TraversalAlgorithmInput = { startNode: Node | undefined };
@@ -33,8 +33,8 @@ export abstract class GraphAlgorithm {
 }
 
 export interface State {
-  nodes: Map<IdType | string, { node: Node; color: ColorState }>;
-  edges: Map<IdType | string, { edge: EdgeOptions; color: ColorState }>;
+  nodes: Map<IdType | string, { node: Node; color: NodeColorState }>;
+  edges: Map<IdType | string, { edge: Edge; color: EdgeColorState }>;
 }
 
 export enum AutoRunButtonState {
