@@ -1,6 +1,6 @@
 import { DataSet, Edge, EdgeOptions, IdType, Network, Node } from 'vis';
 import { NodeColorState, EdgeColorState } from '../../graphConfig/colorConfig';
-import { State, GraphAlgorithm, AlgorithmGroup, SPSPAlgorithmInput } from '../../types/algorithm.types';
+import { State, GraphAlgorithm, AlgorithmGroup, SSSPAlgorithmInput } from '../../types/algorithm.types';
 import { NodePriorityQueue } from '../helper/nodePriorityQueue';
 import { dataSetToArray } from '../../helper/datasetOperators';
 import { nonStrictIncludes } from '../../helper/comparators';
@@ -13,8 +13,8 @@ export class DijkstraSSSPAlgorithm extends GraphAlgorithm {
   private _edgesDataSet?: DataSet<Edge>;
   private _edgeArray?: Edge[];
 
-  public *startAlgorithm(input: SPSPAlgorithmInput, graph: Network): Iterator<State> {
-    if (!input.startNode || !input.targetNode || !input.startNode.id || !input.targetNode.id) {
+  public *startAlgorithm(input: SSSPAlgorithmInput, graph: Network): Iterator<State> {
+    if (!input.startNode || !input.startNode.id) {
       throw new Error('Wrong input provided!');
     }
 

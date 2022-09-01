@@ -6,7 +6,9 @@ export type TraversalAlgorithmInput = { startNode: Node | undefined };
 
 export type SPSPAlgorithmInput = { startNode: Node | undefined; targetNode: Node | undefined };
 
-export type GraphAlgorithmInput = TraversalAlgorithmInput | SPSPAlgorithmInput;
+export type SSSPAlgorithmInput = TraversalAlgorithmInput;
+
+export type GraphAlgorithmInput = TraversalAlgorithmInput | SPSPAlgorithmInput | SSSPAlgorithmInput;
 
 export const isSPSPAlgorithmInput = (input: GraphAlgorithmInput): input is SPSPAlgorithmInput => {
   return equalArrays(Object.keys(input), ['startNode', 'targetNode']);

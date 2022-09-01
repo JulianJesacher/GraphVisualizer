@@ -10,13 +10,17 @@
     </div>
   </div>
   <div class="middle-items">
-    <button (click)="previousStep()" [disabled]="algorithmService.backwardButtonDisabled$ | async"><i class="fa-solid fa-backward-step" title="Previous algorithm step"></i></button>
+    <button (click)="previousStep()" [disabled]="algorithmService.backwardButtonDisabled$ | async">
+      <i class="fa-solid fa-backward-step" title="Previous algorithm step"></i>
+    </button>
     <button (click)="algorithmAutoStepButtonClicked()">
       <i *ngIf="middleButtonState === buttonStates.STOPP" class="fa-solid fa-pause" title="Stopp automatic execution"></i>
       <i *ngIf="middleButtonState === buttonStates.RUN" class="fa-solid fa-play" title="Start automatic execution"></i>
       <i *ngIf="middleButtonState === buttonStates.REPEAT" class="fa-solid fa-repeat" title="Repeat automatic execution"></i>
     </button>
-    <button (click)="nextStep()" [disabled]="algorithmService.forwardButtonDisabled$ | async"><i class="fa-solid fa-forward-step" title="Next algorithm step"></i></button>
+    <button (click)="nextStep()" [disabled]="algorithmService.forwardButtonDisabled$ | async">
+      <i class="fa-solid fa-forward-step" title="Next algorithm step"></i>
+    </button>
   </div>
   <div class="right-items">
     <button class="dropdown-toggle" id="dropdown-toggle-right" (click)="toggleDropdown(toggleDropdownRight)" #toggleDropdownRight>
@@ -26,9 +30,9 @@
     <div class="dropdown-items-container" #dropdownContainerRight>
       <h6>Traversal</h6>
       <button (click)="selectBFS()">BFS</button>
-      <h6>SPSP</h6>
-      <button (click)="selectDijkstra()">Dijkstra</button>
       <h6>SSSP</h6>
+      <button (click)="selectDijkstra()">Dijkstra</button>
+      <h6>SPSP</h6>
     </div>
   </div>
 </div>
