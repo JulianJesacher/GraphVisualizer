@@ -1,6 +1,6 @@
 import { DataSet, Edge, IdType, Network, Node } from 'vis';
 import { NodeColorState, EdgeColorState } from '../../graphConfig/colorConfig';
-import { State, AlgorithmGroup, GraphAlgorithmInput, EdgeState } from '../../types/algorithm.types';
+import { State, AlgorithmGroup, GraphAlgorithmInput, EdgeState, SSSPAlgorithmInput, SPSPAlgorithmInput } from '../../types/algorithm.types';
 import { NodePriorityQueue } from '../helper/nodePriorityQueue';
 import { dataSetToArray } from '../../helper/datasetOperators';
 import { nonStrictIncludes } from '../../helper/comparators';
@@ -11,8 +11,8 @@ export abstract class DijkstraAlgorithm extends GraphAlgorithm {
     super(type, defaultInput);
   }
 
-  public *startAlgorithm(input: GraphAlgorithmInput, graph: Network): Iterator<State> {
-    if (!input.startNode || !input.startNode.id) {
+  public *startAlgorithm(input: SSSPAlgorithmInput | SPSPAlgorithmInput, graph: Network): Iterator<State> {
+    if (!input.startNode || (!input.startNode.id && input.startNode != 0)) {
       throw new Error('Wrong input provided!');
     }
 
@@ -28,15 +28,15 @@ export abstract class DijkstraAlgorithm extends GraphAlgorithm {
 
     //Initialize all datatypes to execute the algorithm
     const distances: { [key: IdType]: number } = {};
-    this._previousNodes = {};
+    this._previousNodesSSSPorSPSP = {};
     nodesDataset.forEach((node: Node) => {
-      if (node.id) {
-        this._previousNodes[node.id] = null;
+      if (node.id && node.id != 0) {
+        this._previousNodesSSSPorSPSP[node.id] = null;
         distances[node.id] = Infinity;
       }
     });
-    distances[input.startNode.id] = 0;
-    this._previousNodes[input.startNode.id] = input.startNode;
+    distances[input.startNode.id ?? 0] = 0;
+    this._previousNodesSSSPorSPSP[input.startNode.id ?? 0] = input.startNode;
 
     const currentState: State = {
       nodes: new Map(nodesDataset.map((node, id) => [id, { node: node, color: NodeColorState.NONE }])),
@@ -67,7 +67,7 @@ export abstract class DijkstraAlgorithm extends GraphAlgorithm {
 
       //Set color of all previously considered edges to none or to selected, if the distance was updated
       for (const edge of previousEdges) {
-        if (!edge.id) {
+        if (!edge.id && edge.id != 0) {
           continue;
         }
         const colorState = nonStrictIncludes(previousUpdatedEdges, edge) ? EdgeColorState.SELECTED_PATH : EdgeColorState.NONE;
@@ -122,7 +122,7 @@ export abstract class DijkstraAlgorithm extends GraphAlgorithm {
             priorityQueue.decreaseKey(currentNeighbor, newDistance);
           }
 
-          this._previousNodes[currentNeighborId] = currentNode;
+          this._previousNodesSSSPorSPSP[currentNeighborId] = currentNode;
           distances[currentNeighborId] = newDistance;
           previousUpdatedEdges.push(connectingEdge);
         }
@@ -132,7 +132,7 @@ export abstract class DijkstraAlgorithm extends GraphAlgorithm {
 
       //Set color of all considered Edges to current
       for (const edge of consideredEdges) {
-        if (!edge.id) {
+        if (!edge.id && edge.id != 0) {
           continue;
         }
         currentState.edges.set(edge.id, { edge: edge, color: EdgeColorState.CURRENT });
@@ -145,7 +145,7 @@ export abstract class DijkstraAlgorithm extends GraphAlgorithm {
 
     //Set color of all previously considered edges to none or to selected, if the distance was updated
     for (const edge of previousEdges) {
-      if (!edge.id) {
+      if (!edge.id && edge.id != 0) {
         continue;
       }
       const colorState = nonStrictIncludes(previousUpdatedEdges, edge) ? EdgeColorState.SELECTED_PATH : EdgeColorState.NONE;

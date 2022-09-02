@@ -7,8 +7,7 @@ export abstract class GraphAlgorithm {
 
   abstract startAlgorithm(input: GraphAlgorithmInput, graph: Network): Iterator<State>;
 
-  protected _previousNodes!: { [key: IdType]: Node | null };
-
+  protected _previousNodesSSSPorSPSP!: { [key: IdType]: Node | null };
   protected _edgesDataSet?: DataSet<Edge>;
   protected _edgeArray?: Edge[];
 
@@ -20,15 +19,15 @@ export abstract class GraphAlgorithm {
     if (!this._edgeArray || !this._edgesDataSet) {
       throw new Error('Edge array or edge Dataset not available, painting the edges not possible!');
     }
-    if (!this._previousNodes) {
+    if (!this._previousNodesSSSPorSPSP) {
       throw new Error('No information about the predecessor of the nodes available, backtracing not possible!');
     }
 
     const edgeState = new Map(this._edgesDataSet.map((edge: Edge, id: IdType) => [id, { edge: edge, color: EdgeColorState.NONE }]));
 
     while (currentNodeId != null && currentNodeId != startNodeId) {
-      const previousNode = this._previousNodes[currentNodeId as number];
-      if (!previousNode || !previousNode.id) {
+      const previousNode = this._previousNodesSSSPorSPSP[currentNodeId as number];
+      if (!previousNode || (!previousNode.id && previousNode.id != 0)) {
         break;
       }
 

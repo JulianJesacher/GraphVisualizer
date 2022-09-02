@@ -9,7 +9,12 @@ export class DijkstraSPSPAlgorithm extends DijkstraAlgorithm {
   }
 
   public override *startAlgorithm(input: SPSPAlgorithmInput, graph: Network): Iterator<State> {
-    if (!input.startNode || !input.targetNode || !input.targetNode.id || !input.startNode.id) {
+    if (
+      !input.startNode ||
+      !input.targetNode ||
+      (!input.targetNode.id && input.targetNode.id != 0) ||
+      (!input.startNode.id && input.startNode.id != 0)
+    ) {
       throw new Error('Wrong input provided!');
     }
 

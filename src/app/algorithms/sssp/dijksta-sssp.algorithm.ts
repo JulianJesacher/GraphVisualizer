@@ -8,7 +8,7 @@ export class DijkstraSSSPAlgorithm extends DijkstraAlgorithm {
   }
 
   public override *startAlgorithm(input: SSSPAlgorithmInput, graph: Network): Iterator<State> {
-    if (!input.startNode || !input.startNode.id) {
+    if (!input.startNode || (!input.startNode.id && input.startNode != 0)) {
       throw new Error('Wrong input provided!');
     }
 

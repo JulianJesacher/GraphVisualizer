@@ -1,6 +1,6 @@
 import { DataSet, IdType, Network, Node } from 'vis';
 import { NodeColorState, EdgeColorState } from '../../graphConfig/colorConfig';
-import { GraphAlgorithmInput, State, AlgorithmGroup } from '../../types/algorithm.types';
+import { GraphAlgorithmInput, State, AlgorithmGroup, TraversalAlgorithmInput } from '../../types/algorithm.types';
 import { GraphAlgorithm } from '../abstract/base.algorithm';
 
 export class BfsTraversalAlgorithm extends GraphAlgorithm {
@@ -8,7 +8,7 @@ export class BfsTraversalAlgorithm extends GraphAlgorithm {
     super(AlgorithmGroup.TRAVERSAL, { startNode: undefined });
   }
 
-  public *startAlgorithm(input: GraphAlgorithmInput, graph: Network): Iterator<State> {
+  public *startAlgorithm(input: TraversalAlgorithmInput, graph: Network): Iterator<State> {
     if (!input.startNode) {
       throw new Error('Invalid input data, no startNode was provided!');
     }
@@ -25,7 +25,7 @@ export class BfsTraversalAlgorithm extends GraphAlgorithm {
       edges: new Map(edges.map((edge, id) => [id, { edge: edge, color: EdgeColorState.NONE }])),
     };
 
-    if (!input.startNode.id) {
+    if (!input.startNode.id && input.startNode.id!=0) {
       throw new Error('The selected start node has no id!');
     }
     visited.push(input.startNode.id);
