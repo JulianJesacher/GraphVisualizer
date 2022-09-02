@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AlgorithmGroup, AlgorithmInputNodeType, GraphAlgorithmInput, isSPSPAlgorithmInput } from '../types/algorithm.types';
+import {
+  AlgorithmGroup,
+  AlgorithmInputNodeType,
+  GraphAlgorithmInput,
+  isSPSPAlgorithmInput,
+  isTraversalAlgorithmInput,
+  isSSSPAlgorithmInput,
+} from '../types/algorithm.types';
 import { GraphEventService } from './graph-event.service';
 import { BehaviorSubject } from 'rxjs';
 import { Node } from 'vis';
@@ -98,8 +105,8 @@ export class AlgorithmInitializerService {
     if (!this._currentGraphPayload) {
       throw new Error('No input data available!');
     }
-    if (this._currentNodeSelection?.nodeType !== AlgorithmInputNodeType.START_NODE) {
-      throw new Error('For traversal algorithms, only start nodes are allowed as input!');
+    if (!isTraversalAlgorithmInput(this._currentGraphPayload)) {
+      throw new Error('The wrong input type is set, expected traversal algorithm input!');
     }
 
     this._currentGraphPayload[AlgorithmInputNodeType.START_NODE] = selectedNode;
@@ -114,7 +121,7 @@ export class AlgorithmInitializerService {
     }
 
     if (!isSPSPAlgorithmInput(this._currentGraphPayload)) {
-      throw new Error('The wrong input type is set, expected SPSPAlgorithmInput!');
+      throw new Error('The wrong input type is set, expected spsp algorithm input!');
     }
 
     this._currentGraphPayload[this._currentNodeSelection.nodeType] = selectedNode;
@@ -124,8 +131,8 @@ export class AlgorithmInitializerService {
     if (!this._currentGraphPayload) {
       throw new Error('No input data available!');
     }
-    if (this._currentNodeSelection?.nodeType !== AlgorithmInputNodeType.START_NODE) {
-      throw new Error('For traversal algorithms, only start nodes are allowed as input!');
+    if (!isSSSPAlgorithmInput(this._currentGraphPayload)) {
+      throw new Error('The wrong input type is set, expected sssp algorithm input!');
     }
     this._currentGraphPayload[AlgorithmInputNodeType.START_NODE] = selectedNode;
   }

@@ -8,10 +8,20 @@ export type SPSPAlgorithmInput = { startNode: Node | undefined; targetNode: Node
 
 export type SSSPAlgorithmInput = TraversalAlgorithmInput;
 
-export type GraphAlgorithmInput = TraversalAlgorithmInput | SPSPAlgorithmInput | SSSPAlgorithmInput;
+export type APSPAlgorithmInput = {};
+
+export type GraphAlgorithmInput = TraversalAlgorithmInput | SPSPAlgorithmInput | SSSPAlgorithmInput | APSPAlgorithmInput;
 
 export const isSPSPAlgorithmInput = (input: GraphAlgorithmInput): input is SPSPAlgorithmInput => {
   return equalArrays(Object.keys(input), ['startNode', 'targetNode']);
+};
+
+export const isTraversalAlgorithmInput = (input: GraphAlgorithmInput): input is TraversalAlgorithmInput => {
+  return equalArrays(Object.keys(input), ['startNode']);
+};
+
+export const isSSSPAlgorithmInput = (input: GraphAlgorithmInput): input is SSSPAlgorithmInput => {
+  return equalArrays(Object.keys(input), ['startNode']);
 };
 
 export type GraphAlgorithmType = (input: GraphAlgorithmInput, graph: Network) => Iterator<State>;
