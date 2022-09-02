@@ -7,6 +7,7 @@ import { AlgorithmInitializerService } from '../../services/algorithm-initialize
 import { BfsTraversalAlgorithm } from '../../algorithms/traversal/bfs.algorithm';
 import { DijkstraSSSPAlgorithm } from 'src/app/algorithms/sssp/dijksta-sssp.algorithm';
 import { DijkstraSPSPAlgorithm } from '../../algorithms/spsp/dijkstra-spsp.algorithm';
+import { FloydWarshallAPSPAlgorithm } from '../../algorithms/apsp/floyd-warshall.algorithm';
 
 @Component({
   selector: 'app-toolbar',
@@ -97,5 +98,8 @@ export class ToolbarComponent implements OnInit {
   }
   selectDijkstraSPSP() {
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new DijkstraSPSPAlgorithm());
+  }
+  selectFloydWarshallAPSP(){
+    this.algorithmInitializer.setAlgorithmAndStartInitialization(new FloydWarshallAPSPAlgorithm());
   }
 }

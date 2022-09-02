@@ -100,18 +100,18 @@ export class GraphDataService {
 
   constructor() {
     this._graphNodes = new DataSet<Node>([
-      { id: 10, label: 'Id 10' },
-      { id: 11, label: 'Id 11' },
-      { id: 12, label: 'Id 12' },
-      { id: 13, label: 'Id 13' },
-      { id: 14, label: 'Id 14' },
+      { id: 0, label: 'Id 0' },
+      { id: 1, label: 'Id 1' },
+      { id: 2, label: 'Id 2' },
+      { id: 3, label: 'Id 3' },
+      { id: 4, label: 'Id 4' },
     ]);
 
     this._graphEdges = new DataSet<Edge>([
-      { from: 10, to: 12, label: '1' },
-      { from: 10, to: 11, label: '1' },
-      { from: 11, to: 13, label: '1' },
-      { from: 11, to: 14, label: '1' },
+      { from: 0, to: 2, label: '1' },
+      { from: 0, to: 1, label: '1' },
+      { from: 1, to: 3, label: '1' },
+      { from: 1, to: 4, label: '1' },
     ]);
   }
 

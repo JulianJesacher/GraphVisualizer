@@ -3,7 +3,7 @@
   <ng-template pTemplate="header"> Set parameters for algorithm execution </ng-template>
   <p-steps [model]="requiredSteps" [activeIndex]="activeIndex" #stepsContainer></p-steps>
   <div class="task-container">
-    <span>{{ requiredSteps[activeIndex].fullInformation.taskDescription }}</span>
+    <span>{{ requiredSteps[activeIndex]?.fullInformation?.taskDescription }}</span>
   </div>
   <ul class="selected-nodes-container">
     <li *ngFor="let nodeInformation of _selectedNodesInformation">

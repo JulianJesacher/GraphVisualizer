@@ -62,7 +62,7 @@ export class AlgorithmInitializerComponent implements OnInit {
       throw new Error('No algorithm group (traversal, apsp, spsp, sssp) was selected!');
     }
     if (!this._initializationInformation) {
-      throw new Error('No information about the initializatio process for the selected algorithm available!');
+      throw new Error('No information about the initialization process for the selected algorithm available!');
     }
 
     this.requiredSteps = this._initializationInformation.map((nodeInformation, index) => {
@@ -72,6 +72,11 @@ export class AlgorithmInitializerComponent implements OnInit {
         fullInformation: nodeInformation,
       };
     });
+
+    if(this.requiredSteps.length===0){
+      this.triggerConfirmInputData();
+      return;
+    }
 
     this.confirmButtonDisabled = true;
     this.stepChanged(0);

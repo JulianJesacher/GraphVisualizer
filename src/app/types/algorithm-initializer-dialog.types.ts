@@ -18,16 +18,7 @@ export const inputNodesInitializationInformation = {
       nodeType: AlgorithmInputNodeType.START_NODE,
     },
   ],
-  //TODO: Adapt accordingly
-  apsp: [
-    {
-      nodeName: 'Start node',
-      taskDescription: 'Please select the start node for the algorithm',
-      color: NodeColorState.START,
-      nodeType: AlgorithmInputNodeType.START_NODE,
-    },
-  ],
-  //TODO: Adapt accordingly
+  apsp: [],
   spsp: [
     {
       nodeName: 'Start node',
@@ -42,7 +33,6 @@ export const inputNodesInitializationInformation = {
       nodeType: AlgorithmInputNodeType.TARGET_NODE,
     },
   ],
-  //TODO: Adapt accordingly
   sssp: [
     {
       nodeName: 'Start node',
