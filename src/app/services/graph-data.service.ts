@@ -99,19 +99,18 @@ export class GraphDataService {
   }
 
   constructor() {
-    this._graphNodes = new DataSet<Node>([
-      { id: 0, label: 'Id 0' },
-      { id: 1, label: 'Id 1' },
-      { id: 2, label: 'Id 2' },
-      { id: 3, label: 'Id 3' },
-      { id: 4, label: 'Id 4' },
-    ]);
+    this._graphNodes = new DataSet<Node>(new Array(6).fill(0).map((_, index) => ({ id: index + 1, label: '' + (index + 1) })));
 
     this._graphEdges = new DataSet<Edge>([
-      { from: 0, to: 2, label: '1' },
-      { from: 0, to: 1, label: '1' },
-      { from: 1, to: 3, label: '1' },
-      { from: 1, to: 4, label: '1' },
+      { from: 1, to: 6, label: '14' },
+      { from: 1, to: 2, label: '7' },
+      { from: 1, to: 3, label: '9' },
+      { from: 2, to: 3, label: '10' },
+      { from: 2, to: 4, label: '15' },
+      { from: 3, to: 6, label: '2' },
+      { from: 3, to: 4, label: '11' },
+      { from: 6, to: 5, label: '9' },
+      { from: 4, to: 5, label: '6' },
     ]);
   }
 
