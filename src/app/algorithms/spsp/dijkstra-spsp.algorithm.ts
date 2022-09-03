@@ -21,6 +21,7 @@ export class DijkstraSPSPAlgorithm extends DijkstraAlgorithm {
     const dijkstraIterator = super.startAlgorithm(input, graph);
     let currentState: { value: State; done?: boolean | undefined };
     let previousState: State | undefined = undefined;
+
     do {
       currentState = dijkstraIterator.next();
       if (!currentState.done) {
