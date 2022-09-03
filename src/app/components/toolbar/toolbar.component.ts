@@ -8,6 +8,8 @@ import { BfsTraversalAlgorithm } from '../../algorithms/traversal/bfs.algorithm'
 import { DijkstraSSSPAlgorithm } from 'src/app/algorithms/sssp/dijksta-sssp.algorithm';
 import { DijkstraSPSPAlgorithm } from '../../algorithms/spsp/dijkstra-spsp.algorithm';
 import { FloydWarshallAPSPAlgorithm } from '../../algorithms/apsp/floyd-warshall.algorithm';
+import { MessageService } from 'primeng/api';
+import { GraphAlgorithm } from '../../algorithms/abstract/base.algorithm';
 
 @Component({
   selector: 'app-toolbar',
@@ -28,7 +30,8 @@ export class ToolbarComponent implements OnInit {
     private graphData: GraphDataService,
     public algorithmService: AlgorithmService,
     private graphGenerator: GraphGeneratorService,
-    private algorithmInitializer: AlgorithmInitializerService
+    private algorithmInitializer: AlgorithmInitializerService,
+    private messageService: MessageService
   ) {
     this.algorithmService.autoRunButtonState$.subscribe((newState) => (this.middleButtonState = newState));
   }
@@ -54,6 +57,15 @@ export class ToolbarComponent implements OnInit {
   }
 
   algorithmAutoStepButtonClicked() {
+    if (!this.algorithmService.algorithmRunnable$.value) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'No algorithm was selected. \nUse the top right button to select an algorithm first!',
+      });
+      return;
+    }
+
     switch (this.middleButtonState) {
       case AutoRunButtonState.RUN:
         this.algorithmService.runAutoStepAlgorithm();
@@ -99,7 +111,7 @@ export class ToolbarComponent implements OnInit {
   selectDijkstraSPSP() {
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new DijkstraSPSPAlgorithm());
   }
-  selectFloydWarshallAPSP(){
+  selectFloydWarshallAPSP() {
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new FloydWarshallAPSPAlgorithm());
   }
 }

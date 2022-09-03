@@ -13,6 +13,8 @@ import { AlgorithmInitializerComponent } from './components/algorithm-initialize
 import { CardModule } from 'primeng/card';
 import { StepsModule } from 'primeng/steps';
 import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [AppComponent, GraphComponent, ToolbarComponent, GraphElementConfigComponent, AlgorithmInitializerComponent],
@@ -24,8 +26,9 @@ import { ButtonModule } from 'primeng/button';
     StepsModule,
     RouterModule.forRoot([{ path: '', component: AppComponent }]),
     ButtonModule,
+    ToastModule,
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
