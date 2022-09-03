@@ -22,6 +22,7 @@ export class AlgorithmService {
   public backwardButtonDisabled$ = new BehaviorSubject<boolean>(true);
   public forwardButtonDisabled$ = new BehaviorSubject<boolean>(true);
   public autoRunButtonState$ = new BehaviorSubject<AutoRunButtonState>(AutoRunButtonState.RUN);
+  public algorithmRunnable$ = new BehaviorSubject<boolean>(false);
 
   constructor(private graphData: GraphDataService, private graphPainter: GraphPainterService) {}
 
@@ -43,6 +44,7 @@ export class AlgorithmService {
     this.forwardButtonDisabled$.next(false);
     this.autoRunButtonState$.next(AutoRunButtonState.RUN);
     this.graphPainter.clearPaint();
+    this.algorithmRunnable$.next(true);
   }
 
   clear() {
@@ -53,6 +55,7 @@ export class AlgorithmService {
     this.backwardButtonDisabled$.next(true);
     this.forwardButtonDisabled$.next(true);
     this.autoRunButtonState$.next(AutoRunButtonState.RUN);
+    this.algorithmRunnable$.next(false);
   }
 
   stepForward() {

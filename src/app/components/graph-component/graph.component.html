@@ -1,3 +1,5 @@
+<p-toast position="top-center"></p-toast>
+
 <div #graphContainer id="graph-container"></div>
 <app-graph-element-config
   *ngIf="(elementDialog.position$ | async) && !(algorithmInitializer.initializingProcessActive$ | async)"
