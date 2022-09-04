@@ -1,7 +1,7 @@
 import { EdgeColorState } from 'src/app/graphConfig/colorConfig';
-import { Network } from 'vis';
-import { State, SPSPAlgorithmInput, AlgorithmGroup, EdgeState } from '../../types/algorithm.types';
-import { DijkstraAlgorithm } from '../abstract/dijkstra.algorithm';
+import { DataSet, Edge, Network } from 'vis';
+import { State, SPSPAlgorithmInput, AlgorithmGroup, EdgeState, isSPSPAlgorithmInput } from '../../types/algorithm.types';
+import { DijkstraAlgorithm, DijkstraMetaData } from '../abstract/dijkstra.algorithm';
 
 export class DijkstraSPSPAlgorithm extends DijkstraAlgorithm {
   constructor() {
@@ -9,18 +9,13 @@ export class DijkstraSPSPAlgorithm extends DijkstraAlgorithm {
   }
 
   public override *startAlgorithm(input: SPSPAlgorithmInput, graph: Network): Iterator<State> {
-    if (
-      !input.startNode ||
-      !input.targetNode ||
-      (!input.targetNode.id && input.targetNode.id != 0) ||
-      (!input.startNode.id && input.startNode.id != 0)
-    ) {
+    if (input.targetNode?.id == undefined || input.startNode?.id == undefined) {
       throw new Error('Wrong input provided!');
     }
 
     const dijkstraIterator = super.startAlgorithm(input, graph);
     let currentState: { value: State; done?: boolean | undefined };
-    let previousState: State | undefined = undefined;
+    let previousState: State | null = null;
 
     do {
       currentState = dijkstraIterator.next();
@@ -30,28 +25,56 @@ export class DijkstraSPSPAlgorithm extends DijkstraAlgorithm {
       }
     } while (!currentState.done);
 
-    if (!previousState) {
+    if (previousState == null) {
       return;
     }
 
-    //Step by step paint the final edges with selected_path color
-    const traceBackIterator = super._getBacktraceEdgeStatesIterator(input.targetNode.id, input.startNode.id, EdgeColorState.SELECTED_PATH);
-    let currentEdgeState: { value: EdgeState; done?: boolean | undefined };
-    do {
-      currentEdgeState = traceBackIterator.next();
-      if (!currentEdgeState.done) {
-        previousState.edges = currentEdgeState.value;
-        yield previousState;
-      }
-    } while (!currentEdgeState.done);
+    //@ts-ignore
+    const edgesDataSet = graph.body.data.edges as DataSet<Edge>;
 
-    if (!previousState || !previousState.edges) {
+    const pathToTarget = this.latestMetaData.allPaths.get(+input.targetNode.id);
+    if (!pathToTarget) {
       return;
     }
 
-    //Show the complete final path with final_path color
-    const finalPath = super._getBacktraceEdgeStates(input.targetNode.id, input.startNode.id, EdgeColorState.FINAL_PATH);
-    previousState.edges = finalPath;
-    yield previousState;
+    //Trace back step by step from target to start
+    for (let i = pathToTarget.length - 1; i >= 0; i--) {
+      const currentState: State = {
+        nodes: previousState.nodes,
+        edges: new Map(
+          edgesDataSet.map((edge, id) => {
+            const currentStepNode = pathToTarget[i].id == id;
+            const inSubPath = pathToTarget.slice(i).some((pathEdge) => pathEdge.id == id);
+
+            if (currentStepNode) {
+              return [id, { edge: edge, color: EdgeColorState.CURRENT as EdgeColorState }];
+            }
+
+            if (inSubPath) {
+              return [id, { edge: edge, color: EdgeColorState.SELECTED_PATH as EdgeColorState }];
+            }
+
+            return [id, { edge: edge, color: EdgeColorState.NONE }];
+          })
+        ),
+      };
+      yield currentState;
+    }
+
+    //Paint the final path
+    yield {
+      nodes: previousState.nodes,
+      edges: new Map(
+        edgesDataSet.map((edge, id) => {
+          const inPath = pathToTarget.some((pathEdge) => pathEdge.id == id);
+
+          if (inPath) {
+            return [id, { edge: edge, color: EdgeColorState.FINAL_PATH as EdgeColorState }];
+          }
+
+          return [id, { edge: edge, color: EdgeColorState.NONE }];
+        })
+      ),
+    };
   }
 }
