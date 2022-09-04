@@ -28,7 +28,7 @@ export abstract class DijkstraAlgorithm extends GraphAlgorithm {
     return this._latestMetaData;
   }
 
-  protected *dijkstraRunner(input: SSSPAlgorithmInput | SPSPAlgorithmInput, graph: Network): Generator<DijkstraMetaData> {
+  private *dijkstraRunner(input: SSSPAlgorithmInput | SPSPAlgorithmInput, graph: Network): Generator<DijkstraMetaData> {
     if (!input.startNode || (!input.startNode.id && input.startNode != 0)) {
       throw new Error('Wrong input provided!');
     }
@@ -124,13 +124,13 @@ export abstract class DijkstraAlgorithm extends GraphAlgorithm {
 
     //Extract nodes and edges from graph
     //@ts-ignore
-    const nodesDataset = graph.body.data.nodes as DataSet<Node>;
+    const nodesDataSet = graph.body.data.nodes as DataSet<Node>;
     //@ts-ignore
     const edgesDataSet = graph.body.data.edges as DataSet<Edge>;
     const edgesArray = dataSetToArray(edgesDataSet);
 
     const unvisitedNeighbourAmount: Map<IdType, number> = new Map(
-      nodesDataset.map((node) => {
+      nodesDataSet.map((node) => {
         const outgoingEdges = edgesArray.filter((edge) => edge.from == node.id);
         return [+node.id!, outgoingEdges.length];
       })
@@ -139,7 +139,7 @@ export abstract class DijkstraAlgorithm extends GraphAlgorithm {
     for (const step of this.dijkstraRunner(input, graph)) {
       const currentState: State = {
         nodes: new Map(
-          nodesDataset.map((node, id) => {
+          nodesDataSet.map((node, id) => {
             const previousPath = [...step.currentPath];
             const lastEdge = previousPath.pop();
 
