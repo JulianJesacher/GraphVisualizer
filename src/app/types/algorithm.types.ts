@@ -51,3 +51,10 @@ export enum AutoRunButtonState {
   STOP,
   REPEAT,
 }
+
+export interface AlgorithmExecutionInformation {
+  informationType: 'warn' | 'error' | 'none';
+  showDialog?: boolean;
+  informationDetail?: string;
+  informationSummary?: string;
+}

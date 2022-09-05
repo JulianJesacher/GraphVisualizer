@@ -83,4 +83,13 @@ export class GraphComponent implements AfterViewInit {
   closeInitializingDialog() {
     this.algorithmInitializer.clear();
   }
+
+  //Delegate click information to algorithm initializer
+  confirmDialogConfirmCallback(): void {
+    this.algorithmInitializer.confirmDialogConfirmClicked();
+  }
+  //Delegate click information to algorithm initializer
+  confirmDialogRejectCallback(): void {
+    this.algorithmInitializer.confirmDialogRejectClicked();
+  }
 }

@@ -9,7 +9,6 @@ import { DijkstraSSSPAlgorithm } from 'src/app/algorithms/sssp/dijksta-sssp.algo
 import { DijkstraSPSPAlgorithm } from '../../algorithms/spsp/dijkstra-spsp.algorithm';
 import { FloydWarshallAPSPAlgorithm } from '../../algorithms/apsp/floyd-warshall.algorithm';
 import { MessageService } from 'primeng/api';
-import { GraphAlgorithm } from '../../algorithms/abstract/base.algorithm';
 
 @Component({
   selector: 'app-toolbar',
@@ -59,6 +58,7 @@ export class ToolbarComponent implements OnInit {
   algorithmAutoStepButtonClicked() {
     if (!this.algorithmService.algorithmRunnable$.value) {
       this.messageService.add({
+        key: 'toast',
         severity: 'error',
         summary: 'Error',
         detail: 'No algorithm was selected. \nUse the top right button to select an algorithm first!',

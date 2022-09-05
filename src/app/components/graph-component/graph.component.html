@@ -1,4 +1,23 @@
-<p-toast position="top-center"></p-toast>
+<p-toast position="top-center" key="toast"></p-toast>
+<p-toast position="top-center" key="dialog-toast">
+  <ng-template let-message pTemplate="message">
+    <div class="p-flex p-flex-column" style="flex: 1">
+      <div class="p-text-center">
+        <i class="pi pi-exclamation-triangle" style="font-size: 3rem"></i>
+        <h4>{{ message.summary }}</h4>
+        <p>{{ message.detail }}</p>
+      </div>
+      <div class="p-grid p-fluid">
+        <div class="p-col-6">
+          <button type="button" pButton label="Yes" (click)="confirmDialogConfirmCallback()" class="p-button-success"></button>
+        </div>
+        <div class="p-col-6">
+          <button type="button" pButton label="No" (click)="confirmDialogRejectCallback()" class="p-button-secondary"></button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>
 
 <div #graphContainer id="graph-container"></div>
 <app-graph-element-config

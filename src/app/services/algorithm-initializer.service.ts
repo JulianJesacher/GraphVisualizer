@@ -15,6 +15,8 @@ import { NodeSelection, SelectedNodeInformation } from '../types/algorithm-initi
 import { GraphPainterService } from './graph-painter.service';
 import { environment } from 'src/environments/environment';
 import { GraphAlgorithm } from '../algorithms/abstract/base.algorithm';
+import { GraphDataService } from './graph-data.service';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
@@ -28,15 +30,20 @@ export class AlgorithmInitializerService {
   public algorithmGroup$ = new BehaviorSubject<AlgorithmGroup | null>(null);
   public selectedNodesInformation$ = new BehaviorSubject<SelectedNodeInformation[]>([]);
 
+  private _confirmDialogResolve?: any;
+  private _confirmDialogReject?: any;
+
   constructor(
     private graphEvent: GraphEventService,
     private algorithmService: AlgorithmService,
-    private graphPainter: GraphPainterService
+    private graphPainter: GraphPainterService,
+    private graphData: GraphDataService,
+    private messageService: MessageService
   ) {
     this.graphEvent.selectedNode$.subscribe((selectedNode) => this.handleSelectedNode(selectedNode));
   }
 
-  setAlgorithmAndStartInitialization(newAlgorithm: GraphAlgorithm) {
+  async setAlgorithmAndStartInitialization(newAlgorithm: GraphAlgorithm) {
     this._algorithm = newAlgorithm;
     this.initializingProcessActive$.next(true);
     this.algorithmGroup$.next(newAlgorithm.group);
@@ -44,6 +51,60 @@ export class AlgorithmInitializerService {
     this.graphPainter.clearPaint();
     this.algorithmService.clear();
     this._currentGraphPayload = newAlgorithm.emptyInputData;
+
+    //Get information about possible errors or warnings depending on the algorithm
+    const algorithmInformation = newAlgorithm.verify(this.graphData.graph);
+    if (algorithmInformation.informationType === 'none') {
+      return;
+    }
+
+    //Show a warning or an error to the user
+    const key = algorithmInformation.showDialog ? 'dialog-toast' : 'toast';
+    const closable = algorithmInformation.showDialog ? false : true;
+    const lifetime = algorithmInformation.showDialog ? 70000 : 3000;
+    this.messageService.add({
+      severity: algorithmInformation.informationType,
+      summary: algorithmInformation.informationSummary,
+      detail: algorithmInformation.informationDetail,
+      closable: closable,
+      key: key,
+      life: lifetime,
+    });
+
+    if (algorithmInformation.informationType === 'error') {
+      this.clear();
+    }
+
+    //Open dialog, create promise and set the callback functions to reject or resolve the promise later on
+    if (algorithmInformation.showDialog) {
+      const promise = new Promise((resolve, reject) => {
+        this._confirmDialogResolve = resolve;
+        this._confirmDialogReject = reject;
+      });
+
+      await promise
+        .then(() => this.messageService.clear())
+        .catch(() => {
+          this.messageService.clear();
+          this.clear();
+        });
+    }
+  }
+
+  //Resolve promise when confirm on dialog was clicked
+  confirmDialogConfirmClicked(): void {
+    if (!this._confirmDialogResolve) {
+      return;
+    }
+    this._confirmDialogResolve();
+  }
+
+  //Reject promise when reject on dialog was clicked
+  confirmDialogRejectClicked(): void {
+    if (!this._confirmDialogReject) {
+      return;
+    }
+    this._confirmDialogReject();
   }
 
   setCurrentNodeSelection(newSelection: NodeSelection) {

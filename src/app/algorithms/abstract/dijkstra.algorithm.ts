@@ -1,10 +1,18 @@
 import { DataSet, Edge, IdType, Network, Node } from 'vis';
 import { NodeColorState, EdgeColorState } from '../../graphConfig/colorConfig';
-import { State, AlgorithmGroup, GraphAlgorithmInput, SSSPAlgorithmInput, SPSPAlgorithmInput } from '../../types/algorithm.types';
+import {
+  State,
+  AlgorithmGroup,
+  GraphAlgorithmInput,
+  SSSPAlgorithmInput,
+  SPSPAlgorithmInput,
+  AlgorithmExecutionInformation,
+} from '../../types/algorithm.types';
 import { NodePriorityQueue } from '../helper/nodePriorityQueue';
 import { dataSetToArray } from '../../helper/datasetOperators';
 import { GraphAlgorithm } from './base.algorithm';
 import { default as clonedeep } from 'lodash.clonedeep';
+import { MessageService } from 'primeng/api';
 
 export interface DijkstraMetaData {
   currentNode: Node;
@@ -190,5 +198,44 @@ export abstract class DijkstraAlgorithm extends GraphAlgorithm {
       };
       yield currentState;
     }
+  }
+
+  public override verify(graph: Network): AlgorithmExecutionInformation {
+    //@ts-ignore
+    const edgesDataSet = graph.body.data.edges as DataSet<Edge>;
+    const edgesArray: Edge[] = dataSetToArray(edgesDataSet);
+
+    let negativeEdges = false;
+    for (const edge of edgesArray) {
+      if (edge?.label == undefined) {
+        continue;
+      }
+
+      if (typeof edge.label === 'number') {
+        return {
+          informationType: 'error',
+          showDialog: false,
+          informationSummary: 'Some edges have a non numerical label!',
+          informationDetail: 'Not all edges have a number as label, therefore the weight of the edge can not be calculated!',
+        };
+      }
+
+      if (parseInt(edge.label) < 0) {
+        negativeEdges = true;
+      }
+    }
+
+    if (negativeEdges) {
+      return {
+        informationType: 'warn',
+        showDialog: true,
+        informationSummary: 'Some edges have a negative weight, therefore it is possible that dijkstra will find a wrong shortest path!',
+        informationDetail: 'Confirm to proceed with the algorithm!',
+      };
+    }
+
+    return {
+      informationType: 'none',
+    };
   }
 }
