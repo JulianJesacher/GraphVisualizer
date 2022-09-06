@@ -1,7 +1,7 @@
 <p-card>
   <button class="close-btn" (click)="closeInitializingDialog()">✖</button>
   <ng-template pTemplate="header"> Set parameters for algorithm execution </ng-template>
-  <p-steps [model]="requiredSteps" [activeIndex]="activeIndex" #stepsContainer></p-steps>
+  <p-steps *ngIf="requiredSteps.length > 1" [model]="requiredSteps" [activeIndex]="activeIndex" #stepsContainer></p-steps>
   <div class="task-container">
     <span>{{ requiredSteps[activeIndex]?.fullInformation?.taskDescription }}</span>
   </div>
@@ -9,14 +9,26 @@
     <li *ngFor="let nodeInformation of _selectedNodesInformation">
       <div class="selected-nodes-information">
         <span class="node-name">{{ getNodeName(nodeInformation.nodeStepIndex) }}:</span>
-        <span class="node-label">'{{ nodeInformation.node.label }}'</span> 
+        <span class="node-label">'{{ nodeInformation.node.label }}'</span>
         <span class="node-color" [style.background]="nodeColorOptions[nodeInformation.color].background"></span>
       </div>
     </li>
   </ul>
   <div class="button-container">
-    <p-button *ngIf="backButtonVisible" type="button" class="p-button-success" (click)="previousStep()"><i class="fa-solid fa-arrow-left margin-right"></i>Back</p-button>
-    <p-button *ngIf="confirmButtonVisible" [disabled]="confirmButtonDisabled" type="button" class="p-button-success" (click)="triggerConfirmInputData()">Confirm<i class="fa-solid fa-check margin-left"></i></p-button>
-    <p-button *ngIf="nextButtonVisible" type="button" class="p-button-success" (click)="nextStep()">Next<i class="fa-solid fa-arrow-right margin-left"></i></p-button>
+    <p-button *ngIf="backButtonVisible" type="button" class="p-button-success" (click)="previousStep()"
+      ><i class="fa-solid fa-arrow-left margin-right"></i>Back</p-button
+    >
+    <p-button
+      *ngIf="confirmButtonVisible"
+      [disabled]="confirmButtonDisabled"
+      type="button"
+      class="p-button-success"
+      (click)="triggerConfirmInputData()"
+    >
+      Confirm<i class="fa-solid fa-check margin-left"></i>
+    </p-button>
+    <p-button *ngIf="nextButtonVisible" type="button" class="p-button-success" (click)="nextStep()"
+      >Next<i class="fa-solid fa-arrow-right margin-left"></i
+    ></p-button>
   </div>
 </p-card>
