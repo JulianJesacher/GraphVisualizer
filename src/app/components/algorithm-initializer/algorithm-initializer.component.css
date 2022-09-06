@@ -104,7 +104,7 @@ li:nth-child(odd) .selected-nodes-information .node-color {
 li:nth-child(even) .selected-nodes-information .node-color {
   animation-name: splash;
   animation-timing-function: linear;
-  animation-duration: 0.5s;
+  animation-duration: 1s;
 }
 
 li+li {
@@ -147,7 +147,7 @@ li+li {
   }
 
   33% {
-    transform: scale(1.2, .8);
+    transform: scale(1.1, .8);
   }
 
   66% {
