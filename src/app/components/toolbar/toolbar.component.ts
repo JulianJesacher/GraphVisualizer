@@ -39,10 +39,12 @@ export class ToolbarComponent implements OnInit {
 
   addNode() {
     this.graphData.enterAddNodeMode();
+    this.closeDropdown(this.dropdownContainerLeft);
   }
 
   addEdge() {
     this.graphData.enterAddEdgeMode();
+    this.closeDropdown(this.dropdownContainerLeft);
   }
 
   previousStep() {
@@ -81,6 +83,7 @@ export class ToolbarComponent implements OnInit {
 
   generateGraph() {
     this.graphGenerator.generateGraph(15, { min: 2, max: 10 }, 2);
+    this.closeDropdown(this.dropdownContainerLeft);
   }
 
   toggleDropdown(button: HTMLButtonElement) {
@@ -91,27 +94,41 @@ export class ToolbarComponent implements OnInit {
     }
   }
 
+  closeDropdown(dropdownContainer: ElementRef<HTMLDivElement>) {
+    dropdownContainer.nativeElement.classList.remove('visible');
+  }
+
   // HostListener to close dropdown menus, if a click outside of the toggle buttons was detected
   @HostListener('document:click', ['$event'])
   clickedOutsideDropdownToggle(event: MouseEvent) {
-    if (event.target instanceof Node && !this.toggleDropdownLeft.nativeElement.contains(event.target)) {
-      this.dropdownContainerLeft.nativeElement.classList.remove('visible');
+    if (!(event.target instanceof Node)) {
+      return;
     }
-    if (event.target instanceof Node && !this.toggleDropdownRight.nativeElement.contains(event.target)) {
-      this.dropdownContainerRight.nativeElement.classList.remove('visible');
+    if (!this.toggleDropdownLeft.nativeElement.contains(event.target) && !this.dropdownContainerLeft.nativeElement.contains(event.target)) {
+      this.closeDropdown(this.dropdownContainerLeft);
+    }
+    if (
+      !this.toggleDropdownRight.nativeElement.contains(event.target) &&
+      !this.dropdownContainerRight.nativeElement.contains(event.target)
+    ) {
+      this.closeDropdown(this.dropdownContainerRight);
     }
   }
 
   selectBFS() {
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new BfsTraversalAlgorithm());
+    this.closeDropdown(this.dropdownContainerRight);
   }
   selectDijkstraSSSP() {
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new DijkstraSSSPAlgorithm());
+    this.closeDropdown(this.dropdownContainerRight);
   }
   selectDijkstraSPSP() {
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new DijkstraSPSPAlgorithm());
+    this.closeDropdown(this.dropdownContainerRight);
   }
   selectFloydWarshallAPSP() {
     this.algorithmInitializer.setAlgorithmAndStartInitialization(new FloydWarshallAPSPAlgorithm());
+    this.closeDropdown(this.dropdownContainerRight);
   }
 }

@@ -72,7 +72,7 @@ button {
   position: absolute;
   z-index: 1;
   top: calc(1.1 * var(--toolbar-height));
-  background-color: var(--toolbar-background-color);
+  background-color: var(--medium-blue);
   padding: 0.25rem;
 
   --dropdown-border-radius: 5px;
@@ -113,7 +113,7 @@ button {
 }
 
 .dropdown-items-container button:hover {
-  background-color: #104712;
+  background-color: var(--dark-blue);
 }
 
 .dropdown-items-container h6 {
