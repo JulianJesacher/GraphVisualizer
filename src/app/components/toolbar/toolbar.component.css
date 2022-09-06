@@ -1,12 +1,10 @@
 .toolbar-wrapper {
-  --toolbar-background-color: #171e33;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
   height: var(--toolbar-height);
-  background-color: var(--toolbar-background-color);
+  background-color: var(--medium-blue);
 }
 
 button {
@@ -17,6 +15,54 @@ button {
 
   color: white;
   font-family: "PT Sans", sans-serif;
+}
+
+.dropdown-toggle>i {
+  font-size: 1rem;
+}
+
+.dropdown-toggle {
+  transition: 0.5s;
+}
+
+.dropdown-toggle:hover {
+  color: var(--dark-blue);
+  transition: 0.5s;
+  letter-spacing: 1px;
+}
+
+/*Animation for middle buttons on hover*/
+.middle-items>button:not(:disabled)>i {
+  color: white;
+  background: linear-gradient(to right, #00171F, #00171F 50%, white 50%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200%;
+  background-position: 100%;
+  transition: background-position 275ms ease;
+}
+
+.middle-items>button:hover>i {
+  background-position: 0 100%;
+}
+
+.middle-items>button>i {
+  line-height: 100%;
+}
+
+.middle-items>button {
+  margin: 0 0.1rem;
+}
+
+.middle-items>button:disabled {
+  color: #262626;
+}
+
+
+/*Align the algorithm control items*/
+.middle-items {
+  display: flex;
 }
 
 .dropdown-items-container {
@@ -36,19 +82,6 @@ button {
 .left-items,
 .right-items {
   margin: 0 1rem;
-}
-
-/*Align the algorithm control items*/
-.middle-items {
-  display: flex;
-}
-
-.middle-items > button {
-  margin: 0 0.1rem;
-}
-
-.middle-items > button:disabled {
-  color: #262626;
 }
 
 .right-items {
@@ -82,6 +115,7 @@ button {
 .dropdown-items-container button:hover {
   background-color: #104712;
 }
+
 .dropdown-items-container h6 {
   margin: 0.5rem 0;
 

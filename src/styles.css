@@ -2,6 +2,12 @@
 
 :root {
   --toolbar-height: 3rem;
+
+  /*Colors*/
+  --light-blue: #00A8E8;
+  --medium-blue: #007EA7;
+  --dark-blue: #003459;
+  --grey: #00171F;
 }
 
 body,
