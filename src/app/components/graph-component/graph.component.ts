@@ -62,13 +62,23 @@ export class GraphComponent implements AfterViewInit {
   }
 
   updateElement(updateEvent: GraphElementUpdateEvent) {
-    switch (updateEvent.type) {
-      case 'node':
-        this.graphData.graphNodes.update({ id: updateEvent.id, label: updateEvent.updatedData.label });
-        break;
-      case 'edge':
-        this.graphData.graphEdges.update({ id: updateEvent.id, label: updateEvent.updatedData.label });
-        break;
+    if (updateEvent.updatedData.label != undefined) {
+      switch (updateEvent.type) {
+        case 'node':
+          this.graphData.graphNodes.update({ id: updateEvent.id, label: updateEvent.updatedData.label });
+          break;
+        case 'edge':
+          this.graphData.graphEdges.update({ id: updateEvent.id, label: updateEvent.updatedData.label });
+          break;
+      }
+    }
+
+    if (updateEvent.updatedData.changeEdgeDirection && updateEvent.type === 'edge') {
+      const currentEdge = this.graphData.graphEdges.get(updateEvent.id);
+
+      if (currentEdge?.from != undefined && currentEdge?.to != undefined) {
+        this.graphData.graphEdges.update({ id: updateEvent.id, from: currentEdge.to, to: currentEdge.from });
+      }
     }
   }
 

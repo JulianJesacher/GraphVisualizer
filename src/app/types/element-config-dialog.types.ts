@@ -6,7 +6,8 @@ interface GraphElementIdentifier {
 export type GraphElementDeleteEvent = GraphElementIdentifier;
 
 interface UpdatePayload {
-  label: string;
+  label?: string;
+  changeEdgeDirection?: boolean;
 }
 
 export interface GraphElementUpdateEvent extends GraphElementIdentifier {

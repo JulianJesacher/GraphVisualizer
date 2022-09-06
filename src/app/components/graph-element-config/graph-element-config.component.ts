@@ -20,7 +20,7 @@ export class GraphElementConfigComponent {
     this.resetErrors();
   }
 
-  private elementType_?: GraphElementType | null;
+  public elementType_?: GraphElementType | null;
   @Input() set elementType(newElementType: GraphElementType | undefined | null) {
     this.elementType_ = newElementType;
     this.resetErrors();
@@ -81,8 +81,9 @@ export class GraphElementConfigComponent {
 
   /**
    * Checks provided label and shows error if the label is missing. If everything is valid, the element gets updated and the dialog closed.
+   * @param changeEdgeDirection boolean to indicate wheter the direction of the edited edge gets switched
    */
-  triggerUpdate() {
+  triggerUpdate(changeEdgeDirection: boolean = false) {
     if (!this.elementConfigForm.valid) {
       this.configErrorState = ElementConfigErrorState.LABEL_NOT_PROVIDED;
       return;
@@ -103,10 +104,21 @@ export class GraphElementConfigComponent {
     this.update.next({
       id: elementId,
       type: elementType,
-      updatedData: this.elementConfigForm.value,
+      updatedData: { label: this.elementConfigForm.value.label, changeEdgeDirection: changeEdgeDirection },
     });
 
     this.closeConfig();
+  }
+
+  /**
+   * Changes the direction of the selected node
+   */
+  changeEdgeDirection() {
+    if (this.elementType_ !== 'edge') {
+      throw new Error('This operation is only defined for edges!');
+    }
+
+    this.triggerUpdate(true);
   }
 
   /**
