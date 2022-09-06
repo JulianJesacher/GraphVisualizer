@@ -156,7 +156,8 @@ export class AlgorithmInitializerService {
 
     const updatedNodeInformation = currentNodesInformation
       .filter((nodeInformation) => nodeInformation.nodeStepIndex != this._currentNodeSelection?.nodeStepIndex)
-      .concat({ ...this._currentNodeSelection, node: selectedNode }); // Concat because push returns the length of the new array
+      .concat({ ...this._currentNodeSelection, node: selectedNode }) // Concat because push returns the length of the new array
+      .sort((a, b) => a.nodeStepIndex - b.nodeStepIndex); //Sort array by indices
 
     this.selectedNodesInformation$.next(updatedNodeInformation);
     this.graphPainter.paintBySelectedNodeInformation(updatedNodeInformation);
