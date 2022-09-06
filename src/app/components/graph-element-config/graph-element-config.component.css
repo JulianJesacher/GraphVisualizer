@@ -6,6 +6,9 @@
   position: relative;
   margin: 0;
   z-index: 10;
+  border: 1px solid black;
+  box-shadow: 2px 2px 4px rgba(10, 10, 10, 0.15);
+  font-family: "PT Sans", sans-serif;
 }
 
 .config-container > form {
@@ -27,16 +30,17 @@
 }
 
 .config-container .row > button {
-  --button-color: #1d83d1;
   margin: 0 0.25rem;
   border-radius: 5px;
-  border: 1px solid var(--button-color);
-  color: var(--button-color);
+  border: 1px solid var(--medium-blue);
+  color: var(--medium-blue);
   background-color: transparent;
+  font-size: 1.15rem;
+  padding: 0.1rem 0.25rem;
 }
 
 .config-container .row > button:hover {
-  background-color: var(--button-color);
+  background-color: var(--medium-blue);
   color: white;
   transition: 0.5s;
 }
@@ -47,6 +51,16 @@
   grid-template-rows: 1fr;
   grid-gap: 0.5rem 0.75rem;
   margin-bottom: 0.75rem;
+
+  padding: 5px;
+  border: 1px solid var(--medium-blue);
+  border-radius: 7.5px;
+}
+
+input{
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 2.5px;
 }
 
 .config-container .grid > span {

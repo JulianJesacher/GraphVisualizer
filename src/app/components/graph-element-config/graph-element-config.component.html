@@ -1,15 +1,15 @@
 <div class="config-container" #configContainer>
   <form [formGroup]="elementConfigForm">
-    <h3>Edit {{elementType | titlecase}}</h3>
+    <h3>Edit {{ elementType | titlecase }}</h3>
     <div class="grid">
       <span>Label:</span>
-      <input type="text" formControlName="label"required (focus)="resetErrors()"/>
+      <input type="text" formControlName="label" required (focus)="resetErrors()" />
     </div>
     <div class="row" style="margin-bottom: 0">
-      <button (click)="triggerDelete()" type="button">Remove</button>
-      <button (click)="triggerUpdate()" type="button">Save changes</button>
+      <button (click)="triggerDelete()" type="button" title="Remove"><i class="fa-solid fa-trash"></i></button>
+      <button (click)="triggerUpdate()" type="button" title="Save changes"><i class="fa-solid fa-floppy-disk"></i></button>
     </div>
-    <span class="config-error" *ngIf="configErrorState !== ElementConfigErrorState.NONE">{{configErrorState}}</span>
+    <span class="config-error" *ngIf="configErrorState !== ElementConfigErrorState.NONE">{{ configErrorState }}</span>
   </form>
   <button class="close-btn" (click)="closeConfig()">✖</button>
 </div>
