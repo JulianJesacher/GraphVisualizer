@@ -56,7 +56,7 @@ button {
 }
 
 .middle-items>button:disabled {
-  color: #262626;
+  color: var(--disabled-color);
 }
 
 
@@ -77,6 +77,19 @@ button {
 
   --dropdown-border-radius: 5px;
   border-radius: var(--dropdown-border-radius);
+}
+
+.dropdown-items-container h6 {
+  margin: 0.5rem 0;
+
+  color: var(--disabled-color);
+  font-family: "PT Sans", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  display: inline-block;
+  border-bottom: 1.5px solid var(--disabled-color);
+  border-top: 1.5px solid var(--disabled-color);
 }
 
 .left-items,
@@ -114,13 +127,4 @@ button {
 
 .dropdown-items-container button:hover {
   background-color: var(--dark-blue);
-}
-
-.dropdown-items-container h6 {
-  margin: 0.5rem 0;
-
-  color: white;
-  font-family: "PT Sans", sans-serif;
-  font-size: 0.95rem;
-  font-weight: 100;
 }
