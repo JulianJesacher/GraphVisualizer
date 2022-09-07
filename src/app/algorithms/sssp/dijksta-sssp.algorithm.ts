@@ -1,4 +1,4 @@
-import { EdgeColorState, NodeColorState } from 'src/app/graphConfig/colorConfig';
+import { EdgeColorState, NodeColorState } from 'src/app/config/colorConfig';
 import { DataSet, Edge, IdType, Network, Node } from 'vis';
 import { AlgorithmGroup, SSSPAlgorithmInput, State } from '../../types/algorithm.types';
 import { DijkstraAlgorithm } from '../abstract/dijkstra.algorithm';

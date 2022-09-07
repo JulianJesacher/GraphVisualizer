@@ -1,5 +1,5 @@
 import { DataSet, Edge, IdType, Network, Node } from 'vis';
-import { EdgeColorState, NodeColorState } from '../../graphConfig/colorConfig';
+import { EdgeColorState, NodeColorState } from '../../config/colorConfig';
 import { State, AlgorithmGroup, TraversalAlgorithmInput } from '../../types/algorithm.types';
 import { GraphAlgorithm } from '../abstract/base.algorithm';
 import { default as clonedeep } from 'lodash.clonedeep';

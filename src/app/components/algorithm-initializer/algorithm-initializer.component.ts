@@ -3,7 +3,7 @@ import { MenuItem } from 'primeng/api';
 import { InitializationInformation, inputNodesInitializationInformation } from 'src/app/types/algorithm-initializer-dialog.types';
 import { AlgorithmGroup } from '../../types/algorithm.types';
 import { UpdateCurrentNodeSelectionEvent, SelectedNodeInformation } from '../../types/algorithm-initializer-dialog.types';
-import { nodeColorOptions } from '../../graphConfig/colorConfig';
+import { nodeColorOptions } from '../../config/colorConfig';
 import { Steps } from 'primeng/steps';
 
 interface MenuItemWithInitializationInformation extends MenuItem {

@@ -1,5 +1,5 @@
 import { DataSet, Edge, IdType, Network, Node } from 'vis';
-import { NodeColorState, EdgeColorState } from '../../graphConfig/colorConfig';
+import { NodeColorState, EdgeColorState } from '../../config/colorConfig';
 import {
   State,
   AlgorithmGroup,

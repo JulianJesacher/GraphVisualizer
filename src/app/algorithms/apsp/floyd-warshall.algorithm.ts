@@ -1,4 +1,4 @@
-import { EdgeColorState, NodeColorState } from 'src/app/graphConfig/colorConfig';
+import { EdgeColorState, NodeColorState } from 'src/app/config/colorConfig';
 import { dataSetToArray } from 'src/app/helper/datasetOperators';
 import { AlgorithmGroup, GraphAlgorithmInput, State } from 'src/app/types/algorithm.types';
 import { DataSet, Edge, Network, Node } from 'vis';

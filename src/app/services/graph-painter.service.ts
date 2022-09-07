@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { State } from '../types/algorithm.types';
 import { GraphDataService } from './graph-data.service';
 import { IdType } from 'vis';
-import { NodeColorState, nodeColorOptions, EdgeColorState, edgeColorOptions } from '../graphConfig/colorConfig';
+import { NodeColorState, nodeColorOptions, EdgeColorState, edgeColorOptions } from '../config/colorConfig';
 import { SelectedNodeInformation } from '../types/algorithm-initializer-dialog.types';
 
 @Injectable({
@@ -20,12 +20,12 @@ export class GraphPainterService {
 
   paintState(newState: State) {
     newState.nodes.forEach((singleEntry, id) => this.paintNodeByState(id, singleEntry.color));
-    newState.edges.forEach((singleEntry, id) => this.paintEdgeByStte(id, singleEntry.color));
+    newState.edges.forEach((singleEntry, id) => this.paintEdgeByState(id, singleEntry.color));
   }
 
   clearPaint() {
     this.graphData.graphNodes.forEach((node, id) => this.paintNodeByState(id, NodeColorState.NONE)); //todo: optimize
-    this.graphData.graphEdges.forEach((edge, id) => this.paintEdgeByStte(id, EdgeColorState.NONE)); //todo: optimize
+    this.graphData.graphEdges.forEach((edge, id) => this.paintEdgeByState(id, EdgeColorState.NONE)); //todo: optimize
   }
 
   paintBySelectedNodeInformation(selectedNodeInformation: SelectedNodeInformation[]) {
@@ -33,7 +33,7 @@ export class GraphPainterService {
     selectedNodeInformation.forEach((nodeInformation) => this.paintNodeByState(nodeInformation.node.id, nodeInformation.color));
   }
 
-  paintEdgeByStte(edgeId: IdType, state: EdgeColorState) {
+  paintEdgeByState(edgeId: IdType, state: EdgeColorState) {
     if (!edgeId) {
       throw new Error('No id of the node to paint was provided!');
     }

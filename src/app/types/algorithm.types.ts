@@ -1,5 +1,5 @@
 import { Node, IdType, Network, Edge } from 'vis';
-import { NodeColorState, EdgeColorState } from '../graphConfig/colorConfig';
+import { NodeColorState, EdgeColorState } from '../config/colorConfig';
 import { equalArrays } from '../helper/comparators';
 
 export type TraversalAlgorithmInput = { startNode: Node | undefined };
