@@ -1,0 +1,16 @@
+<div class="information-card-background">
+  <div class="information-card-container">
+    <span class="page-number">1/1</span>
+    <h2 class="title">{{ currentInformation.title }}</h2>
+    <h3 class="subtitle">{{ currentInformation.subtitle }}</h3>
+    <p class="content">{{ currentInformation.content }}</p>
+    <div class="image-container">
+      <img [src]="image" *ngFor="let image of currentInformation.images" />
+    </div>
+    <div class="button-container">
+      <button *ngIf="true" disabled>Previous</button>
+      <button *ngIf="true">Skip tutorial</button>
+      <button *ngIf="true">Next</button>
+    </div>
+  </div>
+</div>

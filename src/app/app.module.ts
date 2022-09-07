@@ -15,9 +15,10 @@ import { StepsModule } from 'primeng/steps';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { UserInformationCardComponent } from './components/user-information-card/user-information-card.component';
 
 @NgModule({
-  declarations: [AppComponent, GraphComponent, ToolbarComponent, GraphElementConfigComponent, AlgorithmInitializerComponent],
+  declarations: [AppComponent, GraphComponent, ToolbarComponent, GraphElementConfigComponent, AlgorithmInitializerComponent, UserInformationCardComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

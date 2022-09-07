@@ -1,5 +1,5 @@
 import { Node } from 'vis';
-import { NodeColorState } from '../graphConfig/colorConfig';
+import { NodeColorState } from '../config/colorConfig';
 import { AlgorithmInputNodeType } from './algorithm.types';
 
 export interface InitializationInformation {
