@@ -9,19 +9,29 @@ import { tutorialCardInformation } from '../../config/tutorialConfig';
 })
 export class UserInformationCardComponent implements OnInit {
   public _currentInformation: InformationCardData[] = tutorialCardInformation;
-  @Input() set currentInformation(newInformation: InformationCardData[]) {
+  @Input() set currentInformation(newInformation: InformationCardData[] | null) {
+    if (newInformation == null) {
+      throw new Error("Information can't be null!");
+    }
+
     this._currentInformation = newInformation;
     this._activeIndex = 0;
     this._informationCardAmount = newInformation.length;
     this._singleCard = newInformation.length === 1;
   }
 
-  @Input() currentCardNumber: number = 1;
-  public _informationCardAmount: number = 3;
-  public _activeIndex: number = 0;
-  public _singleCard: boolean = true;
+  public _informationCardAmount!: number;
+  public _activeIndex!: number;
+  public _singleCard!: boolean;
 
-  @Input() currentInformationType: InformationType = InformationType.TUTORIAL;
+  public _currentInformationType: InformationType = InformationType.TUTORIAL;
+  @Input() set currentInformationType(newValue: InformationType | null) {
+    if (newValue == null) {
+      throw new Error("Information type can't be null!");
+    }
+
+    this._currentInformationType = newValue;
+  }
   public informationTypes = InformationType;
 
   @Output() closeCard = new EventEmitter<void>();

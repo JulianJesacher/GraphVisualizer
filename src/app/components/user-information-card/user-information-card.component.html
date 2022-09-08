@@ -8,9 +8,9 @@
       <img [src]="image" *ngFor="let image of _currentInformation[_activeIndex].images" />
     </div>
     <div class="button-container">
-      <button *ngIf="_singleCard" [disabled]="_singleCard && _activeIndex <= 0" (click)="previousCard()">Previous</button>
-      <button *ngIf="currentInformationType === informationTypes.TUTORIAL" (click)="triggerCloseCard()">Skip tutorial</button>
-      <button *ngIf="_singleCard" [disabled]="_singleCard && _activeIndex >= _informationCardAmount - 1" (click)="nextCard()">Next</button>
+      <button *ngIf="!_singleCard" [disabled]="!_singleCard && _activeIndex <= 0" (click)="previousCard()">Previous</button>
+      <button *ngIf="_currentInformationType === informationTypes.TUTORIAL" (click)="triggerCloseCard()">Skip tutorial</button>
+      <button *ngIf="!_singleCard" [disabled]="!_singleCard && _activeIndex >= _informationCardAmount - 1" (click)="nextCard()">Next</button>
     </div>
   </div>
 </div>

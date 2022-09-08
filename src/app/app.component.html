@@ -1,3 +1,8 @@
 <app-toolbar></app-toolbar>
 <app-graph></app-graph>
-<app-user-information-card *ngIf="true"></app-user-information-card>
+<app-user-information-card
+  *ngIf="informationService.cardVisible$ | async"
+  [currentInformation]="informationService.cardInformation$ | async"
+  [currentInformationType]="informationService.cardInformationType$ | async"
+  (closeCard)="closeInformationCard()"
+></app-user-information-card>
