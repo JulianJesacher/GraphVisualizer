@@ -8,3 +8,8 @@ interface InformationCardDataBase {
 export type TutorialCardData = InformationCardDataBase;
 
 export type InformationCardData = TutorialCardData;
+
+export enum InformationType {
+  TUTORIAL,
+  ALGORITHM_INFORMATION,
+}
