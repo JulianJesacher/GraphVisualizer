@@ -8,7 +8,7 @@ import { tutorialCardInformation } from '../../config/tutorialConfig';
   styleUrls: ['./user-information-card.component.css'],
 })
 export class UserInformationCardComponent implements OnInit {
-  public _currentInformation: InformationCardData[] = [tutorialCardInformation[0]];
+  public _currentInformation: InformationCardData[] = tutorialCardInformation;
   @Input() set currentInformation(newInformation: InformationCardData[]) {
     this._currentInformation = newInformation;
     this._activeIndex = 0;
