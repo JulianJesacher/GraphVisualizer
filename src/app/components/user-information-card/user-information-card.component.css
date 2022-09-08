@@ -22,7 +22,7 @@
 
 .information-card-container {
   width: 70%;
-  max-height: 95%;
+  height: 95%;
   border: 2px solid black;
   display: flex;
   flex-direction: column;
@@ -32,6 +32,7 @@
   position: absolute;
   text-align: center;
   align-items: center;
+  position: relative;
 }
 
 .page-number {
@@ -85,6 +86,8 @@
   align-items: center;
   width: 100%;
   padding: 2rem;
+  position: absolute;
+  bottom: 0;
 }
 
 .button-container button {

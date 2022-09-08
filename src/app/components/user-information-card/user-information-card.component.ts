@@ -17,7 +17,7 @@ export class UserInformationCardComponent implements OnInit {
   }
 
   @Input() currentCardNumber: number = 1;
-  public _informationCardAmount: number = 2;
+  public _informationCardAmount: number = 3;
   public _activeIndex: number = 0;
   public _singleCard: boolean = true;
 

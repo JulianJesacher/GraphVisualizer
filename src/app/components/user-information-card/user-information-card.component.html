@@ -3,7 +3,7 @@
     <span class="page-number" *ngIf="_informationCardAmount > 1">1/1</span>
     <h2 class="title">{{ _currentInformation[_activeIndex].title }}</h2>
     <h3 class="subtitle">{{ _currentInformation[_activeIndex].subtitle }}</h3>
-    <p class="content">{{ _currentInformation[_activeIndex].content }}</p>
+    <p class="content" style="white-space: pre-wrap">{{ _currentInformation[_activeIndex].content }}</p>
     <div class="image-container">
       <img [src]="image" *ngFor="let image of _currentInformation[_activeIndex].images" />
     </div>
