@@ -1,16 +1,16 @@
 <div class="information-card-background">
   <div class="information-card-container">
-    <span class="page-number">1/1</span>
-    <h2 class="title">{{ currentInformation.title }}</h2>
-    <h3 class="subtitle">{{ currentInformation.subtitle }}</h3>
-    <p class="content">{{ currentInformation.content }}</p>
+    <span class="page-number" *ngIf="_informationCardAmount > 1">1/1</span>
+    <h2 class="title">{{ _currentInformation[_activeIndex].title }}</h2>
+    <h3 class="subtitle">{{ _currentInformation[_activeIndex].subtitle }}</h3>
+    <p class="content">{{ _currentInformation[_activeIndex].content }}</p>
     <div class="image-container">
-      <img [src]="image" *ngFor="let image of currentInformation.images" />
+      <img [src]="image" *ngFor="let image of _currentInformation[_activeIndex].images" />
     </div>
     <div class="button-container">
-      <button *ngIf="true" disabled>Previous</button>
-      <button *ngIf="true">Skip tutorial</button>
-      <button *ngIf="true">Next</button>
+      <button *ngIf="_singleCard" [disabled]="_singleCard && _activeIndex <= 0" (click)="previousCard()">Previous</button>
+      <button *ngIf="currentInformationType === informationTypes.TUTORIAL" (click)="triggerCloseCard()">Skip tutorial</button>
+      <button *ngIf="_singleCard" [disabled]="_singleCard && _activeIndex >= _informationCardAmount - 1" (click)="nextCard()">Next</button>
     </div>
   </div>
 </div>
