@@ -13,3 +13,47 @@
   display: grid;
   place-items: center;
 }
+
+.help-button {
+  background-color: transparent;
+  color: #6b6b6b;
+  border: none;
+  font-size: 1.5rem;
+  position: absolute;
+  top: calc(var(--toolbar-height) + 1.25rem);
+  right: 1.25rem;
+  transition: 1s color;
+}
+
+.help-button:hover {
+  color: black;
+  animation-name: stretching;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes stretching {
+  0% {
+    transform: scale(1, 1) translateY(0);
+  }
+
+  20% {
+    transform: scale(1.2, 1) translateY(-10px);
+  }
+
+  40% {
+    transform: scale(1.25, 1) translateY(-12px);
+  }
+
+  60% {
+    transform: scale(1.2, 1) translateY(0);
+  }
+
+  80% {
+    transform: scale(0.85, 1) translateY(-7px);
+  }
+
+  100% {
+    transform: scale(1, 1) translateY(0);
+  }
+}

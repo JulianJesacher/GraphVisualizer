@@ -20,6 +20,7 @@
 </p-toast>
 
 <div #graphContainer id="graph-container"></div>
+<button class="help-button" title="Show tutorial"><i class="fa-sharp fa-solid fa-info"></i></button>
 <app-graph-element-config
   *ngIf="(elementDialog.position$ | async) && !(algorithmInitializer.initializingProcessActive$ | async)"
   [elementId]="elementDialog.elementId$ | async"
