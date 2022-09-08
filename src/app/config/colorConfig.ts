@@ -6,7 +6,7 @@ export const nodeColorOptions = {
     background: '#D61111',
   },
   finished: {
-    background: '#0E42C7',
+    background: '#00A8E8',
   },
   none: {
     background: '#FFFFFF',
