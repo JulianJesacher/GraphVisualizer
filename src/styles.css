@@ -4,10 +4,10 @@
   --toolbar-height: 3rem;
 
   /*Colors*/
-  --light-blue: #00A8E8;
-  --medium-blue: #007EA7;
+  --light-blue: #00a8e8;
+  --medium-blue: #007ea7;
   --dark-blue: #003459;
-  --grey: #00171F;
+  --grey: #00171f;
   --disabled-color: #262626;
 }
 
@@ -39,4 +39,10 @@ button {
 .close-btn:hover {
   color: red;
   transform: rotate(90deg);
+}
+
+@media (min-width: 1600px) {
+  html {
+    font-size: 20px;
+  }
 }
