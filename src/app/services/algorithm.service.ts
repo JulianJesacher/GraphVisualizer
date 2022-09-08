@@ -51,6 +51,7 @@ export class AlgorithmService {
     this._stateHistory = [];
     this._currentStateHistoryIndex = -1;
     this._autoStepAlgorithm = false;
+    this._iteratorFinished = false;
 
     this.backwardButtonDisabled$.next(true);
     this.forwardButtonDisabled$.next(true);
