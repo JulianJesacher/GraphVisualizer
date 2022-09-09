@@ -1,0 +1,7 @@
+version: '3.8'
+services: 
+    GraphVisualizer:
+        container_name: 'GraphVisualizer'
+        image: 'ghcr.io/julianjesacher/graphvisualizer:latest'
+        ports: 
+            - 127.0.0.1:2000:80
