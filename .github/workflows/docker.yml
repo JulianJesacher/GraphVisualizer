@@ -1,0 +1,29 @@
+name: 'Build and Push GraphVisualizer Docker Container'
+
+on:
+    push:
+        tags:
+            - 'v[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+    build:
+
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+            - run: echo "SEM_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
+            - name: Docker Login
+              uses: docker/login-action@v2.0.0
+              with:
+                  registry: ghcr.io
+                  username: JulianJesacher
+                  password: ${{ secrets.CR_PAT }}
+            - name: Build and push GraphVisualizer Docker image
+              uses: docker/build-push-action@v3.0.0
+              with:
+                  context: .
+                  file: ./Dockerfile
+                  pull: true
+                  push: true
+                  tags: 'ghcr.io/julianjesacher/GraphVisualizer:latest,ghcr.io/julianjesacher/GraphVisualizer:${{ env.SEM_VERSION }}-alpine'
