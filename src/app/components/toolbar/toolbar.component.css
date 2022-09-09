@@ -28,7 +28,6 @@ button {
 .dropdown-toggle:hover {
   color: var(--dark-blue);
   transition: 0.5s;
-  letter-spacing: 1px;
 }
 
 /*Animation for middle buttons on hover*/
@@ -40,7 +39,7 @@ button {
   -webkit-text-fill-color: transparent;
   background-size: 200%;
   background-position: 100%;
-  transition: background-position 275ms ease;
+  transition: background-position 500ms ease;
 }
 
 .middle-items>button:hover>i {
