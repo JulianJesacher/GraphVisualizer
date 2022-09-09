@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserInformationServiceService } from './services/user-information-service.service';
+import { UserInformationService } from './services/user-information.service';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +7,7 @@ import { UserInformationServiceService } from './services/user-information-servi
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  constructor(public informationService: UserInformationServiceService) {}
+  constructor(public informationService: UserInformationService) {}
 
   ngOnInit(): void {
     this.informationService.showTutorial();

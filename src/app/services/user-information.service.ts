@@ -6,7 +6,7 @@ import { InformationType, InformationCardData } from '../types/user-information-
 @Injectable({
   providedIn: 'root',
 })
-export class UserInformationServiceService {
+export class UserInformationService {
   public cardInformationType$ = new BehaviorSubject<InformationType | null>(null);
   public cardInformation$ = new BehaviorSubject<InformationCardData[] | null>(null);
   public cardVisible$ = new BehaviorSubject<boolean>(false);

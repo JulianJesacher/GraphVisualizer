@@ -6,7 +6,7 @@ import { GraphDataService } from '../../services/graph-data.service';
 import { GraphElementConfigComponent } from '../graph-element-config/graph-element-config.component';
 import { AlgorithmInitializerService } from '../../services/algorithm-initializer.service';
 import { UpdateCurrentNodeSelectionEvent } from '../../types/algorithm-initializer-dialog.types';
-import { UserInformationServiceService } from 'src/app/services/user-information-service.service';
+import { UserInformationService } from 'src/app/services/user-information.service';
 
 @Component({
   selector: 'app-graph',
@@ -34,7 +34,7 @@ export class GraphComponent implements AfterViewInit {
     private graphData: GraphDataService,
     public elementDialog: GraphElementDialogService,
     public algorithmInitializer: AlgorithmInitializerService,
-    private informationService: UserInformationServiceService
+    private informationService: UserInformationService
   ) {}
 
   ngAfterViewInit() {
