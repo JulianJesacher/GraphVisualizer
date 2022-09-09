@@ -26,4 +26,4 @@ jobs:
                   file: ./Dockerfile
                   pull: true
                   push: true
-                  tags: 'ghcr.io/julianjesacher/GraphVisualizer:latest,ghcr.io/julianjesacher/GraphVisualizer:${{ env.SEM_VERSION }}-alpine'
+                  tags: 'ghcr.io/julianjesacher/graphvisualizer:latest,ghcr.io/julianjesacher/graphvisualizer:${{ env.SEM_VERSION }}-alpine'
