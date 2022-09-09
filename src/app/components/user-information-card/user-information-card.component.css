@@ -32,7 +32,6 @@
   position: absolute;
   text-align: center;
   align-items: center;
-  position: relative;
 }
 
 .page-number {
@@ -74,10 +73,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 
 .image-container>img {
-  max-width: 35%;
+  margin: auto;
+  max-width: 60%;
+  max-height: 100%;
 }
 
 .button-container {
@@ -86,8 +88,7 @@
   align-items: center;
   width: 100%;
   padding: 2rem;
-  position: absolute;
-  bottom: 0;
+  justify-self: flex-end;
 }
 
 .button-container button {
