@@ -37,13 +37,13 @@ export const tutorialCardInformation: TutorialCardData[] = [
     -Generate graph: A click on this option will generate a random graph. Beware: This will remove your current graph without warning.
     
     When a node or edge is clicked, a configuration dialog opens in which you can change the labeling of the element. In this dialog, the element can also be removed from the graph - or in the case of an edge - the direction of the edge can be switched.`,
-    images: ['/assets/Screenshot 2022-09-08 201257.png'],
+    images: ['/assets/graph_manipulation.webp'],
   },
   {
     title: 'Executing an Algorithm.',
     subtitle: `An algorithm can be chosen in the dropdown menu in the top right corner. The algorithms in the dropdown menu are sorted by the categories explained on page 3. `,
     content: `When an algorithm is selected, a new menu opens to configure the input parameters, such as the start node, for the algorithm. When the input is set accordingly, a click on confirm button will close the dialog and start the algorithm so that it can be stepped through.
     The algorithm can be controlled using the three buttons in the center of the top toolbar. The left button undoes the last step, the right button performs the next step and the middle button can be used to start and stop an the periodical execution of the specified algorithm. When the algorithm is finished, the middle button will visually change and can be used to repeat the algorithm execution from the beginning.`,
-    images: ['/assets/Screenshot 2022-09-08 201257.png'],
+    images: ['/assets/algo_control.webp'],
   },
 ];
